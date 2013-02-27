@@ -1,1 +1,4 @@
 node_modules
+
+# CSS files are generated from SCSS files
+*.css
