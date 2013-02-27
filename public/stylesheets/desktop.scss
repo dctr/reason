@@ -1,10 +1,181 @@
-header,nav,main,footer {
-	border: 1px solid black;
-	border-radius: 10px;
-	padding: 5px;
-	margin: 5px;
+/*
+ * (S)CSS file for REaSoN
+ *
+ * This is based on Boilerplate's CSS which in turn is based on normalize.css.
+ * Furthermore, it used the solarized color scheme and is loosely based
+ * on the SCSS used on the solarized hompage.
+ */
+
+// Use normalize.css as delivered with HTML5 Boilerplate 4
+@import "normalize";
+
+// Use main.css as delivered with HTML5 Boilerplate 4
+@import "h5bp";
+
+// Define basics for solarized (http://ethanschoonover.com/solarized)
+@import "solarized";
+
+
+/*
+ * Variables and classes
+ */
+$hmargin:   70px;
+$vmargin:   20px;
+
+/*
+ * Document structure
+ */
+header {
+    //font-size: 123.1% ;
+    line-height: 190%;
+    @include rebase($base03,$base02,$base01,$base00,$base0,$base1,$base2,$base3)
+}
+nav {
+	a {
+        text-decoration:none;
+        margin-right: 10px;
+    }
+}
+aside{
+    display: block;
+    float: right;
+    width: $hmargin - 10px;
+    padding-left: 10px;
+}
+main {
+    margin-left:$hmargin;
+    margin-right:$hmargin;
+    margin-top:$vmargin*2;
+    margin-bottom:$vmargin*2;
+    //min-width: 52em; // sufficient for 80 char pre blocks
+    min-width: 32em; // sufficient for 72 char pre blocks
+    max-width: 52em;
+}
+footer {
+    padding-left:$hmargin;
+    line-height:200%;
+    padding-right:1em;
+    @include rebase($base03,$base02,$base01,$base00,$base0,$base1,$base2,$base3)
 }
 
-nav li {
-	display: inline;
+/*
+ * Generic tag styles.
+ */
+h1,h2,h3,h4,h5,h6 {
+    font-weight: lighter;
+    text-transform: capitalize;
+    margin-top:$vmargin*2;
+    margin-bottom:$vmargin;
+}
+h1 {
+	font-size: 153.9%; //26px
+    text-transform: uppercase;
+    font-weight: bold;
+    border-bottom:1px solid;
+    &:first-of-type {
+	    //font-size: 700%;
+	    font-size: 400%;
+	    margin-top:0;
+	    margin-bottom:$vmargin;
+	    line-height: 100%;
+	    border: none;
+	    text-decoration: none;
+	}
+}
+h2 {
+	font-size: 153.9%; //23px
+    border-bottom:1px solid;
+    &:first-of-type {
+	    font-weight: lighter;
+	    font-size: 200%;
+	    text-transform: none;
+	    color: $base01;
+	    margin-top:$vmargin;
+	    margin-bottom:$vmargin*2;
+	    line-height: 100%;
+	    border: none;
+	}
+}
+h3,h4,h5,h6 {
+    border-bottom:none;
+}
+h3 { font-size: 146.5% }    //20px
+h4 { font-size: 138.5% }      //18px
+h5 { font-size: 138.5% }      //18px
+h6 { font-size: 138.5% }      //18px
+
+p {
+    font-weight: lighter;
+    margin: 0 0 $vmargin 0;
+}
+strong {
+	font-weight: bold;
+}
+em {
+	font-style: italic;
+}
+ol,ul {
+    margin-bottom: $vmargin;
+}
+li {
+    margin-bottom: $vmargin/2;
+}
+dt {
+    font-weight: bold;
+}
+dd {
+    margin-left: $hmargin/2;
+}
+img { margin: 0 0 $vmargin 0; }
+pre {
+    margin-bottom:$vmargin;
+}
+pre, code {
+    font-family: monospace;
+}
+pre {
+}
+/*code {
+    font-size: 75%;
+}*/
+table {
+    font-size: 75%;
+}
+th {
+    padding-bottom: .7em;
+    padding-right: 1.8em;
+}
+td {
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    padding-left: .2em;
+    padding-right: 1.8em;
+}
+td.nums {
+}
+
+
+.yellow{
+    @include accentize($yellow);
+}
+.orange{
+    @include accentize($orange);
+}
+.red{
+    @include accentize($red);
+}
+.magenta{
+    @include accentize($magenta);
+}
+.violet{
+    @include accentize($violet);
+}
+.blue{
+    @include accentize($blue);
+}
+.cyan{
+    @include accentize($cyan);
+}
+.green{
+    @include accentize($green);
 }

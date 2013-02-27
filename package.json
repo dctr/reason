@@ -1,0 +1,11 @@
+{
+  "name": "reason",
+  "description": "REaSoN node.js app",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "ejs": "0.8",
+    "express": "3.1",
+    "node-sass": "0.3"
+  }
+}
