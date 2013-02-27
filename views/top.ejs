@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- This is an HTML5 template -->
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/desktop.css">
+  </head>
+  <body>
+    <!--
+      Modenizr detects a browsers HTML5 capabilities and provides polyfills!
+
+      Nice new tags:
+        - section, article
+        - figure>figcaption
+        - form (google "state of html5 forms" for more information)
+          - input -> attributes
+            - type: email, url, tel, color, search (+ results),
+              number, range (+ min/max)
+            - required
+            - pattern (regex) (? should validation syntax be part of HTML ?)
+            - placeholder (preset text, disappears on focussing the input)
+          - progress, meter (+ min/max)
+    -->
+    <header>
+      <h1>REaSoN</h1>
+      <nav>
+        <ul>
+          <li>Home</li>
+          <li>Users</li>
+          <li>Cases</li>
+        </ul>
+    </nav>
+    </header>
+    <!--
+      <main> is HTML 5.1
+      a) Browser knows main => Block with semantic
+      b) Browsers doesn't know main => Make it a block through style,
+         give it semantics through role (transitional)
+      New: <main style="display: block" role="main"></main>
+      Alternative: <div role="main"></div>
+    -->
+    <main style="display: block" role="main">
