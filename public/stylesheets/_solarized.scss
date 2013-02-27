@@ -14,13 +14,19 @@ $violet:    #6c71c4;
 $blue:      #268bd2;
 $cyan:      #2aa198;
 $green:     #859900;
-@mixin rebase($rebase03,$rebase02,$rebase01,$rebase00,$rebase0,$rebase1,$rebase2,$rebase3)
+
+$hmargin: 70px;
+$vmargin: 20px;
+
+$border: 1px solid $base03;
+
+@mixin rebase($fg, $bg, $hl)
 {
-	background-color:$rebase02;
-    color:$rebase2;
-    * { color:$rebase2; }
-    h1,h2,h3,h4,h5,h6 { color:$rebase2; border-color: $rebase2; }
-    a, a:active, a:visited { color: $rebase3; }
+	background-color:$bg;
+    color:$fg;
+    * { color:$fg; }
+    h1,h2,h3,h4,h5,h6 { color:$fg; border-color: $fg; }
+    a, a:active, a:visited { color: $hl; }
     // background-color:$rebase03;
     // color:$rebase0;
     // * { color:$rebase0; }
@@ -32,9 +38,35 @@ $green:     #859900;
     h1,h2,h3,h4,h5,h6 {color:$accent}
 }
 /* light is default mode, so pair with general html definition */
-html, .light { @include rebase($base3,$base2,$base1,$base0,$base00,$base01,$base02,$base03)}
-.dark  { @include rebase($base03,$base02,$base01,$base00,$base0,$base1,$base2,$base3)}
+.light { @include rebase($base02,$base2,$base03)}
+.dark  { @include rebase($base2,$base02,$base3)}
 html * {
     color-profile: sRGB;
     rendering-intent: auto;
+}
+
+// L: cyan, green;
+.yellow{
+    @include accentize($yellow);
+}
+.orange{
+    @include accentize($orange);
+}
+.red{
+    @include accentize($red);
+}
+.magenta{
+    @include accentize($magenta);
+}
+.violet{
+    @include accentize($violet);
+}
+.blue{
+    @include accentize($blue);
+}
+.cyan{
+    @include accentize($cyan);
+}
+.green{
+    @include accentize($green);
 }
