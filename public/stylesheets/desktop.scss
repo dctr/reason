@@ -27,10 +27,13 @@ $vmargin:   20px;
  */
 header {
     //font-size: 123.1% ;
-    line-height: 190%;
+    line-height: 123.1%;
+    border-radius: 15px;
+    margin: $hmargin;
     @include rebase($base03,$base02,$base01,$base00,$base0,$base1,$base2,$base3)
 }
 nav {
+    ul, li { display: inline-block; }
 	a {
         text-decoration:none;
         margin-right: 10px;
@@ -72,29 +75,29 @@ h1 {
     text-transform: uppercase;
     font-weight: bold;
     border-bottom:1px solid;
-    &:first-of-type {
-	    //font-size: 700%;
-	    font-size: 400%;
-	    margin-top:0;
-	    margin-bottom:$vmargin;
-	    line-height: 100%;
-	    border: none;
-	    text-decoration: none;
-	}
+ //    &:first-of-type {
+	//     //font-size: 700%;
+	//     font-size: 400%;
+	//     margin-top:0;
+	//     margin-bottom:$vmargin;
+	//     line-height: 100%;
+	//     border: none;
+	//     text-decoration: none;
+	// }
 }
 h2 {
 	font-size: 153.9%; //23px
     border-bottom:1px solid;
-    &:first-of-type {
-	    font-weight: lighter;
-	    font-size: 200%;
-	    text-transform: none;
-	    color: $base01;
-	    margin-top:$vmargin;
-	    margin-bottom:$vmargin*2;
-	    line-height: 100%;
-	    border: none;
-	}
+ //    &:first-of-type {
+	//     font-weight: lighter;
+	//     font-size: 200%;
+	//     text-transform: none;
+	//     color: $base01;
+	//     margin-top:$vmargin;
+	//     margin-bottom:$vmargin*2;
+	//     line-height: 100%;
+	//     border: none;
+	// }
 }
 h3,h4,h5,h6 {
     border-bottom:none;
@@ -105,7 +108,7 @@ h5 { font-size: 138.5% }      //18px
 h6 { font-size: 138.5% }      //18px
 
 p {
-    //font-weight: lighter;
+    font-weight: lighter;
     margin: 0 0 $vmargin 0;
 }
 strong {
@@ -154,7 +157,7 @@ td {
 td.nums {
 }
 
-
+// L: cyan, green;
 .yellow{
     @include accentize($yellow);
 }
