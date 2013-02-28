@@ -22,51 +22,51 @@ $border: 1px solid $base03;
 
 @mixin rebase($fg, $bg, $hl)
 {
-	background-color:$bg;
-    color:$fg;
-    * { color:$fg; }
-    h1,h2,h3,h4,h5,h6 { color:$fg; border-color: $fg; }
-    a, a:active, a:visited { color: $hl; }
-    // background-color:$rebase03;
-    // color:$rebase0;
-    // * { color:$rebase0; }
-    // h1,h2,h3,h4,h5,h6 { color:$rebase1; border-color: $rebase0; }
-    // a, a:active, a:visited { color: $rebase1; }
+  background-color:$bg;
+  color:$fg;
+  * { color:$fg; }
+  h1,h2,h3,h4,h5,h6 { color:$fg; border-color: $fg; }
+  a, a:active, a:visited { color: $hl; }
+  // background-color:$rebase03;
+  // color:$rebase0;
+  // * { color:$rebase0; }
+  // h1,h2,h3,h4,h5,h6 { color:$rebase1; border-color: $rebase0; }
+  // a, a:active, a:visited { color: $rebase1; }
 }
 @mixin accentize($accent) {
-    a, a:active, a:visited, code.url { color: $accent; }
-    h1,h2,h3,h4,h5,h6 {color:$accent}
+  a, a:active, a:visited, code.url { color: $accent; }
+  h1,h2,h3,h4,h5,h6 {color:$accent}
 }
 /* light is default mode, so pair with general html definition */
 .light { @include rebase($base02,$base2,$base03)}
 .dark  { @include rebase($base2,$base02,$base3)}
 html * {
-    color-profile: sRGB;
-    rendering-intent: auto;
+  color-profile: sRGB;
+  rendering-intent: auto;
 }
 
 // L: cyan, green;
 .yellow{
-    @include accentize($yellow);
+  @include accentize($yellow);
 }
 .orange{
-    @include accentize($orange);
+  @include accentize($orange);
 }
 .red{
-    @include accentize($red);
+  @include accentize($red);
 }
 .magenta{
-    @include accentize($magenta);
+  @include accentize($magenta);
 }
 .violet{
-    @include accentize($violet);
+  @include accentize($violet);
 }
 .blue{
-    @include accentize($blue);
+  @include accentize($blue);
 }
 .cyan{
-    @include accentize($cyan);
+  @include accentize($cyan);
 }
 .green{
-    @include accentize($green);
+  @include accentize($green);
 }

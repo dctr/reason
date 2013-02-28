@@ -24,10 +24,16 @@
     -->
     <header>
       <nav>
+        <%
+          var currentPage = filename.slice(filename.lastIndexOf('/') + 1,
+                                           filename.lastIndexOf('.'));
+        %>
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Users</a></li>
-          <li><a href="#">Cases</a></li>
+          <% for (var page in pages) { %>
+            <li><a href="<%= page %>"
+              <% if (currentPage === page ) { %>class="current"<% } %>
+            ><%= pages[page] %></a></li>
+          <% } %>
         </ul>
     </nav>
     </header>
@@ -39,4 +45,11 @@
       New: <main style="display: block" role="main"></main>
       Alternative: <div role="main"></div>
     -->
+    <div class="debug">
+      <h1>DEBUG</h1>
+      <ul><% for (var elem in locals) { %>
+          <li><%= elem %> &gt; <%= locals[elem] %></li>
+        <% } %></ul>
+      <hr style="border: 1px solid black;">
+    </div>
     <main role="main">

@@ -26,9 +26,27 @@ app.use(function (err, req, res, next) {
 });
 
 
+// Global Template variables
+app.locals.pages = {
+  home: 'Home',
+  cases: 'Cases',
+  users: 'Users',
+  login: 'Login'
+};
+
+console.log(app.locals);
+
 // Routes.
-app.get('/', function (req, res) {
-  res.render('index', {foo: "bar", layout: false});
+app.get(['/', '/home'], function (req, res) {
+  res.render('home', {message: 'This is the start page'});
+});
+
+app.get('/cases', function (req, res) {
+  res.render('cases', {message: 'This is the cases page'});
+});
+
+app.get('/users', function (req, res) {
+
 });
 
 
