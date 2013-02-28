@@ -1,7 +1,3 @@
-node_modules
-
-# CSS files are generated from SCSS files
-*.css
-
-# Ignore SASS cache
 .sass-cache
+node_modules
+reason.sublime-*
