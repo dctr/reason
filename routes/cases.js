@@ -1,3 +1,17 @@
 module.exports = function (req, res) {
-  res.render('cases', {message: 'This is the cases page'});
+  var fs = require('fs');
+
+  var render = function (arguments) {
+    res.render('cases', arguments);
+  }
+
+  try {
+    var message = fs.readdirSync(RSN.datadir);
+    if (typeof message === 'undefined') throw {
+      name: 'DirectoryReadError',
+      message: 'Could not read the given directory.'
+    }
+  } catch (e) {
+    render({error: e.name + ': ' + e.message});
+  }
 };
