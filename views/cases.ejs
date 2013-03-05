@@ -1,7 +1,14 @@
 <% include layout/top %>
 <% if (typeof error === 'undefined') { %>
   <h1>Case database</h1>
-  <p><%= message %></p>
-  <p>... and have a nice day.</p>
+  <table>
+    <% for (var i in cases) { %>
+    <tr>
+      <td><%= i %></td>
+      <td><%= cases[i].creationDate %></td>
+      <td><%= cases[i].summary %></td>
+    </tr>
+    <% } %>
+  </table>
 <% } %>
 <% include layout/bottom %>
