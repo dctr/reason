@@ -54,3 +54,8 @@
       <hr style="border: 1px solid black;">
     </div> -->
     <main role="main">
+      <% if (typeof error !== 'undefined') { %>
+        <h1>Error</h1>
+        <p>The following error occured:</p>
+        <p><%= error %></p>
+      <% } %>

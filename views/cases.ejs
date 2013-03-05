@@ -1,5 +1,7 @@
 <% include layout/top %>
-<h1>Case database</h1>
-<p><%= message %></p>
-<p>... and have a nice day.</p>
+<% if (typeof error === 'undefined') { %>
+  <h1>Case database</h1>
+  <p><%= message %></p>
+  <p>... and have a nice day.</p>
+<% } %>
 <% include layout/bottom %>
