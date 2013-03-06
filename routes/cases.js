@@ -23,11 +23,7 @@ module.exports = function (req, res) {
       };
     }
   } catch (e) {
-    console.log(e);
-    for (var prop in e) {
-      console.log(prop + ': ' + e.prop);
-    }
-    pageContent.error = "1";
+    pageContent.error = 'Somethings wrong in the cases database.';
   }
 
   myRender();

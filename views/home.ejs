@@ -1,5 +1,7 @@
-<% include layout/top %>
-<h1>Welcome</h1>
-<p><%= message %></p>
-<p>... and have a nice day.</p>
-<% include layout/bottom %>
+<% include layouts/top %>
+<% if (typeof error === 'undefined') { %>
+  <h1>Welcome</h1>
+  <p><%= message %></p>
+  <p>... and have a nice day.</p>
+<% } %>
+<% include layouts/bottom %>
