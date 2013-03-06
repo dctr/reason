@@ -4,11 +4,11 @@ REaSoN
 ... to be continued
 
 
-Dependencies
-============
+Setup
+=====
 
-NPM moduels needed: ejs, express
+To set the project up simply clone it, install node.js and the necessary npm modules, and populate an apop_data directory correctly (documentation to be added).
 
-	npm install ejs express
+To install the npm modules if node.js and npm are installed, just type
 
-A SCSS (Sassy CSS) compiler is needed to translate the stylesheets. At the moment, for some reason, node-sass does not work; therefore, i recommend the original sass ruby gem.
+    npm install
