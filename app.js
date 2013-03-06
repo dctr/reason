@@ -17,6 +17,7 @@ app.get(['/', '/home'], require('./routes/home.js'));
 app.get('/cases', require('./routes/cases.js'));
 app.get('/cases/:caseid(\\d+)', require('./routes/cases-caseid.js'));
 app.get('/users', require('./routes/users.js'));
+app.get('/users/:userid(\\w+)', require('./routes/users-userid.js'));
 app.get('/login', require('./routes/login.js'));
 // app.get('/TPL', require('./routes/TPL.js'));
 // TODO add '*' route for 404s
