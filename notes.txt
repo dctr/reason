@@ -1,5 +1,5 @@
 1. Store new object in git database
-  git hash-object -w
+  use git hash-object -w
 2. generate valid tree info
   - git ls-tree master for the current tree
   - append/alter changed element
