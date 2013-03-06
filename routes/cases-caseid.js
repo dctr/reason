@@ -7,8 +7,13 @@ module.exports = function (req, res) {
     res.render('cases-caseid', pageContent);
   }
 
-  var caseid = req.params.caseid;
+  try {
+    var folder = fs.readdirSync(RSN.datadir + '/cases/' + req.params.caseid);
+    pageContent.message = folder;
+  } catch (e) {
+    console.log(e);
+    pageContent.error = 'The given case does not exist.';
+  }
 
-  pageContent.message = caseid;
   myRender();
 };

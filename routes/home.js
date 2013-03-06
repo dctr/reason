@@ -1,3 +1,10 @@
 module.exports = function (req, res) {
-  res.render('home', {message: 'This is the home page'});
+
+  // Convenience
+  var pageContent = {};
+  var myRender = function () {
+    res.render('home', pageContent);
+  }
+
+  myRender();
 };

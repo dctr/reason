@@ -1,3 +1,10 @@
 module.exports = function (req, res) {
-  res.render('login', {message: 'This is the login page'});
+
+  // Convenience
+  var pageContent = {};
+  var myRender = function () {
+    res.render('login', pageContent);
+  }
+
+  myRender();
 };

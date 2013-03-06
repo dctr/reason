@@ -1,7 +1,19 @@
 <% include layouts/top %>
 <% if (typeof error === 'undefined') { %>
-  <h1>Users list</h1>
-  <p><%= message %></p>
-  <p>... and have a nice day.</p>
+  <h1>Users List</h1>
+  <table>
+    <tr>
+      <th>Username</th>
+      <th>Tags</th>
+      <th>Important for cases</th>
+    </tr>
+    <% for (var i in users) { %>
+    <tr>
+      <td><a href="/users/<%= i %>"><%= i %></a></td>
+      <td><%= users[i].tags %></td>
+      <td><%= users[i].cases %></td>
+    </tr>
+    <% } %>
+  </table>
 <% } %>
 <% include layouts/bottom %>
