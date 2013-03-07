@@ -1,4 +1,5 @@
-var http = require('http');
+var fs = require('fs');
+var https = require('https');
 var express = require('express');
 var app = express();
 
@@ -23,6 +24,10 @@ app.get('/login', require('./routes/login.js'));
 // TODO add '*' route for 404s
 
 // Start the server
-http.createServer(app).listen(app.get('port'), function(){
+var options = {
+    key: fs.readFileSync('./settings/server.key.insecure'),
+    cert: fs.readFileSync('./public/server.crt')
+};
+https.createServer(options, app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
