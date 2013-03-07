@@ -37,15 +37,16 @@
 			]
 		]
 	},
-	"buffers":
-	[
-	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 52.0,
+		"height": 32.0,
 		"selected_items":
 		[
+			[
+				"json",
+				"Set Syntax: JSON"
+			],
 			[
 				"instal",
 				"Package Control: Install Package"
@@ -132,14 +133,31 @@
 	},
 	"file_history":
 	[
+		"/home/david/Dokumente/Development/reason/views/layouts/bottom.ejs",
+		"/home/david/Dokumente/Development/reason/public/stylesheets/desktop.scss",
+		"/home/david/Dokumente/Development/reason/routes/cases-caseid.js",
+		"/home/david/Dokumente/Development/reason/routes/cases.js",
+		"/home/david/Dokumente/Development/reason/routes/users-userid.js",
+		"/home/david/Dokumente/Development/reason/routes/sidebar.js",
+		"/home/david/Dokumente/Development/reason/routes/login.js",
+		"/home/david/Dokumente/Development/reason/routes/_boilerplate.js",
+		"/home/david/Dokumente/Development/reason/routes/users.js",
+		"/home/david/Dokumente/Development/reason/routes/home.js",
+		"/home/david/Dokumente/Development/reason/views/login.ejs",
+		"/home/david/Dokumente/Development/reason/app.js",
+		"/home/david/Dokumente/Development/reason/views/layouts/top.ejs",
+		"/home/david/Dokumente/Development/reason/settings/express.js",
+		"/home/david/Dokumente/Development/reason/views/cases.ejs",
+		"/home/david/Dokumente/Development/reason/app_data/users/john/description.json",
+		"/home/david/Dokumente/Development/reason/app_data/users/sam/description.json",
+		"/home/david/Dokumente/Development/reason/app_data/cases/23/description.json",
+		"/home/david/Dokumente/Development/reason/app_data/cases/42/description.json",
+		"/home/david/Dokumente/Development/reason/app_data/cases/99/description.json",
 		"/home/david/Dokumente/Development/reason/views/users.ejs",
 		"/home/david/SparkleShare/Sonstiges/local/etc/Sublime/JavaScript/trycatch.sublime-snippet",
-		"/home/david/Dokumente/Development/reason/routes/home.js",
 		"/home/david/.config/sublime-text-2/Packages/EJS/EJS.tmLanguage",
 		"/home/david/Dokumente/Development/reason/views/layout/bottom.ejs",
-		"/home/david/Dokumente/Development/reason/app.js",
 		"/home/david/Dokumente/Development/reason/notes.txt",
-		"/home/david/Dokumente/Development/reason/settings/express.js",
 		"/home/david/Dokumente/Development/reason/package.json",
 		"/home/david/Dokumente/Development/jadetest/views/index.jade",
 		"/home/david/Downloads/node-v0.8.21/test/message/eval_messages.js",
@@ -197,6 +215,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"main",
+			"pageContent",
+			"myRender",
+			"pageContent",
+			"http",
+			"https",
 			"\"",
 			"casesDir",
 			"message",
@@ -222,14 +246,6 @@
 		"whole_word": false,
 		"wrap": true
 	},
-	"groups":
-	[
-		{
-			"sheets":
-			[
-			]
-		}
-	],
 	"incremental_find":
 	{
 		"height": 0.0
@@ -275,6 +291,22 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"scss",
+				"public/stylesheets/desktop.scss"
+			],
+			[
+				"bot",
+				"views/layouts/bottom.ejs"
+			],
+			[
+				"top",
+				"views/layouts/top.ejs"
+			],
+			[
+				"side",
+				"routes/sidebar.js"
+			]
 		],
 		"width": 0.0
 	},
