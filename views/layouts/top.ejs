@@ -46,14 +46,17 @@
       New: <main style="display: block" role="main"></main>
       Alternative: <div role="main"></div>
     -->
+
     <div class="debug">
       <h1>DEBUG</h1>
-      <ul><% for (var elem in locals) { %>
+      <ul><% for (var elem in sess) { %>
           <li><%= elem %> &gt; <%= locals[elem] %></li>
         <% } %></ul>
+        <%= sess %>
       <hr style="border: 1px solid black;">
     </div>
-    <main role="main">
+
+    <div role="main" class="main">
       <% if (typeof error !== 'undefined') { %>
         <h1>Error</h1>
         <p>The following error occured:</p>

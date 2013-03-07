@@ -804,7 +804,7 @@ aside {
   width: 60px;
   padding-left: 10px; }
 
-main {
+main, .main {
   margin-left: 70px;
   margin-right: 70px;
   margin-top: 40px;

@@ -69,7 +69,7 @@ aside{
   width: $hmargin - 10px;
   padding-left: 10px;
 }
-main {
+main, .main {
   margin-left:$hmargin;
   margin-right:$hmargin;
   margin-top:$vmargin*2;
@@ -82,7 +82,7 @@ main {
 /*
  * Generic tag styles.
  */
- h1,h2,h3,h4,h5,h6 {
+h1,h2,h3,h4,h5,h6 {
   font-weight: lighter;
   text-transform: capitalize;
   margin-top:$vmargin*2;

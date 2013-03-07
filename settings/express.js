@@ -9,7 +9,7 @@ module.exports = function (express, app, rootdir) {
 
   // Middleware.
   app.use(express.favicon());
-  if ('development' == app.get('env')) {
+  if (app.get('env') === 'development') {
     app.use(express.logger('dev'));
   } else {
     app.use(express.logger());
