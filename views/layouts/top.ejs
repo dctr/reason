@@ -46,13 +46,13 @@
       New: <main style="display: block" role="main"></main>
       Alternative: <div role="main"></div>
     -->
-    <!-- <div class="debug">
+    <div class="debug">
       <h1>DEBUG</h1>
       <ul><% for (var elem in locals) { %>
           <li><%= elem %> &gt; <%= locals[elem] %></li>
         <% } %></ul>
       <hr style="border: 1px solid black;">
-    </div> -->
+    </div>
     <main role="main">
       <% if (typeof error !== 'undefined') { %>
         <h1>Error</h1>

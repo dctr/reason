@@ -1,6 +1,23 @@
 <% include layouts/top %>
 <% if (typeof error === 'undefined') { %>
-  <h1>Login page</h1>
-  <p>No need for a login, yet.</p>
+  <h1>Login</h1>
+  <p>
+    <form action=".">
+      <input type="email" placeholder="Benutzername" autofocus>
+      <input type="password" placeholder="Passwort">
+      <input type="submit">
+      <input type="text"><!-- invisible nonce -->
+    </form>
+  </p>
+  <h1>Registrieren</h1>
+  <p>
+    <form action=".">
+      <input type="email" placeholder="Benutzername">
+      <input type="password" placeholder="Passwort">
+      <input type="password" placeholder="Passwort wiederholen">
+      <input type="submit">
+      <input type="text">
+    </form>
+  </p>
 <% } %>
 <% include layouts/bottom %>

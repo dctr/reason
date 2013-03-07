@@ -14,6 +14,7 @@ RSN = (function () {
 
 // Defining routes
 // TODO add '*' route to handle login
+app.get('*', require('./routes/sidebar.js'))
 app.get(['/', '/home'], require('./routes/home.js'));
 app.get('/cases', require('./routes/cases.js'));
 app.get('/cases/:caseid(\\d+)', require('./routes/cases-caseid.js'));
