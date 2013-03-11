@@ -64,10 +64,11 @@ nav {
   }
 }
 aside{
-  display: block;
   float: right;
-  width: $hmargin - 10px;
-  padding-left: 10px;
+  width: $hmargin*2;
+  margin-top:$vmargin*2;
+  margin-bottom:$vmargin*2;
+  margin-right:$hmargin;
 }
 main, .main {
   margin-left:$hmargin;
@@ -77,6 +78,9 @@ main, .main {
   //min-width: 52em; // sufficient for 80 char pre blocks
   min-width: 32em; // sufficient for 72 char pre blocks
   max-width: 52em;
+}
+footer {
+  clear: both;
 }
 
 /*

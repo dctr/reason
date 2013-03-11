@@ -14,7 +14,6 @@ RSN = (function () {
 
 // Defining routes
 // TODO add '*' route to handle login
-app.get('*', require('./routes/sidebar.js'))
 app.get(['/', '/home'], require('./routes/home.js'));
 app.get('/cases', require('./routes/cases.js'));
 app.get('/cases/:caseid(\\d+)', require('./routes/cases-caseid.js'));
@@ -25,10 +24,10 @@ app.get('/login', require('./routes/login.js'));
 // TODO add '*' route for 404s
 
 // Start the server
-var options = {
+var sslOptions = {
     key: fs.readFileSync('./settings/server.key.insecure'),
     cert: fs.readFileSync('./public/server.crt')
 };
-https.createServer(options, app).listen(app.get('port'), function(){
+https.createServer(sslOptions, app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });

@@ -799,10 +799,11 @@ nav a {
     background-color: #eee8d5; }
 
 aside {
-  display: block;
   float: right;
-  width: 60px;
-  padding-left: 10px; }
+  width: 140px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  margin-right: 70px; }
 
 main, .main {
   margin-left: 70px;
@@ -811,6 +812,9 @@ main, .main {
   margin-bottom: 40px;
   min-width: 32em;
   max-width: 52em; }
+
+footer {
+  clear: both; }
 
 /*
  * Generic tag styles.

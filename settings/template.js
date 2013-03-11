@@ -2,8 +2,8 @@ module.exports = function (app) {
   // Nav bar
   app.locals.pages = {
     home: 'Home',
-    cases: 'Cases',
-    users: 'Users',
+    cases: 'Fälle',
+    users: 'Nutzer',
     login: 'Login'
   }
 };

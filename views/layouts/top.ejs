@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
   <!-- This is an HTML5 template -->
   <head>
     <title></title>
@@ -31,31 +31,14 @@
         %>
         <ul>
           <% for (var page in pages) { %>
-            <li><a href="/<%= page %>"
-              <% if (currentPage === page ) { %>class="current"<% } %>
-            ><%= pages[page] %></a></li>
+            <li><a href="/<%= page %>"<% if (currentPage === page ) { %>
+              class="current"
+            <% } %>><%= pages[page] %></a></li>
           <% } %>
         </ul>
     </nav>
     </header>
-    <!--
-      <main> is HTML 5.1
-      a) Browser knows main => Block with semantic
-      b) Browsers doesn't know main => Make it a block through style,
-         give it semantics through role (transitional)
-      New: <main style="display: block" role="main"></main>
-      Alternative: <div role="main"></div>
-    -->
-
-    <div class="debug">
-      <h1>DEBUG</h1>
-      <ul><% for (var elem in sess) { %>
-          <li><%= elem %> &gt; <%= locals[elem] %></li>
-        <% } %></ul>
-        <%= sess %>
-      <hr style="border: 1px solid black;">
-    </div>
-
+    <% include sidebar %>
     <div role="main" class="main">
       <% if (typeof error !== 'undefined') { %>
         <h1>Error</h1>
