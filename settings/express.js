@@ -24,7 +24,7 @@ module.exports = function (express, app, rootdir) {
 
   // Own middleware, needs the session, has to be processed before the
   // rendering of the page (done in router).
-  app.use(require(rootdir + '/controllers/userManager.js'));
+  app.use(require(rootdir + '/controllers/templateVariables.js'));
 
   app.use(app.router);
   app.use(express.static(rootdir + '/public'));

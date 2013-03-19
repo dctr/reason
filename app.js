@@ -5,27 +5,24 @@ var app = express();
 
 // Setting up the environment
 require('./settings/express.js')(express, app, __dirname);
-require('./settings/template.js')(app);
 RSN = (function () {
   return {
     domain: 'example.com',
-    datadir: __dirname + '/app_data/',
-    usersdir: datadir + '/users/',
-    casesdir: datadir + '/cases/',
-    pepper: 'f6985cd5b4'
+    appdir:   __dirname + '/',
+    datadir:  __dirname + '/app_data/',
+    usersdir: __dirname + '/app_data/users/',
+    casesdir: __dirname + '/app_data/cases/',
+    pepper: 'SvtB6XiodbPrU04+n0vcy/rsigsp3LxXf7itk97hcf0='
   }
 }());
 
 // Defining routes
-// TODO add '*' route to handle login
 app.all(['/', '/home'], require('./routes/home.js'));
 app.all('/cases', require('./routes/cases.js'));
 app.all('/cases/:caseid(\\d+)', require('./routes/cases-caseid.js'));
 app.all('/users', require('./routes/users.js'));
 app.all('/users/:userid(\\w+)', require('./routes/users-userid.js'));
 app.all('/login', require('./routes/login.js'));
-// app.all('/TPL', require('./routes/TPL.js'));
-// TODO add '*' route for 404s
 
 // Start the server
 var sslOptions = {

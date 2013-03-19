@@ -2,14 +2,14 @@
 <% if (typeof error === 'undefined') { %>
   <h1>Login</h1>
   <form method="post" action="/login">
-    <input type="email" name="email" placeholder="Benutzername" autofocus>
+    <input type="text" name="username" placeholder="Benutzername" autofocus>
     <input type="password" name="password" placeholder="Passwort">
     <input type="submit" name="login">
     <input type="hidden" name="_csrf" value="<%= csrf %>">
   </form>
   <h1>Registrieren</h1>
   <form method="post" action="/login">
-    <input type="email" name="email" placeholder="Benutzername">
+    <input type="text" name="username" placeholder="Benutzername">
     <input type="password"name="password1" placeholder="Passwort">
     <input type="password" name="password2" placeholder="Passwort wiederholen">
     <input type="submit" name="register">
