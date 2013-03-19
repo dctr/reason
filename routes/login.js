@@ -1,16 +1,25 @@
+/**
+ * Script behind the login page
+ */
+
+/*global RSN */
+/*jslint indent: 2 */ // Set indent to 2 spaces
+'use strict';
+
 module.exports = function (req, res, next) {
 
-  console.log('login.js');
-
   var userManager = require(RSN.appdir + 'controllers/userManager.js')(
-    RSN.usersdir, 'credentials.json', 100000, RSN.pepper
+    RSN.usersdir,
+    'credentials.json',
+    100000,
+    RSN.pepper
   );
 
   var checkUsername = function () {
-    if (! /\w/.test(req.body.username)) {
+    if (!/\w/.test(req.body.username)) {
       throw {name: 'CredentialErrror', message: 'Invalid username.'};
     }
-  }
+  };
 
   // Test POST data only if not authenticated already.
   if (typeof req.session.auth === 'undefined') {
@@ -35,7 +44,6 @@ module.exports = function (req, res, next) {
         }
         if (userManager.register(req.body.username, req.body.password1)) {
           // Add message: regsiter success
-          console.log('Register success.');
         } else {
           throw {
             name: 'CredentialErrror',

@@ -9,5 +9,5 @@ module.exports = function (req, res) {
     res.locals.error = 'The given case does not exist.';
   }
 
-  res.render();
+  res.render('users-userid');
 };

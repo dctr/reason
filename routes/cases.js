@@ -1,30 +1,33 @@
+/**
+ * Script behind the cases page
+ */
+
+/*global RSN */
+/*jslint indent: 2 */ // Set indent to 2 spaces
+'use strict';
+
 module.exports = function (req, res) {
   var fs = require('fs');
 
-  // Convenience
-  var pageContent = {};
-  var myRender = function () {
-    res.render('cases', pageContent);
-  }
+  var file, folders, i;
 
   try {
-    var folders = fs.readdirSync(RSN.casesdir);
-    var file
-    pageContent.cases = {};
-    for (var i in folders) {
+    folders = fs.readdirSync(RSN.casesdir);
+    res.locals.cases = {};
+    for (i in folders) {
       // TODO This could easly be made async
       file = fs.readFileSync(RSN.casesdir + folders[i] +
                              '/description.json', 'utf-8');
       file = JSON.parse(file);
-      pageContent.cases[folders[i]] = {
+      res.locals.cases[folders[i]] = {
         id: folders[i],
         creationDate: file.creationDate,
         summary: file.summary
       };
     }
   } catch (e) {
-    pageContent.error = 'Somethings wrong in the cases database.';
+    res.locals.error = 'Somethings wrong in the cases database.';
   }
 
-  myRender();
+  res.render('cases');
 };

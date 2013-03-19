@@ -1,3 +1,10 @@
+/**
+ * Settings for express
+ */
+
+/*jslint indent: 2 */ // Set indent to 2 spaces
+'use strict';
+
 module.exports = function (express, app, rootdir) {
 
   // Express settings.
@@ -33,4 +40,4 @@ module.exports = function (express, app, rootdir) {
   if (app.get('env') === 'development') {
     app.use(express.errorHandler());
   }
-}
+};
