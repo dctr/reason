@@ -186,7 +186,7 @@ kbd,
 pre,
 samp {
   font-family: monospace, serif;
-  _font-family: "courier new", monospace;
+  _font-family: 'courier new', monospace;
   font-size: 1em; }
 
 /**
@@ -305,7 +305,7 @@ form {
  * Define consistent border, margin, and padding.
  */
 fieldset {
-  border: 1px solid silver;
+  border: 1px solid #c0c0c0;
   margin: 0 2px;
   padding: 0.35em 0.625em 0.75em; }
 
@@ -494,7 +494,7 @@ hr {
   display: block;
   height: 1px;
   border: 0;
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ccc;
   margin: 1em 0;
   padding: 0; }
 
@@ -632,7 +632,7 @@ textarea {
 @media print {
   * {
     background: transparent !important;
-    color: black !important;
+    color: #000 !important;
     /* Black prints faster: h5bp.com/s */
     box-shadow: none !important;
     text-shadow: none !important; }
@@ -657,7 +657,7 @@ textarea {
 
   pre,
   blockquote {
-    border: 1px solid #999999;
+    border: 1px solid #999;
     page-break-inside: avoid; }
 
   thead {
@@ -800,12 +800,11 @@ nav a {
 
 aside {
   float: right;
-  width: 140px;
-  margin-top: 40px;
+  width: 280px;
   margin-bottom: 40px;
   margin-right: 70px; }
 
-main, .main {
+main, div[role="main"] {
   margin-left: 70px;
   margin-right: 70px;
   margin-top: 40px;

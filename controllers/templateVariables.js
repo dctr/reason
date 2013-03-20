@@ -19,8 +19,9 @@ module.exports = function (req, res, next) {
   if (req.session.auth) {
     res.locals.auth = req.session.auth;
     res.locals.pages['users/' + req.session.auth] = req.session.auth;
+    res.locals.pages.logout = 'Logout';
   } else {
-    res.locals.pages.login = 'Login';
+    res.locals.pages.login = 'Login / Registrierung';
   }
 
   next();

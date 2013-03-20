@@ -27,7 +27,7 @@ module.exports = function (express, app, rootdir) {
     key: 'sid',
     secret: 'aabece9605acd3c4243a9a2de29cea028bad6a720386b2d9f567a98065967ea39d11951529c14e959a6896fcd7025f1d7e69b6a320c7b3fc133a39d6e1f3973d'
   }));
-  //app.use(express.csrf());
+  app.use(express.csrf());
 
   // Own middleware, needs the session, has to be processed before the
   // rendering of the page (done in router).

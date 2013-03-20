@@ -1,0 +1,28 @@
+<% include layouts/top %>
+<% if (typeof error === 'undefined') { %>
+  <h1>Neuer Fall</h1>
+  <form method="post" action="/cases/create">
+    <input type="text" name="title" placeholder="Titel" autofocus>
+    <br>
+    <label>Eigenschaften</label>
+    <br>
+    <select>
+      <option value="sys:foo">Foo</option>
+      <option value="sys:bar">Bar</option>
+      <option value="sys:baka">Baka</option>
+      <option value="sys:melon">Melone</option>
+      <option value="sys:nice">N1c3</option>
+    </select>
+    <input type="text" placeholder="Eigenschaftswert">
+    <br>
+    <label>Tags</label>
+    <br>
+    <input type="text" placeholder="Tag"></input>
+    <br>
+    <textarea name="description" placeholder="Beschreibung"></textarea>
+    <br>
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <input type="submit" name="casesCreate">
+  </form>
+<% } %>
+<% include layouts/bottom %>

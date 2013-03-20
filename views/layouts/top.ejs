@@ -4,25 +4,10 @@
   <head>
     <title></title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/stylesheets/desktop.css">
+    <link rel="stylesheet" href="/styles/desktop.css">
     <link rel="author" href="humans.txt" />
   </head>
   <body>
-    <!--
-      Modenizr detects a browsers HTML5 capabilities and provides polyfills!
-
-      Nice new tags:
-        - section, article
-        - figure>figcaption
-        - form (google "state of html5 forms" for more information)
-          - input -> attributes
-            - type: email, url, tel, color, search (+ results),
-              number, range (+ min/max)
-            - required
-            - pattern (regex) (? should validation syntax be part of HTML ?)
-            - placeholder (preset text, disappears on focussing the input)
-          - progress, meter (+ min/max)
-    -->
     <header>
       <nav>
         <%
@@ -39,7 +24,7 @@
     </nav>
     </header>
     <% include sidebar %>
-    <div role="main" class="main">
+    <div role="main">
       <% if (typeof error !== 'undefined') { %>
         <h1>Error</h1>
         <p>The following error occured:</p>

@@ -1,12 +1,10 @@
 <aside>
-  <% if (typeof user === 'undefined') { %>
-  <h1>Login</h1>
-  <form action=".">
-    <input type="email" placeholder="Benutzername" autofocus>
-    <input type="password" placeholder="Passwort">
-    <input type="submit">
-  </form>
+  <% if (typeof auth !== 'undefined') { %>
+  <h1>Aktionen</h1>
+  <p><a href="/cases/create">Neuer Fall</a></p>
   <% } %>
+  <h1>News</h1>
+  <p>Neuigkeiten und interessantes.</p>
   <h1>Debug</h1>
   <p><%= csrf %></p>
 </aside>
