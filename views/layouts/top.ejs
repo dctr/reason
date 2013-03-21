@@ -28,5 +28,10 @@
       <% if (typeof error !== 'undefined') { %>
         <h1>Error</h1>
         <p>The following error occured:</p>
-        <p><%= error %></p>
+        <pre>
+          <% for (var e in error) { %>
+<%= error[e] %>
+<br />
+          <% } %>
+        </pre>
       <% } %>

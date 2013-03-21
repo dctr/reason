@@ -16,8 +16,7 @@ module.exports = function (req, res) {
     res.locals.users = {};
     for (i in folders) {
       // TODO This could easly be made async
-      file = fs.readFileSync(RSN.datadir + '/users/' + folders[i] +
-                             '/description.json', 'utf-8');
+      file = fs.readFileSync(RSN.usersdir + folders[i] + '/profile.json');
       file = JSON.parse(file);
       res.locals.users[folders[i]] = {
         id: folders[i],
@@ -26,7 +25,7 @@ module.exports = function (req, res) {
       };
     }
   } catch (e) {
-    res.locals.error = 'Somethings wrong in the users database.';
+    RSN.addError(res, e);
   }
 
   res.render('users');

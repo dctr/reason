@@ -16,6 +16,7 @@
 module.exports = function (profilesDirectory, credentialsFile, rounds, pepper) {
   var crypto = require('crypto');
   var fs = require('fs');
+  var strftime = require('strftime');
 
   var hashPassword = function (password) {
     var i;
@@ -29,8 +30,8 @@ module.exports = function (profilesDirectory, credentialsFile, rounds, pepper) {
 
   var afterRegistration = function (username) {
     // async, no error callback
-    fs.writeFile(profilesDirectory + username + '/description.json',
-      RSN.stringify(RSN.blankProfile));
+    fs.writeFile(profilesDirectory + username + '/profile.json',
+      RSN.stringify(RSN.blankProfile()));
   };
 
   if (typeof rounds !== 'number') {

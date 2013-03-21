@@ -1,5 +1,14 @@
 <% include layouts/top %>
 <% if (typeof error === 'undefined') { %>
-  <%= message %>
+  <h1><%= userid %></h1>
+  <p>Tags: <% for (var t in profile.tags) { %><%= profile.tags[t] %>, <% } %></p>
+  <p><%= profile.description %></p>
+  <p>Mitglied seit: <%= profile.since %></p>
+  <h1><%= profile.cases.length %> Fälle</h1>
+  <p>
+    <ul><% for (var c in profile.cases) { %>
+      <li><a href="/cases/<%= profile.cases[c] %>"><%= profile.cases[c] %></a></li>
+    <% } %></ul>
+  </p>
 <% } %>
 <% include layouts/bottom %>
