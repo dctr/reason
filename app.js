@@ -9,18 +9,15 @@
 /*jslint nomen: true */ // Allow underscores, as in __dirname
 'use strict';
 
+var _ = require('underscore');
 var fs = require('fs');
 var https = require('https');
 var express = require('express');
 
 var app = express();
+var sslOptions = {};
 
-// Setting up the environment
-require('./settings/express.js')(express, app, __dirname);
-
-// Make the global RSN object available
-GLOBAL.RSN = require('./controllers/global.js')(__dirname);
-
+// Functions
 var requireLogin = function (req, res, next) {
   if (req.session.auth) {
     next();
@@ -28,6 +25,20 @@ var requireLogin = function (req, res, next) {
     res.send(404);
   }
 }
+
+var startServer = function () {
+  https.createServer(sslOptions, app).listen(app.get('port'), function () {
+    console.log('Express server listening on port ' + app.get('port'));
+  });
+}
+
+var startServerIfSslLoaded = _.after(2, startServer);
+
+// Setting up the environment
+require('./settings/express.js')(express, app, __dirname);
+
+// Make the global RSN object available
+GLOBAL.RSN = require('./controllers/global.js')(__dirname);
 
 // Define routes
 app.all(['/', '/home'], require('./routes/home.js'));
@@ -42,13 +53,11 @@ app.all('/logout', function (req, res) {
   res.redirect(303, '/');
 });
 
-var sslOptions = {};
 fs.readFile('./settings/server.key.insecure', function (err, key) {
   sslOptions.key = key;
-  fs.readFile('./public/server.crt', function (err, cert) {
-    sslOptions.cert = cert;
-    https.createServer(sslOptions, app).listen(app.get('port'), function () {
-      console.log('Express server listening on port ' + app.get('port'));
-    });
-  });
+  startServerIfSslLoaded();
+});
+fs.readFile('./public/server.crt', function (err, cert) {
+  sslOptions.cert = cert;
+  startServerIfSslLoaded();
 });
