@@ -38,7 +38,7 @@ var startServerIfSslLoaded = _.after(2, startServer);
 require('./settings/express.js')(express, app, __dirname);
 
 // Make the global RSN object available
-GLOBAL.RSN = require('./controllers/global.js')(__dirname);
+GLOBAL.RSN = require('./lib/global.js')(__dirname);
 
 // Define routes
 app.all(['/', '/home'], require('./routes/home.js'));

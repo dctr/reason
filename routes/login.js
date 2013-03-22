@@ -8,7 +8,7 @@
 
 module.exports = function (req, res, next) {
 
-  var userManager = require(RSN.appdir + 'controllers/userManager.js')(
+  var userManager = require(RSN.appdir + 'lib/userManager.js')(
     RSN.usersdir,
     'credentials.json',
     100000,

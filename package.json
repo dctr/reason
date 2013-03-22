@@ -6,7 +6,7 @@
   "dependencies": {
     "ejs": "*",
     "express": "*",
-    "gift": "*",
+    "nodegit": "*",
     "strftime": "*"
   }
 }
