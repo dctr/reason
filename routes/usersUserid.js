@@ -8,7 +8,7 @@
 module.exports = function (req, res) {
   var fs = require('fs');
 
-  fs.readFile(RSN.usersdir + req.params.userid + '/profile.json',
+  fs.readFile(RSN.dir.users + req.params.userid + '/profile.json',
     function (err, data) {
       if (err) {
         RSN.addError(res, err);

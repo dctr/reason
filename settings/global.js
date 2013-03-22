@@ -16,6 +16,12 @@ module.exports = function (rootdir) {
 
   return {
     // Variables
+    dir: {
+      app: rootdir,
+      data: datadir,
+      cases: casesdir,
+      users: usersdir
+    },
     domain: 'example.com',
     pepper: 'SvtB6XiodbPrU04+n0vcy/rsigsp3LxXf7itk97hcf0=',
 
@@ -39,11 +45,5 @@ module.exports = function (rootdir) {
     stringify: function (object) {
       return JSON.stringify(object, null, 2);
     },
-
-    // Directories
-    appdir: rootdir,
-    datadir: datadir,
-    casesdir: casesdir,
-    usersdir: usersdir
   };
 };

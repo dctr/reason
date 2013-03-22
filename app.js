@@ -9,13 +9,12 @@
 /*jslint nomen: true */ // Allow underscores, as in __dirname
 'use strict';
 
-var _ = require('underscore');
+var async = require('async');
 var fs = require('fs');
 var https = require('https');
 var express = require('express');
 
 var app = express();
-var sslOptions = {};
 
 // Functions
 var requireLogin = function (req, res, next) {
@@ -24,21 +23,13 @@ var requireLogin = function (req, res, next) {
   } else {
     res.send(404);
   }
-}
-
-var startServer = function () {
-  https.createServer(sslOptions, app).listen(app.get('port'), function () {
-    console.log('Express server listening on port ' + app.get('port'));
-  });
-}
-
-var startServerIfSslLoaded = _.after(2, startServer);
+};
 
 // Setting up the environment
 require('./settings/express.js')(express, app, __dirname);
 
 // Make the global RSN object available
-GLOBAL.RSN = require('./lib/global.js')(__dirname);
+GLOBAL.RSN = require('./settings/global.js')(__dirname);
 
 // Define routes
 app.all(['/', '/home'], require('./routes/home.js'));
@@ -53,11 +44,27 @@ app.all('/logout', function (req, res) {
   res.redirect(303, '/');
 });
 
-fs.readFile('./settings/server.key.insecure', function (err, key) {
-  sslOptions.key = key;
-  startServerIfSslLoaded();
-});
-fs.readFile('./public/server.crt', function (err, cert) {
-  sslOptions.cert = cert;
-  startServerIfSslLoaded();
-});
+// Load key and cert in parallel and start server when both files are loaded.
+async.parallel(
+  [
+    function (callback) {
+      fs.readFile('./settings/server.key.insecure', function (err, key) {
+        callback(err, key);
+      });
+    },
+    function (callback) {
+      fs.readFile('./public/server.crt', function (err, cert) {
+        callback(err, cert);
+      });
+    }
+  ],
+  function (err, results) {
+    var sslOptions = {
+      key: results[0],
+      cert: results[1]
+    };
+    https.createServer(sslOptions, app).listen(app.get('port'), function () {
+      console.log('Express server listening on port ' + app.get('port'));
+    });
+  }
+);

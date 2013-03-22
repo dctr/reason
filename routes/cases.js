@@ -12,11 +12,11 @@ module.exports = function (req, res) {
   var file, folders, i;
 
   try {
-    folders = fs.readdirSync(RSN.casesdir);
+    folders = fs.readdirSync(RSN.dir.cases);
     res.locals.cases = {};
     for (i in folders) {
       // TODO This could easly be made async
-      file = fs.readFileSync(RSN.casesdir + folders[i] +
+      file = fs.readFileSync(RSN.dir.cases + folders[i] +
                              '/description.json', 'utf-8');
       file = JSON.parse(file);
       res.locals.cases[folders[i]] = {
