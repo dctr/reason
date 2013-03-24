@@ -6,7 +6,7 @@
 
 /*global GLOBAL */
 /*jslint indent: 2 */ // Set indent to 2 spaces
-/*jslint nomen: true */ // Allow underscores, as in __dirname
+/*jslint node: true, nomen: true */ // Allow underscores, as in __dirname
 'use strict';
 
 var _ = require('underscore');
@@ -24,13 +24,13 @@ var requireLogin = function (req, res, next) {
   } else {
     res.send(404);
   }
-}
+};
 
 var startServer = function () {
   https.createServer(sslOptions, app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
   });
-}
+};
 
 var startServerIfSslLoaded = _.after(2, startServer);
 
