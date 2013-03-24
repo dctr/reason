@@ -4,9 +4,10 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "async": "*",
     "ejs": "*",
     "express": "*",
-    "gift": "*",
+    "nodegit": "*",
     "strftime": "*"
   }
 }
