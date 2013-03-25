@@ -7,5 +7,6 @@
 'use strict';
 
 module.exports = function (req, res) {
+  // Check if exists!
   res.render('casesCaseidBranchid');
 };
