@@ -1,8 +1,18 @@
+/**
+ * foo
+ */
+
+/*global RSN */
+/*jslint indent: 2, node: true, nomen: true */
+'use strict';
+
 module.exports = function (req, res) {
-  var fs = require('fs');
+  var folder, fs;
+
+  fs = require('fs');
 
   try {
-    var folder = fs.readdirSync(RSN.dir.data + '/cases/' + req.params.caseid);
+    folder = fs.readdirSync(RSN.dir.data + '/cases/' + req.params.caseid);
     res.locals.message = folder;
   } catch (e) {
     console.log(e);

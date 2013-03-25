@@ -2,7 +2,8 @@
  * Script behind the home page
  */
 
-/*jslint indent: 2 */ // Set indent to 2 spaces
+/*global RSN */
+/*jslint indent: 2, node: true, nomen: true */
 'use strict';
 
 module.exports = function (req, res) {

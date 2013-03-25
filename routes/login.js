@@ -3,26 +3,27 @@
  */
 
 /*global RSN */
-/*jslint indent: 2 */ // Set indent to 2 spaces
+/*jslint indent: 2, node: true, nomen: true */
 'use strict';
 
 module.exports = function (req, res, next) {
+  var checkUsername, userManager;
 
-  var userManager = require(RSN.dir.app + 'lib/userManager.js')(
+  userManager = require(RSN.dir.app + 'lib/userManager.js')(
     RSN.dir.users,
     'credentials.json',
     100000,
     RSN.pepper
   );
 
-  var checkUsername = function () {
+  checkUsername = function () {
     if (!/\w/.test(req.body.username)) {
       throw {name: 'CredentialErrror', message: 'Invalid username.'};
     }
   };
 
   // Test POST data only if not authenticated already.
-  if (typeof req.session.auth === 'undefined') {
+  if (req.session.auth === undefined) {
     try {
       // Check POST in req.body for form data.
       if (req.body.login) {
@@ -42,9 +43,8 @@ module.exports = function (req, res, next) {
         if (req.body.password1 !== req.body.password2) {
           throw {name: 'CredentialErrror', message: 'Passwords do not match.'};
         }
-        if (userManager.register(req.body.username, req.body.password1)) {
-          // Add message: regsiter success
-        } else {
+        // TODO: add message if registration success.
+        if (!userManager.register(req.body.username, req.body.password1)) {
           throw {
             name: 'CredentialErrror',
             message: 'Could not register the username.'
@@ -52,7 +52,7 @@ module.exports = function (req, res, next) {
         }
       }
     } catch (e) {
-      // Add message e
+      // TODO: Add message e
       console.log(e);
     }
     res.render('login');

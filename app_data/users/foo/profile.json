@@ -1,6 +1,8 @@
 {
-  "cases": [],
+  "cases": [23, 42],
+  "since": "2012-09-01T02:21:58+0200",
   "tags": [
-    "newbie"
+    "newbie",
+    "firefox"
   ]
 }

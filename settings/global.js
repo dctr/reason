@@ -2,17 +2,20 @@
  * Declaration of stuff that should be bound to a global object.
  */
 
-/*jslint indent: 2 */ // Set indent to 2 spaces
+/*global RSN */
+/*jslint indent: 2, node: true, nomen: true */
 'use strict';
 
 module.exports = function (rootdir) {
-  var strftime = require('strftime');
+  var casesdir, datadir, strftime, usersdir;
+
+  strftime = require('strftime');
 
   // Directories
   rootdir += '/';
-  var datadir = rootdir + 'app_data/';
-  var casesdir = datadir + 'cases/';
-  var usersdir = datadir + 'users/';
+  datadir = rootdir + 'app_data/';
+  casesdir = datadir + 'cases/';
+  usersdir = datadir + 'users/';
 
   return {
     // Variables
@@ -34,16 +37,16 @@ module.exports = function (rootdir) {
       res.locals.error.push(this.stringify(e));
     },
     blankProfile: function () {
-      var now = strftime('%FT%T%z')
+      var now = strftime('%FT%T%z');
       return {
         cases: [],
         description: 'The user has not given a self-description yet.',
         since: now,
         tags: ['newbie']
-      }
+      };
     },
     stringify: function (object) {
       return JSON.stringify(object, null, 2);
-    },
+    }
   };
 };

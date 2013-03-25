@@ -2,7 +2,8 @@
  * Settings for express
  */
 
-/*jslint indent: 2 */ // Set indent to 2 spaces
+/*global RSN */
+/*jslint indent: 2, node: true, nomen: true */
 'use strict';
 
 module.exports = function (express, app, rootdir) {
@@ -34,7 +35,7 @@ module.exports = function (express, app, rootdir) {
   app.use(require(rootdir + '/lib/templateVariables.js'));
 
   app.use(app.router);
-  app.use(express.static(rootdir + '/public'));
+  app.use(express['static'](rootdir + '/public'));
 
   // The errorHandler doesn't next()!
   if (app.get('env') === 'development') {

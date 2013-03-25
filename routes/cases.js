@@ -3,19 +3,19 @@
  */
 
 /*global RSN */
-/*jslint indent: 2 */ // Set indent to 2 spaces
+/*jslint indent: 2, node: true, nomen: true */
 'use strict';
 
 module.exports = function (req, res) {
-  var fs = require('fs');
+  var i, file, folders, fs;
 
-  var file, folders, i;
+  fs = require('fs');
 
   try {
     folders = fs.readdirSync(RSN.dir.cases);
     res.locals.cases = {};
     for (i in folders) {
-      // TODO This could easly be made async
+      // TODO: This could easly be made async
       file = fs.readFileSync(RSN.dir.cases + folders[i] +
                              '/description.json', 'utf-8');
       file = JSON.parse(file);

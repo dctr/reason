@@ -5,19 +5,20 @@
  */
 
 /*global GLOBAL */
-/*jslint indent: 2 */ // Set indent to 2 spaces
-/*jslint node: true, nomen: true */ // Allow underscores, as in __dirname
+/*jslint indent: 2, node: true, nomen: true */
 'use strict';
 
-var async = require('async');
-var fs = require('fs');
-var https = require('https');
-var express = require('express');
+var async, fs, https, express, app, requireLogin;
 
-var app = express();
+async = require('async');
+fs = require('fs');
+https = require('https');
+express = require('express');
+
+app = express();
 
 // Functions
-var requireLogin = function (req, res, next) {
+requireLogin = function (req, res, next) {
   if (req.session.auth) {
     next();
   } else {
@@ -34,10 +35,14 @@ GLOBAL.RSN = require('./settings/global.js')(__dirname);
 // Define routes
 app.all(['/', '/home'], require('./routes/home.js'));
 app.all('/cases', require('./routes/cases.js'));
-app.all('/cases/:caseid(\\d+)', require('./routes/casesCaseid.js'));
+app.all('/cases/:caseid([0-9]+)', require('./routes/casesCaseid.js'));
+app.all(
+  '/cases/:caseid([0-9]+)/:branchid([a-z\\-\\_]+)',
+  require('./routes/casesCaseidBranchid.js')
+);
 app.all('/cases/create', requireLogin, require('./routes/casesCreate.js'));
 app.all('/users', require('./routes/users.js'));
-app.all('/users/:userid(\\w+)', require('./routes/usersUserid.js'));
+app.all('/users/:userid([a-z]+)', require('./routes/usersUserid.js'));
 app.all('/login', require('./routes/login.js'));
 app.all('/logout', function (req, res) {
   req.session.destroy();

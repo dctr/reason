@@ -2,19 +2,24 @@
  * Code behind the profile view
  */
 
-/*jslint indent: 2 */ // Set indent to 2 spaces
+/*global RSN */
+/*jslint indent: 2, node: true, nomen: true */
 'use strict';
 
 module.exports = function (req, res) {
-  var fs = require('fs');
+  var _, fs, i, profile;
 
-  fs.readFile(RSN.dir.users + req.params.userid + '/profile.json',
+  _ = require('underscore');
+  fs = require('fs');
+
+  fs.readFile(
+    RSN.dir.users + req.params.userid + '/profile.json',
     function (err, data) {
       if (err) {
         RSN.addError(res, err);
       } else {
         res.locals.userid = req.params.userid;
-        res.locals.profile = JSON.parse(data);
+        _.extend(res.locals, JSON.parse(data));
       }
       res.render('usersUserid');
     }

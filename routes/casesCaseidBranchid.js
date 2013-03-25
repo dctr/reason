@@ -1,5 +1,5 @@
 /**
- * Script behind the TPL page
+ * Script behind the case branch page
  */
 
 /*global RSN */
@@ -7,5 +7,5 @@
 'use strict';
 
 module.exports = function (req, res) {
-  res.render('TPL');
+  res.render('casesCaseidBranchid');
 };
