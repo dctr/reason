@@ -4,6 +4,30 @@
 		"selected_items":
 		[
 			[
+				"repo",
+				"repoBranch"
+			],
+			[
+				"cas",
+				"casesdir"
+			],
+			[
+				"res",
+				"results"
+			],
+			[
+				"req",
+				"require"
+			],
+			[
+				"user",
+				"userid"
+			],
+			[
+				"inlin",
+				"inline-block"
+			],
+			[
 				"pro",
 				"prop"
 			],
@@ -14,10 +38,6 @@
 			[
 				"varf",
 				"varfun	varfun"
-			],
-			[
-				"cas",
-				"cases"
 			],
 			[
 				"f",
@@ -40,9 +60,13 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 32.0,
+		"height": 72.0,
 		"selected_items":
 		[
+			[
+				"javasc",
+				"Set Syntax: JavaScript"
+			],
 			[
 				"json",
 				"Set Syntax: JSON"
@@ -108,15 +132,11 @@
 				"Set Syntax: JavaScript"
 			],
 			[
-				"javasc",
-				"Set Syntax: JavaScript"
-			],
-			[
 				"install ",
 				"Package Control: Install Package"
 			]
 		],
-		"width": 467.0
+		"width": 449.0
 	},
 	"console":
 	{
@@ -133,20 +153,38 @@
 	},
 	"file_history":
 	[
-		"/home/david/Dokumente/Development/reason/views/layouts/bottom.ejs",
-		"/home/david/Dokumente/Development/reason/public/stylesheets/desktop.scss",
-		"/home/david/Dokumente/Development/reason/routes/cases-caseid.js",
+		"/home/david/Dokumente/Development/reason/settings/global.js",
+		"/home/david/Dokumente/Development/reason/lib/templateVariables.js",
+		"/home/david/Dokumente/Development/reason/node_modules/express/lib/router/route.js",
+		"/home/david/Dokumente/Development/reason/routes/users.js",
+		"/home/david/Dokumente/Development/reason/routes/casesCaseid.js",
 		"/home/david/Dokumente/Development/reason/routes/cases.js",
+		"/home/david/Dokumente/Development/reason/routes/login.js",
+		"/home/david/Dokumente/Development/reason/routes/usersUserid.js",
+		"/home/david/Dokumente/Development/reason/package.json",
+		"/home/david/Dokumente/Development/reason/lib/global.js",
+		"/home/david/Dokumente/Development/reason/lib/_boilerplate.js",
+		"/home/david/Dokumente/Development/reason/routes/_boilerplate.js",
+		"/home/david/Dokumente/Development/reason/lib/userManager.js",
+		"/home/david/Dokumente/Development/reason/settings/express.js",
+		"/home/david/Dokumente/Development/reason/views/layouts/top.ejs",
+		"/home/david/Dokumente/Development/reason/controllers/global.js",
+		"/home/david/Dokumente/Development/reason/views/usersUserid.ejs",
+		"/home/david/Dokumente/Development/reason/app.js",
+		"/home/david/SparkleShare/Sonstiges/Notizen/Gibson Boot.txt",
+		"/home/david/Dokumente/Development/reason/controllers/userManager.js",
+		"/home/david/Dokumente/Development/reason/public/styles/desktop.scss",
+		"/home/david/Dokumente/Development/reason/views/login.ejs",
+		"/home/david/Dokumente/Development/reason/routes/casesCreate.js",
+		"/home/david/Dokumente/Development/reason/controllers/templateVariables.js",
+		"/home/david/Dokumente/Development/reason/views/casesCreate.ejs",
+		"/home/david/Dokumente/Development/reason/public/stylesheets/desktop.scss",
+		"/home/david/Dokumente/Development/reason/views/layouts/sidebar.ejs",
+		"/home/david/Dokumente/Development/reason/views/layouts/bottom.ejs",
+		"/home/david/Dokumente/Development/reason/routes/cases-caseid.js",
 		"/home/david/Dokumente/Development/reason/routes/users-userid.js",
 		"/home/david/Dokumente/Development/reason/routes/sidebar.js",
-		"/home/david/Dokumente/Development/reason/routes/login.js",
-		"/home/david/Dokumente/Development/reason/routes/_boilerplate.js",
-		"/home/david/Dokumente/Development/reason/routes/users.js",
 		"/home/david/Dokumente/Development/reason/routes/home.js",
-		"/home/david/Dokumente/Development/reason/views/login.ejs",
-		"/home/david/Dokumente/Development/reason/app.js",
-		"/home/david/Dokumente/Development/reason/views/layouts/top.ejs",
-		"/home/david/Dokumente/Development/reason/settings/express.js",
 		"/home/david/Dokumente/Development/reason/views/cases.ejs",
 		"/home/david/Dokumente/Development/reason/app_data/users/john/description.json",
 		"/home/david/Dokumente/Development/reason/app_data/users/sam/description.json",
@@ -158,7 +196,6 @@
 		"/home/david/.config/sublime-text-2/Packages/EJS/EJS.tmLanguage",
 		"/home/david/Dokumente/Development/reason/views/layout/bottom.ejs",
 		"/home/david/Dokumente/Development/reason/notes.txt",
-		"/home/david/Dokumente/Development/reason/package.json",
 		"/home/david/Dokumente/Development/jadetest/views/index.jade",
 		"/home/david/Downloads/node-v0.8.21/test/message/eval_messages.js",
 		"/home/david/SparkleShare/Sonstiges/local/etc/Sublime/JavaScript.sublime-settings",
@@ -215,6 +252,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"datadir",
+			"usersdir",
+			"case",
+			"descrption",
+			"pageContent",
 			"main",
 			"pageContent",
 			"myRender",
@@ -252,7 +294,7 @@
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 35.0
 	},
 	"layout":
 	{
@@ -292,20 +334,112 @@
 		"selected_items":
 		[
 			[
-				"scss",
-				"public/stylesheets/desktop.scss"
+				"globa",
+				"settings/global.js"
 			],
 			[
-				"bot",
-				"views/layouts/bottom.ejs"
+				"casescas",
+				"routes/casesCaseid.js"
+			],
+			[
+				"users",
+				"routes/users.js"
+			],
+			[
+				"route",
+				"node_modules/express/lib/router/route.js"
+			],
+			[
+				"gloal",
+				"settings/global.js"
+			],
+			[
+				"login",
+				"routes/login.js"
+			],
+			[
+				"useruser",
+				"routes/usersUserid.js"
+			],
+			[
+				"user",
+				"routes/users.js"
+			],
+			[
+				"case",
+				"routes/cases.js"
+			],
+			[
+				"global",
+				"settings/global.js"
+			],
+			[
+				"userma",
+				"lib/userManager.js"
+			],
+			[
+				"expres",
+				"settings/express.js"
+			],
+			[
+				"pack",
+				"package.json"
+			],
+			[
+				"app",
+				"app.js"
 			],
 			[
 				"top",
 				"views/layouts/top.ejs"
 			],
 			[
+				"glo",
+				"controllers/global.js"
+			],
+			[
+				"userm",
+				"controllers/userManager.js"
+			],
+			[
+				"log",
+				"routes/login.js"
+			],
+			[
+				"glob",
+				"controllers/global.js"
+			],
+			[
+				"usersuser",
+				"views/usersUserid.ejs"
+			],
+			[
+				"usersu",
+				"routes/usersUserid.js"
+			],
+			[
+				"scss",
+				"public/styles/desktop.scss"
+			],
+			[
+				"loginejs",
+				"views/login.ejs"
+			],
+			[
+				"expre",
+				"settings/express.js"
+			],
+			[
 				"side",
-				"routes/sidebar.js"
+				"views/layouts/sidebar.ejs"
+			],
+			[
+				"templ",
+				"controllers/templateVariables.js"
+			],
+			[
+				"bot",
+				"views/layouts/bottom.ejs"
 			]
 		],
 		"width": 0.0
