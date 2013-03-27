@@ -6,11 +6,8 @@
  * on the SCSS used on the solarized hompage.
  */
 
-// Use normalize.css as delivered with HTML5 Boilerplate 4
+// Use normalize.css 1.1
 @import "normalize";
-
-// Use main.css as delivered with HTML5 Boilerplate 4
-@import "h5bp";
 
 // Define basics for solarized (http://ethanschoonover.com/solarized)
 @import "solarized";
@@ -96,29 +93,10 @@ h1 {
   text-transform: uppercase;
   font-weight: bold;
   border-bottom: $border;
- //    &:first-of-type {
-  //     //font-size: 700%;
-  //     font-size: 400%;
-  //     margin-top:0;
-  //     margin-bottom:$vmargin;
-  //     line-height: 100%;
-  //     border: none;
-  //     text-decoration: none;
-  // }
 }
 h2 {
   font-size: 153.9%; //23px
   border-bottom:$border;
- //    &:first-of-type {
-  //     font-weight: lighter;
-  //     font-size: 200%;
-  //     text-transform: none;
-  //     color: $base01;
-  //     margin-top:$vmargin;
-  //     margin-bottom:$vmargin*2;
-  //     line-height: 100%;
-  //     border: none;
-  // }
 }
 h3,h4,h5,h6 {
   border-bottom:none;
@@ -129,7 +107,6 @@ h5 { font-size: 138.5% }      //18px
 h6 { font-size: 138.5% }      //18px
 
 p {
-  //font-weight: lighter;
   margin: 0 0 $vmargin 0;
 }
 strong {
@@ -150,18 +127,15 @@ dt {
 dd {
   margin-left: $hmargin/2;
 }
-img { margin: 0 0 $vmargin 0; }
+img {
+  margin: 0 0 $vmargin 0;
+}
 pre {
   margin-bottom:$vmargin;
 }
 pre, code {
   font-family: monospace;
 }
-pre {
-}
-/*code {
-  font-size: 75%;
-}*/
 table {
   font-size: 75%;
 }
@@ -174,6 +148,4 @@ td {
   padding-bottom: 0.2em;
   padding-left: .2em;
   padding-right: 1.8em;
-}
-td.nums {
 }
