@@ -564,7 +564,7 @@ nav a {
   padding-left: 10px;
   padding-right: 10px;
   margin-right: 5px; }
-  nav a.current, nav a:hover {
+  nav a.selected, nav a:hover {
     color: #073642;
     background-color: #eee8d5; }
 

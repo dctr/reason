@@ -53,7 +53,7 @@ nav {
       right: 10px;
     }
     margin-right: 5px;
-    &.current, &:hover {
+    &.selected, &:hover {
       color: $base02;
       background-color: $base2;
     }

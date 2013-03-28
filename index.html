@@ -4,6 +4,8 @@
         <link rel="stylesheet" href="styles/main.css">
         <link rel="author" href="humans.txt">
         <meta charset="utf-8">
+        <script src="scripts/vendor/jquery.js"></script>
+        <script src="scripts/vendor/underscore.js"></script>
         <script src="scripts/global.js"></script>
         <script src="scripts/main.js"></script>
         <title>REaSoN</title>
@@ -12,11 +14,16 @@
         <header>
             <nav>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Profile</a></li>
+                    <li><a href="" class="selected">Home</a></li>
+                    <li><a href="">Profile</a></li>
                 </ul>
             </nav>
         </header>
+        <script type="text/template" class="home">
+            <h1>Hallo</h1>
+            <p>Dies ist die REaSoN Hauptseite.</p>
+            <p><%= message %></p>
+        </script>
         <div role="main">
             <h1>Hallo</h1>
             <input type="button" value="Populate Storage" onclick="RSN.populateStorage();">
