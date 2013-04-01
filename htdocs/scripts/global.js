@@ -9,18 +9,19 @@
 (function () {
   'use strict';
 
-  var RSN, compileTemplate;
+  var RSN, renderCompiledTemplate, compiledTemplates;
 
   RSN = {};
+  compiledTemplates = {};
 
-  RSN.template = {};
+  // PRIVATE METHODS
 
   // Compiles templates and memoizes them.
-  compileTemplate = _.memoize(function (template) {
-    var tpl = $.get('templates/home.ejs');
-    console.log(tpl);
-    return _.template(tpl);
-  });
+  renderCompiledTemplate = function (template, data) {
+    $('div[role="main"]').html(compiledTemplates[template](data));
+  };
+
+  // PUBLIC METHODS
 
   // BEGIN DEBUG METHODS
   RSN.populateStorage = function () {
@@ -42,13 +43,14 @@
   };
 
   RSN.render = function (template, data) {
-    console.log('foo');
-    $.get('templates/home.ejs', function (data) {
-      console.log(data);
-    });
-    // console.log(template + ' -> ' + RSN.stringify(data));
-    // var fun = compileTemplate(template);
-    // $('div[role="main"]').html(fun(data));
+    if (compiledTemplates[template]) {
+      renderCompiledTemplate(template, data);
+    } else {
+      $.get('templates/' + template + '.ejs', function (templateContent) {
+        compiledTemplates[template] = _.template(templateContent);
+        renderCompiledTemplate(template, data);
+      });
+    }
   };
 
   /**
