@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html lang="de">
     <head>
         <link rel="stylesheet" href="styles/main.css">
         <link rel="author" href="humans.txt">
@@ -8,6 +8,7 @@
         <script src="scripts/vendor/underscore.js"></script>
         <script src="scripts/global.js"></script>
         <script src="scripts/main.js"></script>
+        <script src="templates/home.ejs"></script>
         <title>REaSoN</title>
     </head>
     <body>
@@ -19,11 +20,6 @@
                 </ul>
             </nav>
         </header>
-        <script type="text/template" class="home">
-            <h1>Hallo</h1>
-            <p>Dies ist die REaSoN Hauptseite.</p>
-            <p><%= message %></p>
-        </script>
         <div role="main">
             <h1>Hallo</h1>
             <input type="button" value="Populate Storage" onclick="RSN.populateStorage();">

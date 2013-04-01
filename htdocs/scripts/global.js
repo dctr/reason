@@ -13,9 +13,11 @@
 
   RSN = {};
 
+  RSN.template = {};
+
   // Compiles templates and memoizes them.
   compileTemplate = _.memoize(function (template) {
-    var tpl = $('script.' + template).html();
+    var tpl = $.get('templates/home.ejs');
     console.log(tpl);
     return _.template(tpl);
   });
@@ -40,9 +42,13 @@
   };
 
   RSN.render = function (template, data) {
-    console.log(template + ' -> ' + RSN.stringify(data));
-    var fun = compileTemplate(template);
-    $('div[role="main"]').html(fun(data));
+    console.log('foo');
+    $.get('templates/home.ejs', function (data) {
+      console.log(data);
+    });
+    // console.log(template + ' -> ' + RSN.stringify(data));
+    // var fun = compileTemplate(template);
+    // $('div[role="main"]').html(fun(data));
   };
 
   /**
