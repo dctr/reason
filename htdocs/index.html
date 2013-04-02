@@ -22,13 +22,19 @@
       <nav>
         <ul>
           <li><a href="" id="home" class="selected">Home</a></li>
-          <li><a href="" id="profile">Profile</a></li>
-          <li class="right">
-            <form action="#" id="login">
-              <input type="text" name="username" placeholder="Benutzername" autofocus>
-              <input type="password" name="password" placeholder="Passwort">
-              <input type="button" value="Login">
-            </form>
+          <li><a href="" id="profiles">Profile</a></li>
+          <li id="login">
+            <span id="logedOut">
+              <form action="#">
+                <input type="text" name="username" placeholder="Benutzername" autofocus>
+                <input type="password" name="password" placeholder="Passwort">
+                <input type="button" value="Login">
+              </form>
+            </span>
+            <span id="logedIn" class="hidden">
+              <a href="" id="profile">Profil</a>
+              <a href="" id="logout">Logout</a>
+            </span>
           </li>
         </ul>
       </nav>
