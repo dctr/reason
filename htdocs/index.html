@@ -1,30 +1,44 @@
 <!DOCTYPE html>
 <html lang="de">
-    <head>
-        <link rel="stylesheet" href="styles/main.css">
-        <link rel="author" href="humans.txt">
-        <meta charset="utf-8">
-        <script src="scripts/vendor/jquery.js"></script>
-        <script src="scripts/vendor/underscore.js"></script>
-        <script src="scripts/global.js"></script>
-        <script src="scripts/main.js"></script>
-        <title>REaSoN</title>
-    </head>
-    <body>
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="" id="home" class="selected">Home</a></li>
-                    <li><a href="" id="profile">Profile</a></li>
-                </ul>
-            </nav>
-        </header>
-        <div role="main">
+  <head>
+    <link rel="author" href="humans.txt">
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <link rel="stylesheet" href="styles/main.css">
+    <meta charset="utf-8">
+    <!-- Libraries -->
+    <script src="scripts/vendor/base64.js"></script>
+    <script src="scripts/vendor/jquery.js"></script>
+    <script src="scripts/vendor/underscore.js"></script>
+    <!-- Library github depends on base64 and underscore -->
+    <script src="scripts/vendor/github.js"></script>
+    <!-- Own global stuff -->
+    <script src="scripts/global.js"></script>
+    <!-- The main script handling the page -->
+    <script src="scripts/main.js"></script>
+    <title>REaSoN</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="" id="home" class="selected">Home</a></li>
+          <li><a href="" id="profile">Profile</a></li>
+          <li class="right">
+            <form action="#" id="login">
+              <input type="text" name="username" placeholder="Benutzername" autofocus>
+              <input type="password" name="password" placeholder="Passwort">
+              <input type="button" value="Login">
+            </form>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <div role="main">
 Never gonna give you up never gonna let you down<br>
 never gonna run around and desert you<br>
 never gonna make you cry never gonna say goodbye<br>
 never gonna tell a lie and hurt you<br>
-        </div>
-        <footer>&copy; 2013 dctr</footer>
-    </body>
+    </div>
+    <footer>&copy; 2013 dctr</footer>
+  </body>
 </html>

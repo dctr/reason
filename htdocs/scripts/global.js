@@ -38,6 +38,12 @@
   };
   // END DEBUG METHODS
 
+  RSN.github = undefined;
+
+  RSN.login = function (username, password) {
+    return true;
+  };
+
   RSN.parse = function (string) {
     return JSON.parse(string);
   };

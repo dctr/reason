@@ -9,14 +9,20 @@
 // Use normalize.css 1.1
 @import "normalize";
 
+// Use HTML5 boilerplate 4.1
+@import "h5bp";
+
 // Define basics for solarized (http://ethanschoonover.com/solarized)
 @import "solarized";
 
+.right {
+  float: right;
+}
 
 /*
  * Document structure
  */
- html {
+html {
   // Light theme per default
   @include rebase($base02,$base2,$base03);
 }
@@ -33,14 +39,20 @@ header, footer {
     bottom: $vmargin;
   }
 }
+header {
+  nav, form, ul, li {
+    display: inline;
+  }
+  input {
+    color: $base02;
+    background-color: $base2;
+  }
+}
 nav {
   // Undo spacing of normalize.css.
   ul {
     margin: 0px;
     padding: 0px;
-  }
-  li {
-    display: inline;
   }
   a {
     text-decoration:none;
