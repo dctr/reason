@@ -2,3 +2,4 @@
 node_modules
 *.key*
 reason.sublime-workspace
+reason.sublime-project
