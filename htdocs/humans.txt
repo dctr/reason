@@ -1,0 +1,20 @@
+/* TEAM */
+Everything: David Christ
+Contact: david [dot] christ [at] uni [dash] trier [dot] de
+From: Trier, Germany.
+
+
+/* THANKS */
+Doctoral Advisor: Prof. Peter Sturm
+From: University of Trier, Germany
+
+Doctoral Candidate: Dipl.-Inf. Stefan Elsen
+From: University of Trier, Germany
+
+
+/* SITE */
+Last update: 2013-03-27
+Standards: HTML5, CSS3, JavaScript - The good parts
+Components: normalize.css, Solarized Color Scheme
+Software: embedded JS
+Tools: ZSH, Sublime Text 2, Firefox

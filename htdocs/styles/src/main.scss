@@ -1,0 +1,160 @@
+/*
+ * (S)CSS file for REaSoN
+ *
+ * This is based on Boilerplate's CSS which in turn is based on normalize.css.
+ * Furthermore, it used the solarized color scheme and is loosely based
+ * on the SCSS used on the solarized hompage.
+ */
+
+// Use normalize.css 1.1
+@import "normalize";
+
+// Use HTML5 boilerplate 4.1
+@import "h5bp";
+
+// Define basics for solarized (http://ethanschoonover.com/solarized)
+@import "solarized";
+
+
+/*
+ * Document structure
+ */
+html {
+  // Light theme per default
+  @include rebase($base02,$base2,$base03);
+}
+// Box layout debug
+//* { border: $border}
+header, footer {
+  // Dark theme in header and footer
+  @include rebase($base2,$base02,$base3);
+  margin: 0px;
+  padding: {
+    left: $hmargin;
+    right: $hmargin;
+    top: $vmargin;
+    bottom: $vmargin;
+  }
+}
+header {
+  nav, form, ul, li {
+    display: inline;
+  }
+  input {
+    color: $base02;
+    background-color: $base2;
+  }
+}
+nav {
+  // Undo spacing of normalize.css.
+  ul {
+    margin: 0px;
+    padding: 0px;
+  }
+  a {
+    text-decoration:none;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: {
+      top: 5px;
+      bottom: 5px;
+      left: 10px;
+      right: 10px;
+    }
+    margin-right: 5px;
+    &.selected, &:hover {
+      color: $base02;
+      background-color: $base2;
+    }
+  }
+}
+aside{
+  float: right;
+  width: $hmargin*4;
+  //margin-top:$vmargin*2;
+  margin-bottom:$vmargin*2;
+  margin-right:$hmargin;
+}
+main, div[role="main"] {
+  margin-left:$hmargin;
+  margin-right:$hmargin;
+  margin-top:$vmargin*2;
+  margin-bottom:$vmargin*2;
+  //min-width: 52em; // sufficient for 80 char pre blocks
+  min-width: 32em; // sufficient for 72 char pre blocks
+  max-width: 52em;
+}
+footer {
+  clear: both;
+}
+
+/*
+ * Generic tag styles.
+ */
+h1,h2,h3,h4,h5,h6 {
+  font-weight: lighter;
+  text-transform: capitalize;
+  margin-top:$vmargin*2;
+  margin-bottom:$vmargin;
+}
+h1 {
+  font-size: 153.9%; //26px
+  text-transform: uppercase;
+  font-weight: bold;
+  border-bottom: $border;
+}
+h2 {
+  font-size: 153.9%; //23px
+  border-bottom:$border;
+}
+h3,h4,h5,h6 {
+  border-bottom:none;
+}
+h3 { font-size: 146.5% }    //20px
+h4 { font-size: 138.5% }      //18px
+h5 { font-size: 138.5% }      //18px
+h6 { font-size: 138.5% }      //18px
+
+p {
+  margin: 0 0 $vmargin 0;
+}
+strong {
+  font-weight: bold;
+}
+em {
+  font-style: italic;
+}
+ol,ul {
+  margin-bottom: $vmargin;
+}
+li {
+  margin-bottom: $vmargin/2;
+}
+dt {
+  font-weight: bold;
+}
+dd {
+  margin-left: $hmargin/2;
+}
+img {
+  margin: 0 0 $vmargin 0;
+}
+pre {
+  margin-bottom:$vmargin;
+}
+pre, code {
+  font-family: monospace;
+}
+table {
+  font-size: 75%;
+}
+th {
+  padding-bottom: .7em;
+  padding-right: 1.8em;
+}
+td {
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  padding-left: .2em;
+  padding-right: 1.8em;
+}
