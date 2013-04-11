@@ -15,7 +15,7 @@ $(document).ready(function () {
   // TODO: Check localstorage and sessionstorage for login
 
   // Functionality for the nav bar.
-  $('nav a').click(function (e) {
+  $('nav a').filter(':not(#logout)').click(function (e) {
     e.preventDefault();
     $('nav a').attr('class', '');
     $(this).attr('class', 'selected');
@@ -24,6 +24,11 @@ $(document).ready(function () {
 
   // Select home per default.
   $('#home').click();
+
+  if (RSN.resumeSession()) {
+    $('#logedIn').attr('class', '');
+    $('#logedOut').attr('class', 'hidden');
+  }
 
   $('#login input[type="button"]').click(function (e) {
     e.preventDefault();
@@ -39,5 +44,12 @@ $(document).ready(function () {
         }
       }
     );
+  });
+
+  $('#logout').click(function (e) {
+    e.preventDefault();
+    RSN.logout();
+    $('#logedIn').attr('class', 'hidden');
+    $('#logedOut').attr('class', '');
   });
 });
