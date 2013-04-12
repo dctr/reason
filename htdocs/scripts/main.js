@@ -8,7 +8,7 @@
  * - Script code
  */
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
-/*global $, _, Github, RSN, console */
+/*global $, _, RSN, TPL, console */
 $(document).ready(function () {
   'use strict';
 
@@ -19,7 +19,7 @@ $(document).ready(function () {
     e.preventDefault();
     $('nav a').attr('class', '');
     $(this).attr('class', 'selected');
-    RSN.render($(this).attr('id'));
+    TPL.render($(this).attr('id'));
   });
 
   // Select home per default.

@@ -5,22 +5,21 @@
  * However, the object is further augmented in other files!
  */
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
-/*global $, _, Github, RSN, console */
+/*global $, _, Github, RSN, TPL, console */
 (function () {
   'use strict';
 
-  var RSN, compiledTemplates, github, renderCompiledTemplate, storage;
+  var RSN, github, renderCompiledTemplate, storage;
 
+  /**
+   * RSN ist an object that will be made global.
+   * @type {Object}
+   */
   RSN = {};
-  compiledTemplates = {};
+
   storage = {};
 
   // PRIVATE METHODS
-
-  // Compiles templates and memoizes them.
-  renderCompiledTemplate = function (template, data) {
-    $('div[role="main"]').html(compiledTemplates[template](data));
-  };
 
   storage.clear = function () {
     sessionStorage.clear();
@@ -63,6 +62,8 @@
   };
 
   // PUBLIC METHODS
+
+  RSN.github = undefined;
 
   /**
    * Checks if a session is either running or stored in the clients browser.
@@ -108,17 +109,6 @@
     return JSON.parse(string);
   };
 
-  RSN.render = function (template, data) {
-    if (compiledTemplates[template]) {
-      renderCompiledTemplate(template, data);
-    } else {
-      $.get('templates/' + template + '.ejs', function (templateContent) {
-        compiledTemplates[template] = _.template(templateContent);
-        renderCompiledTemplate(template, data);
-      });
-    }
-  };
-
   /**
    * Convenience method to get a formated JSON string.
    * @param  {object} object A javascript object.
@@ -128,5 +118,6 @@
     return JSON.stringify(object, null, 2);
   };
 
+  RSN.github = github;
   window.RSN = RSN;
 }());
