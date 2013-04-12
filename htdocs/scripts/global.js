@@ -34,8 +34,6 @@
     }
     session = RSN.parse(sessionStorage.getItem(key));
     local = RSN.parse(localStorage.getItem(key));
-    RSN.log(session);
-    RSN.log(local);
     if (!session) {
       if (local) { storage.set(key, local); }
       return local;
@@ -99,10 +97,6 @@
         callback(true);
       }
     });
-  };
-
-  RSN.log = function (string) {
-    console.log(string);
   };
 
   RSN.logout = function () {

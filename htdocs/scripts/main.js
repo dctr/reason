@@ -30,7 +30,7 @@ $(document).ready(function () {
     $('#logedOut').attr('class', 'hidden');
   }
 
-  $('#login input[type="button"]').click(function (e) {
+  $('#login input[type="submit"]').click(function (e) {
     e.preventDefault();
     RSN.login(
       $('#login input[name="username"]').val(),
