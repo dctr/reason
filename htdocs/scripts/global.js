@@ -9,7 +9,7 @@
 (function () {
   'use strict';
 
-  var RSN, github, renderCompiledTemplate, storage;
+  var RSN, renderCompiledTemplate, storage;
 
   /**
    * RSN ist an object that will be made global.
@@ -71,12 +71,12 @@
    */
   RSN.resumeSession = function () {
     var credentials;
-    if (github) {
+    if (RSN.github) {
       return true;
     }
     credentials = storage.get('credentials');
     if (credentials) {
-      github = credentials;
+      RSN.github = credentials;
       return true;
     }
     return false;
@@ -93,7 +93,7 @@
         callback(false);
       } else {
         github = user;
-        github.password = password;
+        //github.password = password;
         storage.set('credentials', github);
         callback(true);
       }
@@ -101,7 +101,7 @@
   };
 
   RSN.logout = function () {
-    github = undefined;
+    RSN.github = undefined;
     storage.clear();
   };
 
@@ -118,6 +118,5 @@
     return JSON.stringify(object, null, 2);
   };
 
-  RSN.github = github;
   window.RSN = RSN;
 }());

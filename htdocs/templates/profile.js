@@ -3,7 +3,8 @@
 TPL.cacheScript('profile', function () {
   'use strict';
 
+  console.log(RSN.github);
   return {
-    foo: 'bar'
+    foo: 'yeah: ' + TPL.nl2br(RSN.stringify(RSN.github))
   };
 });

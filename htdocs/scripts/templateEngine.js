@@ -20,12 +20,24 @@
     ));
   };
 
+  TPL.br2nl = function (str) {
+    return str.replace(/<br\s*\/?>/mg, '\n');
+  };
+
   TPL.cacheScript = function (template, script) {
     cachedScripts[template] = script;
   };
 
   TPL.cacheTemplate = function (template, text) {
     cachedTemplates[template] = text;
+  };
+
+  TPL.nl2br = function (str) {
+    var breakTag = '<br />';
+    return str.replace(
+      /(\r\n|\n\r|\r|\n)/mg,
+      breakTag + '$1'
+    );
   };
 
   TPL.render = function (template) {
