@@ -1,7 +1,7 @@
 REaSoN
 ======
 
-... to be continued
+This branch persists the node.js version of the program. It is currently orphaned but still contains some data that might be relevant for the new client-only version.
 
 Hosting the app
 ===============
