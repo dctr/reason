@@ -8,7 +8,7 @@
  * - Script code
  */
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
-/*global $, _, RSN, TPL, console */
+/*global $, _, RSN, TPL, USR, console */
 $(document).ready(function () {
   'use strict';
 
@@ -25,14 +25,14 @@ $(document).ready(function () {
   // Select home per default.
   $('#home').click();
 
-  if (RSN.resumeSession()) {
+  if (USR.resumeSession()) {
     $('#logedIn').attr('class', '');
     $('#logedOut').attr('class', 'hidden');
   }
 
   $('#login input[type="submit"]').click(function (e) {
     e.preventDefault();
-    RSN.login(
+    USR.login(
       $('#login input[name="username"]').val(),
       $('#login input[name="password"]').val(),
       function (logedIn) {
@@ -48,7 +48,7 @@ $(document).ready(function () {
 
   $('#logout').click(function (e) {
     e.preventDefault();
-    RSN.logout();
+    USR.logout();
     $('#logedIn').attr('class', 'hidden');
     $('#logedOut').attr('class', '');
   });

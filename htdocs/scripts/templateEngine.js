@@ -1,8 +1,9 @@
 /**
  * A caching template engine based on Underscores template() function.
+ * Defines the global TPL.
  */
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
-/*global $, _, RSN, TPL, console */
+/*global $, _, RSN, USR, console */
 (function () {
   'use strict';
 
@@ -14,9 +15,9 @@
   cachedTemplates = {};
 
   // Compiles templates and memoizes them.
-  renderCompiledTemplate = function (template) {
+  renderCompiledTemplate = function (template, data) {
     $('div[role="main"]').html(cachedTemplates[template](
-      cachedScripts[template]()
+      cachedScripts[template](data)
     ));
   };
 
@@ -40,9 +41,9 @@
     );
   };
 
-  TPL.render = function (template) {
+  TPL.render = function (template, data) {
     if (cachedTemplates[template]) {
-      renderCompiledTemplate(template);
+      renderCompiledTemplate(template, data);
     } else {
       $.get('/templates/' + template + '.ejs', function (templateContent) {
         cachedTemplates[template] = _.template(templateContent);
@@ -50,7 +51,7 @@
           if (textStatus !== 'success') {
             throw {name: 'LoadError', message: jqxhr};
           }
-          renderCompiledTemplate(template);
+          renderCompiledTemplate(template, data);
         });
       });
     }
