@@ -1,5 +1,7 @@
-<h1>hi</h1>
-<% console.log(foo); %>
-<code>
-  <pre><%= foo %></pre>
-</code>
+<h1><%= data.user.name %></h1>
+<h2>Followers</h2>
+<ul>
+  <% for (var f in data.followers) { %>
+  <li><%= data.followers[f].login %></li>
+  <% } %>
+</ul>

@@ -7,7 +7,7 @@
 (function () {
   'use strict';
 
-  var TPL, renderCompiledTemplate, cachedScripts, cachedTemplates;
+  var TPL, cachedScripts, cachedTemplates, renderCompiledTemplate;
 
   TPL = {};
 
@@ -16,9 +16,10 @@
 
   // Compiles templates and memoizes them.
   renderCompiledTemplate = function (template, data) {
-    $('div[role="main"]').html(cachedTemplates[template](
-      cachedScripts[template](data)
-    ));
+    var renderCallback = function (processedData) {
+      $('div[role="main"]').html(cachedTemplates[template](processedData));
+    };
+    cachedScripts[template](data, renderCallback);
   };
 
   TPL.br2nl = function (str) {
@@ -45,12 +46,14 @@
     if (cachedTemplates[template]) {
       renderCompiledTemplate(template, data);
     } else {
+      // TODO: Check template for [a-z]
       $.get('/templates/' + template + '.ejs', function (templateContent) {
         cachedTemplates[template] = _.template(templateContent);
-        $.getScript('/templates/' + template + '.js', function (data, textStatus, jqxhr) {
-          if (textStatus !== 'success') {
+        $.getScript('/templates/' + template + '.js', function (res, status, jqxhr) {
+          if (status !== 'success') {
             throw {name: 'LoadError', message: jqxhr};
           }
+          // NOTE: The template scripts cache themselves.
           renderCompiledTemplate(template, data);
         });
       });

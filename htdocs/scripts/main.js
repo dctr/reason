@@ -12,6 +12,9 @@
 $(document).ready(function () {
   'use strict';
 
+  // Turn caching off globally.
+  $.ajaxSetup({ cache: true });
+
   // Functionality for the nav bar.
   $('nav a').filter(':not(#logout)').click(function (e) {
     e.preventDefault();
@@ -23,10 +26,12 @@ $(document).ready(function () {
   // Select home per default.
   $('#home').click();
 
-  if (RSN.resumeSession()) {
-    $('#logedIn').attr('class', '');
-    $('#logedOut').attr('class', 'hidden');
-  }
+  RSN.resumeSession(function (success) {
+    if (success) {
+      $('#logedIn').attr('class', '');
+      $('#logedOut').attr('class', 'hidden');
+    }
+  });
 
   $('#login input[type="submit"]').click(function (e) {
     e.preventDefault();
@@ -49,5 +54,6 @@ $(document).ready(function () {
     RSN.logout();
     $('#logedIn').attr('class', 'hidden');
     $('#logedOut').attr('class', '');
+    $('#home').click();
   });
 });

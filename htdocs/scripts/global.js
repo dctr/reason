@@ -75,18 +75,13 @@
    * Checks if a session is either running or stored in the clients browser.
    * @return {bool} Whether the user is logged in correctly.
    */
-  RSN.resumeSession = function () {
-    var credentials  = RSN.get('credentials');
-    console.log(credentials);
+  RSN.resumeSession = function (callback) {
+    var credentials = RSN.get('credentials');
     if (credentials && credentials.username && credentials.password) {
-      window.GHB = new Github({
-        username: credentials.username,
-        password: credentials.password,
-        auth: 'basic'
-      });
-      return true;
+      RSN.login(credentials.username, credentials.password, callback);
+    } else {
+      callback(false);
     }
-    return false;
   };
 
   RSN.set = function (key, value) {

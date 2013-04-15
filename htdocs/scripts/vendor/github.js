@@ -97,6 +97,28 @@
         });
       };
 
+      // Show who follows user
+      // -------
+
+      this.followers = function(username, cb) {
+        var command = username ? "/users/"+username+"/followers" : "/user/followers";
+
+        _request("GET", command, null, function(err, res) {
+          cb(err, res);
+        });
+      };
+
+      // Show who user is following
+      // -------
+
+      this.following = function(username, cb) {
+        var command = username ? "/users/"+username+"/following" : "/user/following";
+
+        _request("GET", command, null, function(err, res) {
+          cb(err, res);
+        });
+      };
+
       // List user repositories
       // -------
 
