@@ -12,8 +12,6 @@
 $(document).ready(function () {
   'use strict';
 
-  // TODO: Check localstorage and sessionstorage for login
-
   // Functionality for the nav bar.
   $('nav a').filter(':not(#logout)').click(function (e) {
     e.preventDefault();

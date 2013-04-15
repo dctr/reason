@@ -30,17 +30,17 @@
   };
 
   USR.login = function (username, password, callback) {
-    var profile = new Github({
+    USR.profile = new Github({
       username: username,
       password: password,
       auth: 'basic'
     });
-    profile.getUser().show(username, function (err, user) {
+    USR.profile.getUser().show(username, function (err, user) {
       if (err) {
         callback(false);
       } else {
-        profile = user;
-        RSN.set('credentials', profile);
+        //profile = user;
+        RSN.set('credentials', USR.profile);
         callback(true);
       }
     });
