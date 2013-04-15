@@ -5,7 +5,7 @@
  * functions to access the browser's storage and some convenience functions.
  */
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
-/*global $, _, TPL, USR, console */
+/*global $, _, TPL, USR, Github, console */
 (function () {
   'use strict';
 
@@ -26,15 +26,37 @@
     session = RSN.parse(sessionStorage.getItem(key));
     local = RSN.parse(localStorage.getItem(key));
     if (!session) {
-      if (local) { set(key, local); }
+      if (local) { RSN.set(key, local); }
       return local;
     }
     if (!local) {
-      if (session) { set(key, session); }
+      if (session) { RSN.set(key, session); }
       return session;
     }
     if (_.isEqual(session, local)) { return local; }
     throw {name: 'StorageError', message: 'Session or local Storage corrupt.'};
+  };
+
+  RSN.login = function (username, password, callback) {
+    var github = new Github({
+      username: username,
+      password: password,
+      auth: 'basic'
+    });
+    github.getUser().show(username, function (err, user) {
+      if (err) {
+        callback(false);
+      } else {
+        RSN.set('credentials', {username: username, password: password});
+        window.GHB = github;
+        callback(true);
+      }
+    });
+  };
+
+  RSN.logout = function () {
+    window.GHB = new Github();
+    RSN.remove('credentials');
   };
 
   RSN.parse = function (string) {
@@ -47,6 +69,24 @@
     }
     sessionStorage.removeItem(key);
     localStorage.removeItem(key);
+  };
+
+  /**
+   * Checks if a session is either running or stored in the clients browser.
+   * @return {bool} Whether the user is logged in correctly.
+   */
+  RSN.resumeSession = function () {
+    var credentials  = RSN.get('credentials');
+    console.log(credentials);
+    if (credentials && credentials.username && credentials.password) {
+      window.GHB = new Github({
+        username: credentials.username,
+        password: credentials.password,
+        auth: 'basic'
+      });
+      return true;
+    }
+    return false;
   };
 
   RSN.set = function (key, value) {
@@ -66,5 +106,6 @@
     return JSON.stringify(object, null, 2);
   };
 
+  window.GHB = new Github();
   window.RSN = RSN;
 }());

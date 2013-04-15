@@ -9,10 +9,10 @@
   // Initial Setup
   // -------------
 
-  if (typeof exports !== 'undefined') {
-    var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
-    var _ = require('underscore');
-  }
+  // if (typeof this.exports !== 'undefined') {
+  //   var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+  //   var _ = require('underscore');
+  // }
 
   var API_URL = 'https://api.github.com';
 
@@ -91,28 +91,6 @@
 
       this.show = function(username, cb) {
         var command = username ? "/users/"+username : "/user";
-
-        _request("GET", command, null, function(err, res) {
-          cb(err, res);
-        });
-      };
-
-      // Show who follows user
-      // -------
-
-      this.followers = function(username, cb) {
-        var command = username ? "/users/"+username+"/followers" : "/user/followers";
-
-        _request("GET", command, null, function(err, res) {
-          cb(err, res);
-        });
-      };
-
-      // Show who user is following
-      // -------
-
-      this.following = function(username, cb) {
-        var command = username ? "/users/"+username+"/following" : "/user/following";
 
         _request("GET", command, null, function(err, res) {
           cb(err, res);
