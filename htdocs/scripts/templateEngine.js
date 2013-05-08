@@ -16,10 +16,9 @@
 
   // Compiles templates and memoizes them.
   renderCompiledTemplate = function (template, data) {
-    var renderCallback = function (processedData) {
+    cachedScripts[template](data, function (processedData) {
       $('div[role="main"]').html(cachedTemplates[template](processedData));
-    };
-    cachedScripts[template](data, renderCallback);
+    });
   };
 
   TPL.br2nl = function (str) {
@@ -43,6 +42,7 @@
   };
 
   TPL.render = function (template, data) {
+    // If a cached template exists, the corresponding script is also cached.
     if (cachedTemplates[template]) {
       renderCompiledTemplate(template, data);
     } else {

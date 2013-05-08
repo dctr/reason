@@ -7,7 +7,7 @@ cd DIR
 ## Run app
 echo ">>> Welcome to REaSoN! Starting up..."
 
-subl --project reason.sublime-project
+#subl --project reason.sublime-project
 
 # Start mongoose webserver
 ./tools/vendor/mongoose -a "/dev/stdout" -e "/dev/stderr" -r "$DIR/htdocs" &

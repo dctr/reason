@@ -3,5 +3,5 @@
 TPL.cacheScript('home', function (data, render) {
   'use strict';
 
-  render();
+  render(data);
 });
