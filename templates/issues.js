@@ -12,5 +12,9 @@ TPL.cacheScript('issues', function (data, render) {
   // Get list of branches == issues
   // - Title, time opened, time of last activity, opened/closed-status, tags
 
+  var issuesRepo;
+
+  issuesRepo = 'sstr/' + data.repo.replace('/', '___');
+
   render(data);
 });
