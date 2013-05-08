@@ -47,9 +47,9 @@
       renderCompiledTemplate(template, data);
     } else {
       // TODO: Check template for [a-z]
-      $.get('/templates/' + template + '.ejs', function (templateContent) {
+      $.get('./templates/' + template + '.ejs', function (templateContent) {
         cachedTemplates[template] = _.template(templateContent);
-        $.getScript('/templates/' + template + '.js', function (res, status, jqxhr) {
+        $.getScript('./templates/' + template + '.js', function (res, status, jqxhr) {
           if (status !== 'success') {
             throw {name: 'LoadError', message: jqxhr};
           }
