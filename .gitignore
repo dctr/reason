@@ -1,0 +1,5 @@
+.sass-cache
+node_modules
+*.key*
+reason.sublime-workspace
+reason.sublime-project
