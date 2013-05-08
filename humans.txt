@@ -14,7 +14,6 @@ From: University of Trier, Germany
 
 /* SITE */
 Last update: 2013-03-27
-Standards: HTML5, CSS3, JavaScript - The good parts
-Components: normalize.css, Solarized Color Scheme
-Software: embedded JS
-Tools: ZSH, Sublime Text 2, Firefox
+Standards: HTML5, CSS3, JavaScript
+Components: async, base64, github, jQuery, underscore; normalize.css, Solarized Color Scheme
+Tools: ZSH, Sublime Text, Firefox

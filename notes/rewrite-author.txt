@@ -5,4 +5,4 @@ git filter-branch -f --env-filter "
     GIT_COMMITTER_EMAIL='david.christ@uni-trier.de'
   " HEAD
 
-# git push --force origin master
+# git push --force origin BRANCHNAME
