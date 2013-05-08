@@ -1,7 +1,9 @@
-REaSoN
-======
+Reporting Errors using A Social Network
+=======================================
 
-This branch persists the node.js version of the program. It is currently orphaned but still contains some data that might be relevant for the new client-only version.
+This software is curently under development and does not provide any working version.
+
+Come back later!
 
 Hosting the app
 ===============
@@ -12,10 +14,4 @@ The app comes bundled with mongoose, a small, easy to use, and plattform-indepen
 
     ./tools/run.sh
 
-As an alternative, you can host the app on any webserver. If you do so, consider using the HTML5 offline cache option for all files, so the client can cache all files.
-
-
-Setup
-=====
-
-Host the HTML directory throug any webserver. No special options required.
+As an alternative, you can host the app on any webserver. In fact, the current HEAD of the gh-pages branch is available via github.io.
