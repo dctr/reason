@@ -1,4 +1,4 @@
-Reporting Errors using A Social Network
+Reporting Errors using a Social Network
 =======================================
 
 This software is curently under development and does not provide any working version.

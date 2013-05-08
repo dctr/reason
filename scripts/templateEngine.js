@@ -7,12 +7,13 @@
 (function () {
   'use strict';
 
-  var TPL, cachedScripts, cachedTemplates, renderCompiledTemplate;
+  var TPL, cachedScripts, cachedTemplates, redirects, renderCompiledTemplate;
 
   TPL = {};
 
   cachedScripts = {};
   cachedTemplates = {};
+  redirects = {};
 
   // Compiles templates and memoizes them.
   renderCompiledTemplate = function (template, data) {
@@ -42,6 +43,9 @@
   };
 
   TPL.render = function (template, data) {
+    if (redirects[template]) {
+      template = redirects[template];
+    }
     // If a cached template exists, the corresponding script is also cached.
     if (cachedTemplates[template]) {
       renderCompiledTemplate(template, data);
@@ -58,6 +62,10 @@
         });
       });
     }
+  };
+
+  TPL.setRedirect = function (source, target) {
+    redirects[source] = target;
   };
 
   window.TPL = TPL;

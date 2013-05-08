@@ -10,12 +10,12 @@ echo ">>> Welcome to REaSoN! Starting up..."
 #subl --project reason.sublime-project
 
 # Start mongoose webserver
-./tools/vendor/mongoose -a "/dev/stdout" -e "/dev/stderr" -r "$DIR/htdocs" &
+./tools/vendor/mongoose -a "/dev/stdout" -e "/dev/stderr" -r "$DIR" &
 
 # Recompile SCSS files on change
 while [[ 1 ]]; do
-	inotifywait htdocs/styles/src/main.scss
-	sass htdocs/styles/src/main.scss htdocs/styles/main.css
+	inotifywait styles/src/main.scss
+	sass styles/src/main.scss styles/main.css
 done &
 
 

@@ -12,25 +12,26 @@
 $(document).ready(function () {
   'use strict';
 
+  // -----
+  // Settings
+  // ----------
+
   // Turn caching off globally.
   $.ajaxSetup({ cache: true });
 
+  // Let the logout page redirect to home.
+  TPL.setRedirect('logout', 'home');
+
+  // -----
+  // Register event handlers
+  // ----------
+
   // Functionality for the nav bar.
-  $('nav a').filter(':not(#logout)').click(function (e) {
+  $('nav a').click(function (e) {
     e.preventDefault();
     $('nav a').attr('class', '');
     $(this).attr('class', 'selected');
     TPL.render($(this).attr('id'));
-  });
-
-  // Select home per default.
-  $('#home').click();
-
-  RSN.resumeSession(function (success) {
-    if (success) {
-      $('#logedIn').attr('class', '');
-      $('#logedOut').attr('class', 'hidden');
-    }
   });
 
   $('#login input[type="submit"]').click(function (e) {
@@ -38,10 +39,10 @@ $(document).ready(function () {
     RSN.login(
       $('#login input[name="username"]').val(),
       $('#login input[name="password"]').val(),
-      function (logedIn) {
-        if (logedIn) {
-          $('#logedIn').attr('class', '');
-          $('#logedOut').attr('class', 'hidden');
+      function (loggedIn) {
+        if (loggedIn) {
+          $('.loggedIn').show();
+          $('.loggedOut').hide();
         } else {
           window.alert('Login failure.');
         }
@@ -52,8 +53,25 @@ $(document).ready(function () {
   $('#logout').click(function (e) {
     e.preventDefault();
     RSN.logout();
-    $('#logedIn').attr('class', 'hidden');
-    $('#logedOut').attr('class', '');
+    $('.loggedIn').hide();
+    $('.loggedOut').show();
     $('#home').click();
+  });
+
+  // -----
+  // Program
+  // ----------
+
+  // Select home per default.
+  $('#home').click();
+
+  RSN.resumeSession(function (success) {
+    if (success) {
+      $('.loggedIn').show();
+      $('.loggedOut').hide();
+    } else {
+      $('.loggedIn').hide();
+      $('.loggedOut').show();
+    }
   });
 });
