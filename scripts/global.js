@@ -33,7 +33,9 @@
       if (session) { RSN.set(key, session); }
       return session;
     }
-    if (_.isEqual(session, local)) { return local; }
+    if (_.isEqual(session, local)) {
+      return local;
+    }
     throw {name: 'StorageError', message: 'Session or local Storage corrupt.'};
   };
 
@@ -47,6 +49,7 @@
       if (err) {
         callback(false);
       } else {
+        // TODO: Storing password on client plaintext. Very, very naughty!
         RSN.set('credentials', {username: username, password: password});
         window.GHB = github;
         callback(true);
@@ -101,6 +104,9 @@
     return JSON.stringify(object, null, 2);
   };
 
+  // When loading, assign anonymous GHB object.
   window.GHB = new Github();
+
+  // Export RSN
   window.RSN = RSN;
 }());
