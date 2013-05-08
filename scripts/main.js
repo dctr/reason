@@ -26,14 +26,6 @@ $(document).ready(function () {
   // Register event handlers
   // ----------
 
-  // Functionality for the nav bar.
-  $('nav a').click(function (e) {
-    e.preventDefault();
-    $('nav a').attr('class', '');
-    $(this).attr('class', 'selected');
-    TPL.render($(this).attr('id'));
-  });
-
   $('#login input[type="submit"]').click(function (e) {
     e.preventDefault();
     RSN.login(
@@ -58,6 +50,19 @@ $(document).ready(function () {
     $('#home').click();
   });
 
+  // Functionality for the nav bar.
+  $('nav a').click(function (e) {
+    e.preventDefault();
+    $('nav a').attr('class', '');
+    $(this).attr('class', 'selected');
+    TPL.render($(this).attr('id'));
+  });
+
+  $('#search input[type="submit"]').click(function (e) {
+    e.preventDefault();
+    TPL.render('issues', {repo: $('#search input[name="repo"]').val()});
+  });
+
   // -----
   // Program
   // ----------
@@ -74,4 +79,5 @@ $(document).ready(function () {
       $('.loggedOut').show();
     }
   });
+
 });
