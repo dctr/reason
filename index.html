@@ -23,15 +23,22 @@
     <header>
       <nav>
         <ul>
-          <li><a href="" id="home" class="selected">Home</a></li>
-          <li class="loggedIn">
-            <form action="#" id="search">
-              <!-- <input type="text" name="repo" placeholder="owner/repository" autofocus> -->
-              <!-- DEBUG -->
-              <input type="text" name="repo" value="dctr/reason" autofocus>
-              <input type="submit" value="View Issues">
-            </form>
-          </li>
+          <!-- TODO: Do layout -->
+          <span class="left">
+            <li><input type="button" value="Back" id="back"></li>
+            <li><input type="button" value="Forth" id="forth"></li>
+          </span>
+          <span class="middle">
+            <li><a href="" id="home" class="selected">Home</a></li>
+            <li class="loggedIn">
+              <form action="#" id="search">
+                <!-- <input type="text" name="repo" placeholder="owner/repository" autofocus> -->
+                <!-- DEBUG -->
+                <input type="text" name="repo" value="dctr/reason" autofocus>
+                <input type="submit" value="View Issues">
+              </form>
+            </li>
+          </span>
           <span class="right">
             <li class="loggedOut">
               <form action="#" id="login">

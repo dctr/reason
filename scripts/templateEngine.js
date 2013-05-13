@@ -7,19 +7,34 @@
 (function () {
   'use strict';
 
-  var TPL, cachedScripts, cachedTemplates, redirects, renderCompiledTemplate;
+  var TPL, back, cachedScripts, cachedTemplates, currentContent, forth, noBackForth, redirects, renderCompiledTemplate;
 
   TPL = {};
 
+  back = [];
   cachedScripts = {};
   cachedTemplates = {};
+  forth = [];
   redirects = {};
 
   // Compiles templates and memoizes them.
   renderCompiledTemplate = function (template, data) {
     cachedScripts[template](data, function (processedData) {
-      $('div[role="main"]').html(cachedTemplates[template](processedData));
+      if (currentContent !== back[back.length - 1]) {
+        back.push(currentContent);
+      }
+      currentContent = cachedTemplates[template](processedData);
+      $('div[role="main"]').html(currentContent);
     });
+  };
+
+  TPL.backwards = function () {
+    var upcomming = back.pop();
+    if (!upcomming) { return; }
+    forth.push(currentContent);
+    currentContent = upcomming;
+    $('div[role="main"]').html(currentContent);
+    return back.length;
   };
 
   TPL.br2nl = function (str) {
@@ -37,6 +52,15 @@
   TPL.clear = function () {
     cachedScripts = {};
     cachedTemplates = {};
+  };
+
+  TPL.forwards = function () {
+    var upcomming = forth.pop();
+    if (!upcomming) { return; }
+    back.push(currentContent);
+    currentContent = upcomming;
+    $('div[role="main"]').html(currentContent);
+    return forth.length;
   };
 
   TPL.nl2br = function (str) {
@@ -68,6 +92,11 @@
       });
     }
   };
+
+  // TODO:
+  // TPL.setNoBackForth = function (template) {
+  //   noBackForth[template] = true;
+  // }
 
   TPL.setRedirect = function (source, target) {
     redirects[source] = target;

@@ -13,23 +13,6 @@ $(document).ready(function () {
   'use strict';
 
   // -----
-  // Program
-  // ----------
-
-  // Select home per default.
-  TPL.render('home');
-
-  $('.loggedIn').hide();
-  $('.loggedOut').show();
-
-  RSN.resumeSession(function (success) {
-    if (success) {
-      $('.loggedIn').show();
-      $('.loggedOut').hide();
-    }
-  });
-
-  // -----
   // Settings
   // ----------
 
@@ -38,6 +21,27 @@ $(document).ready(function () {
 
   // Let the logout page redirect to home.
   TPL.setRedirect('logout', 'home');
+
+  // -----
+  // Program
+  // ----------
+
+  // Select home per default.
+  TPL.render('home');
+  $('.loggedIn').hide();
+  $('.loggedOut').hide();
+  $('#back').attr('disabled', true);
+  $('#forth').attr('disabled', true);
+
+  RSN.resumeSession(function (success) {
+    if (success) {
+      $('.loggedIn').show();
+      $('.loggedOut').hide();
+    } else {
+      $('.loggedIn').hide();
+      $('.loggedOut').show();
+    }
+  });
 
   // -----
   // Register event handlers
@@ -49,6 +53,15 @@ $(document).ready(function () {
     $('nav a').attr('class', '');
     $(this).attr('class', 'selected');
     TPL.render($(this).attr('id'));
+    $('#back').attr('disabled', false);
+  });
+
+  $('#back').click(function (e) {
+    e.preventDefault();
+    if (!TPL.backwards()) {
+      $('#back').attr('disabled', true);
+    }
+    $('#forth').attr('disabled', false);
   });
 
   $('#debug').click(function (e) {
@@ -56,6 +69,14 @@ $(document).ready(function () {
     TPL.clear();
     RSN.clear();
     window.location.reload();
+  });
+
+  $('#forth').click(function (e) {
+    e.preventDefault();
+    if (!TPL.forwards()) {
+      $('#forth').attr('disabled', true);
+    }
+    $('#back').attr('disabled', false);
   });
 
   $('#login input[type="submit"]').click(function (e) {
@@ -79,14 +100,14 @@ $(document).ready(function () {
     RSN.logout();
     $('.loggedIn').hide();
     $('.loggedOut').show();
-    TPL.render('home');
+    window.location.reload();
   });
 
   $('#search input[type="submit"]').click(function (e) {
     e.preventDefault();
     TPL.render('loading');
     TPL.render('issues', {repo: $('#search input[name="repo"]').val()});
-    // PRODUCTIVE: $('#search input[name="repo"]').val('');
+    $('#back').attr('disabled', false);
   });
 
 });
