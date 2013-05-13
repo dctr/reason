@@ -1,5 +1,5 @@
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
-/*global $, _, RSN, TPL, console */
+/*global $, _, GHB, RSN, TPL, console */
 
 // TODO:
 // - Assign issues to milestones.
@@ -12,9 +12,27 @@ TPL.cacheScript('issues', function (data, render) {
   // Get list of branches == issues
   // - Title, time opened, time of last activity, opened/closed-status, tags
 
-  var issuesRepo;
+  var asyncs, asyncRender, repo;
 
-  issuesRepo = 'sstr/' + data.repo.replace('/', '___');
+  asyncs = [];
+  repo = GHB.getRepo('issuetracker', data.repo.replace('/', '___'));
 
-  render(data);
+  asyncs.push(function () {
+    repo.listBranches(function (err, branches) {
+      data.branches = {};
+      _.each(branches, function (branch) {
+        data.branches[branch];
+      });
+      asyncRender();
+    });
+  });
+
+  asyncRender = _.after(asyncs.length, function () {
+    console.log(data);
+    render(data);
+  });
+  _.each(asyncs, function (fn) {
+    fn();
+  });
+
 });

@@ -34,6 +34,11 @@
     cachedTemplates[template] = text;
   };
 
+  TPL.clear = function () {
+    cachedScripts = {};
+    cachedTemplates = {};
+  };
+
   TPL.nl2br = function (str) {
     var breakTag = '<br />';
     return str.replace(

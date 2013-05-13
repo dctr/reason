@@ -17,7 +17,7 @@ $(document).ready(function () {
   // ----------
 
   // Turn caching off globally.
-  $.ajaxSetup({ cache: true });
+  $.ajaxSetup({ cache: false });
 
   // Let the logout page redirect to home.
   TPL.setRedirect('logout', 'home');
@@ -25,6 +25,13 @@ $(document).ready(function () {
   // -----
   // Register event handlers
   // ----------
+
+  $('#debug').click(function (e) {
+    e.preventDefault();
+    TPL.clear();
+    RSN.clear();
+    window.location.reload();
+  });
 
   $('#login input[type="submit"]').click(function (e) {
     e.preventDefault();
@@ -61,6 +68,7 @@ $(document).ready(function () {
   $('#search input[type="submit"]').click(function (e) {
     e.preventDefault();
     TPL.render('issues', {repo: $('#search input[name="repo"]').val()});
+    // PRODUCTIVE: $('#search input[name="repo"]').val('');
   });
 
   // -----
