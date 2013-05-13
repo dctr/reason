@@ -1,3 +1,0 @@
-[submodule "vendor/github"]
-	path = vendor/github
-	url = https://github.com/dctr/github.git
