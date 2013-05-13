@@ -24,14 +24,6 @@
       <nav>
         <ul>
           <li><a href="" id="home" class="selected">Home</a></li>
-          <li class="loggedIn"><a href="" id="logout">Logout</a></li>
-          <li class="loggedOut">
-            <form action="#" id="login">
-              <input type="text" name="username" placeholder="Username" autofocus>
-              <input type="password" name="password" placeholder="Password">
-              <input type="submit" value="Login">
-            </form>
-          </li>
           <li class="loggedIn">
             <form action="#" id="search">
               <!-- <input type="text" name="repo" placeholder="owner/repository" autofocus> -->
@@ -40,18 +32,21 @@
               <input type="submit" value="View Issues">
             </form>
           </li>
-          <li class="debug">
-            <input type="button" value="Clear" id="debug">
-          </li>
+          <span class="right">
+            <li class="loggedOut">
+              <form action="#" id="login">
+                <input type="text" name="username" placeholder="Username" autofocus>
+                <input type="password" name="password" placeholder="Password">
+                <input type="submit" value="Login">
+              </form>
+            </li>
+            <li class="loggedIn"><input type="button" value="Logout" id="logout"></li>
+          </span>
         </ul>
       </nav>
     </header>
     <div role="main">
-Never gonna give you up never gonna let you down<br>
-never gonna run around and desert you<br>
-never gonna make you cry never gonna say goodbye<br>
-never gonna tell a lie and hurt you<br>
     </div>
-    <footer>&copy; 2013 dctr</footer>
+    <footer>&copy; 2013 dctr <input type="button" value="Clear" id="debug"></footer>
   </body>
 </html>

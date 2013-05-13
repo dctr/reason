@@ -13,6 +13,23 @@ $(document).ready(function () {
   'use strict';
 
   // -----
+  // Program
+  // ----------
+
+  // Select home per default.
+  TPL.render('home');
+
+  $('.loggedIn').hide();
+  $('.loggedOut').show();
+
+  RSN.resumeSession(function (success) {
+    if (success) {
+      $('.loggedIn').show();
+      $('.loggedOut').hide();
+    }
+  });
+
+  // -----
   // Settings
   // ----------
 
@@ -25,6 +42,14 @@ $(document).ready(function () {
   // -----
   // Register event handlers
   // ----------
+
+  // Functionality for the nav bar.
+  $('nav a').click(function (e) {
+    e.preventDefault();
+    $('nav a').attr('class', '');
+    $(this).attr('class', 'selected');
+    TPL.render($(this).attr('id'));
+  });
 
   $('#debug').click(function (e) {
     e.preventDefault();
@@ -54,38 +79,14 @@ $(document).ready(function () {
     RSN.logout();
     $('.loggedIn').hide();
     $('.loggedOut').show();
-    $('#home').click();
-  });
-
-  // Functionality for the nav bar.
-  $('nav a').click(function (e) {
-    e.preventDefault();
-    $('nav a').attr('class', '');
-    $(this).attr('class', 'selected');
-    TPL.render($(this).attr('id'));
+    TPL.render('home');
   });
 
   $('#search input[type="submit"]').click(function (e) {
     e.preventDefault();
+    TPL.render('loading');
     TPL.render('issues', {repo: $('#search input[name="repo"]').val()});
     // PRODUCTIVE: $('#search input[name="repo"]').val('');
-  });
-
-  // -----
-  // Program
-  // ----------
-
-  // Select home per default.
-  $('#home').click();
-
-  RSN.resumeSession(function (success) {
-    if (success) {
-      $('.loggedIn').show();
-      $('.loggedOut').hide();
-    } else {
-      $('.loggedIn').hide();
-      $('.loggedOut').show();
-    }
   });
 
 });

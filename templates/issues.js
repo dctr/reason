@@ -18,19 +18,36 @@ TPL.cacheScript('issues', function (data, render) {
   repo = GHB.getRepo('issuetracker', data.repo.replace('/', '___'));
 
   asyncs.push(function () {
+    // Get a list of branch names.
     repo.listBranches(function (err, branches) {
-      data.branches = {};
-      _.each(branches, function (branch) {
-        data.branches[branch];
+      var b, asyncGetRepos;
+      b = [];
+      // After all branches are fetched, store data sorted by date and continue.
+      asyncGetRepos = _.after(branches.length, function () {
+        data.branches = _.sortBy(b, function (elem) {
+          return new Date(elem.committer.date).getTime();
+        });
+        asyncRender();
       });
-      asyncRender();
+      // Get commit object for each branch's head.
+      _.each(branches, function (branch) {
+        repo.getBranch(branch, function (err, data) {
+          data.name = branch;
+          b.push(data);
+          asyncGetRepos();
+        });
+      });
     });
   });
 
   asyncRender = _.after(asyncs.length, function () {
-    console.log(data);
     render(data);
+    $('div[role="main"] a').click(function (e) {
+      e.preventDefault();
+      TPL.render('issue', {issue: $(this).attr('id')});
+    });
   });
+
   _.each(asyncs, function (fn) {
     fn();
   });

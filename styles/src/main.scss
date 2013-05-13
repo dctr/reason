@@ -35,14 +35,14 @@ header, footer {
     top: $vmargin;
     bottom: $vmargin;
   }
+  input {
+    color: $base02;
+    background-color: $base2;
+  }
 }
 header {
   nav, form, ul, li {
     display: inline;
-  }
-  input {
-    color: $base02;
-    background-color: $base2;
   }
 }
 nav {
@@ -157,4 +157,8 @@ td {
   padding-bottom: 0.2em;
   padding-left: .2em;
   padding-right: 1.8em;
+}
+
+.right {
+  float: right;
 }

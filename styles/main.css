@@ -779,12 +779,12 @@ header, footer {
     border-color: #eee8d5; }
   header a, header a:active, header a:visited, footer a, footer a:active, footer a:visited {
     color: #fdf6e3; }
+  header input, footer input {
+    color: #073642;
+    background-color: #eee8d5; }
 
 header nav, header form, header ul, header li {
   display: inline; }
-header input {
-  color: #073642;
-  background-color: #eee8d5; }
 
 nav ul {
   margin: 0px;
@@ -895,3 +895,6 @@ td {
   padding-bottom: 0.2em;
   padding-left: .2em;
   padding-right: 1.8em; }
+
+.right {
+  float: right; }
