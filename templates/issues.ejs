@@ -1,9 +1,10 @@
 <h1>Issues for <%= repo %></h1>
 <ul>
-  <% _.each(branches, function (branch) { %>
+  <% _.each(branches, function (branch) { if (branch.name !== 'master') {%>
     <li>
       <a href="" id="<%= branch.name %>"><%= branch.name %></a><br>
       Last update: <%= branch.committer.date %> from <%= branch.committer.name %>
     </li>
-  <% }); %>
+  <% } }); %>
+  <img src="./images/GitChat.png" alt="">
 </ul>
