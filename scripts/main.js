@@ -109,5 +109,4 @@ $(document).ready(function () {
     TPL.render('issues', {repo: $('#search input[name="repo"]').val()});
     $('#back').attr('disabled', false);
   });
-
 });
