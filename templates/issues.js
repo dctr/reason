@@ -20,6 +20,9 @@ TPL.cacheScript('issues', function (data, render) {
   // Recursive function that calls itself for all parents in commit.
   resolveCommit = function (sha) {
     if (commits[sha]) { return; }
+    // Prevent an other resolveCommit from resolving this sha
+    // while getCommit is running (in brackground using a callback).
+    commits[sha] = 1;
     repo.getCommit(sha, function (err, commit) {
       if (err) { throw err; }
       commits[sha] = commit;
