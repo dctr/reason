@@ -12,31 +12,31 @@ TPL.cacheScript('issues', function (data, render) {
   // Get list of branches == issues
   // - Title, time opened, time of last activity, opened/closed-status, tags
 
-  var repo;
+  var commits, repo, resolveCommit, startpoints;
 
+  commits = {};
   repo = GHB.getRepo('issuetracker', data.repo.replace('/', '___'));
 
-  repo.listBranches(function (err, branches) {
-    var b, _afterGotBranches;
-    b = [];
-    // After all branches are fetched, store data sorted by date and continue.
-    _afterGotBranches = _.after(branches.length, function () {
-      data.branches = _.sortBy(b, function (elem) {
-        return new Date(elem.committer.date).getTime();
-      });
-      render(data);
-      $('div[role="main"] a').click(function (e) {
-        e.preventDefault();
-        TPL.render('issue', {issue: $(this).attr('id')});
+  // Recursive function that calls itself for all parents in commit.
+  resolveCommit = function (sha) {
+    if (commits[sha]) { return; }
+    repo.getCommit(sha, function (err, commit) {
+      if (err) { throw err; }
+      commits[sha] = commit;
+      _.each(commit.parents, function (parent) {
+        resolveCommit(parent.sha);
       });
     });
+  };
+
+  // Get all heads to start from.
+  repo.getBranches(function (err, branches) {
     // Get commit object for each branch's head.
+    startpoints = _.pluck(branches, 'name');
     _.each(branches, function (branch) {
-      repo.getBranch(branch, function (err, data) {
-        data.name = branch;
-        b.push(data);
-        _afterGotBranches();
-      });
+      resolveCommit(branch.commit.sha);
     });
   });
+
+  // RENDER!
 });
