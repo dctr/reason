@@ -107,6 +107,7 @@ path.edge {
       (points);
   }
 
+  // Moving
   // Translates all points in the edge using `dx` and `dy`.
   function translateEdge(e, dx, dy) {
     e.dagre.points.forEach(function(p) {
@@ -130,6 +131,12 @@ path.edge {
     d.source = stateKeys[d.source];
     d.target = stateKeys[d.target];
   });
+  // console.log('stateKeys');
+  // console.log(stateKeys);
+  // console.log('transitions');
+  // console.log(transitions);
+  console.log('states');
+  console.log(states);
 
   // Now start laying things out
   var svg = d3.select("svg");
@@ -251,8 +258,8 @@ path.edge {
       d3.select(this).attr('d', spline(d));
     });
 
-  nodes.call(nodeDrag);
-  edges.call(edgeDrag);
+  // nodes.call(nodeDrag);
+  // edges.call(edgeDrag);
 </script>
 </body>
 </html>
