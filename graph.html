@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang=en>
+<head>
+  <meta charset=utf-8>
+  <title>Graph Test</title>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="./scripts/vendor/dagre.js"></script>
+  <script type="text/javascript">
+    window.onload = function myFun () {
+
+    }
+  </script>
+</head>
+<body>
+  <div id="canvas" class="canvas"></div>
+  <h2>Graph Visualization</h2>
+
+<svg width=0 height=0>
+  <defs>
+    <marker id="arrowhead"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerUnits="strokeWidth"
+            markerWidth="8"
+            markerHeight="5"
+            orient="auto"
+            style="fill: #333">
+      <path d="M 0 0 L 10 5 L 0 10 z"></path>
+    </marker>
+  </defs>
+</svg>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="../dagre.js"></script>
+
+<style>
+.node rect {
+  stroke-width: 1.5px;
+  stroke: #333;
+  fill: #fff;
+}
+
+#node-1 rect {
+  stroke-width: 3px;
+  fill: #f88;
+}
+
+.node text {
+  font: 300 16px "Helvetica Neue";
+}
+
+.node:hover {
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+path.edge {
+  fill: none;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+.edge:hover {
+  cursor: pointer;
+  opacity: 0.4;
+}
+</style>
+
+<script>
+  var nodePadding = 10;
+
+  function spline(e) {
+    var points = e.dagre.points.slice(0);
+    var source = dagre.util.intersectRect(e.source.dagre, points[0]);
+    var target = dagre.util.intersectRect(e.target.dagre, points[points.length - 1]);
+    points.unshift(source);
+    points.push(target);
+    return d3.svg.line()
+      .x(function(d) { return d.x; })
+      .y(function(d) { return d.y; })
+      .interpolate("linear")
+      (points);
+  }
+
+  var commitsObjects = {
+    '1': {
+      sha: '1',
+      author: {
+        name: 'Sam',
+        email: 'sam@dom.org',
+        date: '2013-05-13T09:03:03Z'
+      },
+      message: 'Hi<br><br>jlkj kö jlk jl jl jlöjkljjjjjjjjjjjjj  jjjjjjjjjjjjj jjjjjjjjjjjjiiiiii iiiiiii iiiiiiiiiiiiiiiiiiiiHow are you?',
+      parents: []
+    },
+    '2': {
+      sha: '2',
+      author: {
+        name: 'Bob',
+        email: 'bob@dom.org',
+        date: '2013-05-14T09:03:03Z'
+      },
+      message: 'Hi<br><br>Ijklllllllllllloiuiu 88888888888888880 000000000 00000000000000 zzzzzzzzzzz  zzzzzzzzzzzzzzzz  zzzzzzzzzzzz zzzzzzzz iii am fine!',
+      parents: ['1']
+    },
+    '3': {
+      sha: '3',
+      author: {
+        name: 'Eve',
+        email: 'eve@dom.org',
+        date: '2013-05-15T09:03:03Z'
+      },
+      message: 'What djjjjjjjjjjjjjo you mean      jlkj joij jio uuopjkkj klj oi uoupiu ouoiuo u by that?',
+      parents: ['1']
+    }
+  };
+
+  var transitions = [];
+
+  for (var key in commitsObjects) {
+    if (!commitsObjects[key].children) {
+      commitsObjects[key].children = [];
+      commitsObjects[key].children.push(commitsObjects[key]);
+    } else {
+      var exists = _.find(commitsObjects[key].children, function (child) {
+        return child.sha === commitsObjects[key].sha;
+      });
+      if (!exists) {
+        commitsObjects[key].children.push(commitsObjects[key]);
+      }
+    }
+
+    for (var i = 0; i < commitsObjects[key].parents.length; i++) {
+      transitions.push({
+        source: commitsObjects[commitsObjects[key].parents[i]],
+        target: commitsObjects[key]
+      })
+    }
+  }
+
+  var commits = d3.values(commitsObjects);
+
+
+  // Now start laying things out
+  var svg = d3.select("svg");
+  var svgGroup = svg.append("g").attr("transform", "translate(5, 5)");
+
+  // `nodes` is center positioned for easy layout later
+  var nodes = svgGroup
+    .selectAll("g .node")
+    .data(commits)
+    .enter()
+      .append("g")
+      .attr("class", "node")
+      .attr("id", function(d) { return "node-" + d.sha });
+
+  var edges = svgGroup
+    .selectAll("path .edge")
+    .data(transitions)
+    .enter()
+      .append("path")
+      .attr("class", "edge")
+      .attr("marker-end", "url(#arrowhead)");
+
+  // Append rectangles to the nodes. We do this before laying out the text
+  // because we want the text above the rectangle.
+  var rects = nodes.append("rect");
+
+  // Append text
+  var labels = nodes
+    .append("text")
+      .attr("text-anchor", "middle")
+      .attr("x", 0);
+
+  labels
+    .append("tspan")
+    .attr("x", 0)
+    .attr("dy", "1em")
+    .text(function(d) { return d.message; });
+
+  // We need width and height for layout.
+  labels.each(function(d) {
+    var bbox = this.getBBox();
+    d.bbox = bbox;
+    d.width = bbox.width + 2 * nodePadding;
+    d.height = bbox.height + 2 * nodePadding;
+  });
+
+  rects
+    .attr("x", function(d) { return -(d.bbox.width / 2 + nodePadding); })
+    .attr("y", function(d) { return -(d.bbox.height / 2 + nodePadding); })
+    .attr("width", function(d) { return d.width; })
+    .attr("height", function(d) { return d.height; });
+
+  labels
+    .attr("x", function(d) { return -d.bbox.width / 2; })
+    .attr("y", function(d) { return -d.bbox.height / 2; });
+
+  // Create the layout and get the graph
+  dagre.layout()
+    .nodeSep(50)
+    .edgeSep(10)
+    .rankSep(50)
+    .nodes(commits)
+    .edges(transitions)
+    .debugLevel(1)
+    .run();
+
+  nodes.attr("transform", function(d) { return 'translate('+ d.dagre.x +','+ d.dagre.y +')'; });
+
+  // Ensure that we have at least two points between source and target
+  edges.each(function(d) {
+    var points = d.dagre.points;
+    if (!points.length) {
+      var s = d.source.dagre;
+      var t = d.target.dagre;
+      points.push({ x: (s.x + t.x) / 2, y: (s.y + t.y) / 2 });
+    }
+
+    if (points.length === 1) {
+      points.push({ x: points[0].x, y: points[0].y });
+    }
+  });
+
+  edges
+    // Set the id. of the SVG element to have access to it later
+    .attr('id', function(e) { return e.dagre.id; })
+    .attr("d", function(e) { return spline(e); });
+
+  // Resize the SVG element
+  var svgBBox = svg.node().getBBox();
+  svg.attr("width", 1000);
+  svg.attr("height", svgBBox.height + 10);
+
+</script>
+</body>
+</html>
