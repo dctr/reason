@@ -27,7 +27,9 @@ $(document).ready(function () {
   // ----------
 
   // Select home per default.
-  TPL.render('home');
+  // TPL.render('home');
+  // DEBUG:
+  TPL.render('issues', {repo: ['issuetracker', 'dctr___reason']});
   $('.loggedIn').hide();
   $('.loggedOut').hide();
   $('#back').attr('disabled', true);

@@ -15,7 +15,7 @@ TPL.cacheScript('issues', function (data, render) {
   var commits, repo, recurseResolve, startpoints;
 
   commits = {};
-  repo = GHB.getRepo('issuetracker', 'dctr___reason');
+  repo = GHB.getRepo(data.repo[0], data.repo[1]);
 
   // Warning, brainfuck! Async and recusive!
   // @mvo: Thanks for the hint, try to understand this :-P
