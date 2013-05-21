@@ -93,11 +93,6 @@
     }
   };
 
-  // TODO:
-  // TPL.setNoBackForth = function (template) {
-  //   noBackForth[template] = true;
-  // }
-
   TPL.setRedirect = function (source, target) {
     redirects[source] = target;
   };

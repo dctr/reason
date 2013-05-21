@@ -251,7 +251,7 @@
       this.getBranches = function (branch, cb) {
         _request("GET", repoPath + "/branches", null, function(err, branches) {
           if (err) return cb(err);
-          cb(null, branches));
+          cb(null, branches);
         });
       };
 
