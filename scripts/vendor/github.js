@@ -248,7 +248,7 @@
       // Gets an array of branch objects
       // -------
 
-      this.getBranches = function (branch, cb) {
+      this.getBranches = function (cb) {
         _request("GET", repoPath + "/branches", null, function(err, branches) {
           if (err) return cb(err);
           cb(null, branches);
