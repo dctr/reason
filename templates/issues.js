@@ -22,9 +22,15 @@ TPL.cacheScript('issues', function (data, render) {
   recurseResolve = function (sha, callback) {
     // If this commit is known, it's subtree is known.
     // Thus we can exit the recursion tree by calling the callback (aka return).
-    if (commits[sha]) { callback(); }
+    if (commits[sha]) {
+      callback();
+      return;
+    }
     repo.getCommit(sha, function (error, commit) {
-      if (error) { callback(error); }
+      if (error) {
+        callback(error);
+        return;
+      }
       // Store this commit in a global database.
       commits[sha] = commit;
       // Get the shas of all of it's parents.
@@ -55,7 +61,6 @@ TPL.cacheScript('issues', function (data, render) {
       function (err) {
         if (err) { throw err; }
         // TODO: apply gained info on data object.
-        console.log(commits);
         render(data);
       }
     );
