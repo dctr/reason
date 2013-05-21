@@ -40,6 +40,7 @@ TPL.cacheScript('issues', function (data, render) {
         // The recursive call will receive a new callback for it's async.each.
         recurseResolve,
         function (err) {
+          // If no error occured, err will evaluate to false.
           callback(err);
         }
       );
@@ -50,7 +51,7 @@ TPL.cacheScript('issues', function (data, render) {
   repo.getBranches(function (error, branches) {
     if (error) { throw error; }
     var shas;
-    // Get commit object for each branch's head.
+    // Get commit sha for each branch's head.
     startpoints = _.pluck(branches, 'name');
     shas = _.map(branches, function (branch, index) {
       return branch.commit.sha;

@@ -230,7 +230,7 @@ path.edge {
 
   // Resize the SVG element
   var svgBBox = svg.node().getBBox();
-  svg.attr("width", 1000);
+  svg.attr("width", svgBBox.width + 10);
   svg.attr("height", svgBBox.height + 10);
 
 </script>
