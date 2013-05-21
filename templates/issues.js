@@ -21,8 +21,8 @@ TPL.cacheScript('issues', function (data, render) {
     if (err) { throw err; }
     if (commits[commit.sha]) { return; }
     commits[commit.sha] = commit;
-    var i;
-    for (i = 0; i < commit.parents.length; i += 1) {
+    var i, len;
+    for (i = 0, len = commit.parents.length; i < len; i += 1) {
       repo.getCommit(commit.parents[i].sha, recurseCommit);
     }
   };
