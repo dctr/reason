@@ -68,8 +68,18 @@ TPL.cacheScript('issues', function (data, render) {
       recurseResolve,
       function (err) {
         if (err) { throw err; }
+        var sha, i, len;
         // TODO: apply gained info on data object.
+        graphEngine.addNodes(commits);
+        for (sha in commits) {
+          if (commits.hasOwnProperty(sha)) {
+            for (i = 0, len = commits[sha].parents.length; i < len; i += 1) {
+              graphEngine.addEdge(commits[sha].parents[i].sha, sha);
+            }
+          }
+        }
         render(data);
+        // run() has to be called after render, which creates the drawingArea.
         graphEngine.run();
       }
     );
