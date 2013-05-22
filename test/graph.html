@@ -121,7 +121,7 @@ path.edge {
   for (var key in commitsObjects) {
     if (!commitsObjects[key].children) {
       commitsObjects[key].children = [];
-      commitsObjects[key].children.push(commitsObjects[key]);
+      commitsObjects[key].children.push(commitsObjects[key].sha);
     } else {
       var exists = _.find(commitsObjects[key].children, function (child) {
         return child.sha === commitsObjects[key].sha;
@@ -144,6 +144,8 @@ path.edge {
 
   // Now start laying things out
   var svg = d3.select("svg");
+  console.log(svg);
+  console.log(document.getElementsByTagName('svg')[0]);
   var svgGroup = svg.append("g").attr("transform", "translate(5, 5)");
 
   // `nodes` is center positioned for easy layout later

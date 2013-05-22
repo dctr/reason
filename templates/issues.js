@@ -1,5 +1,5 @@
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
-/*global $, _, GHB, RSN, TPL, async, console */
+/*global $, _, GHB, GPH, RSN, TPL, async, console */
 
 // TODO:
 // - Assign issues to milestones.
@@ -12,7 +12,7 @@ TPL.cacheScript('issues', function (data, render) {
   // Get list of branches == issues
   // - Title, time opened, time of last activity, opened/closed-status, tags
 
-  var commits, repo, recurseResolve, startpoints;
+  var commits, graphEngine, repo, recurseResolve;
 
   commits = {};
   repo = GHB.getRepo(data.repo[0], data.repo[1]);
@@ -47,12 +47,19 @@ TPL.cacheScript('issues', function (data, render) {
     });
   };
 
+
+  // -----
+  // main
+  // ----------
+
+  data.drawingAreaId = 'drawingArea';
+  graphEngine = GPH('drawingArea');
+
   // Get all heads to start from.
   repo.getBranches(function (error, branches) {
     if (error) { throw error; }
     var shas;
     // Get commit sha for each branch's head.
-    startpoints = _.pluck(branches, 'name');
     shas = _.map(branches, function (branch, index) {
       return branch.commit.sha;
     });
@@ -63,6 +70,7 @@ TPL.cacheScript('issues', function (data, render) {
         if (err) { throw err; }
         // TODO: apply gained info on data object.
         render(data);
+        graphEngine.run();
       }
     );
   });
