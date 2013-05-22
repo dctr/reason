@@ -3,8 +3,8 @@
  * Defines the global TPL.
  */
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
-/*global $, _, RSN, USR, console */
-(function () {
+/*global $, _, RSN, async, console */
+(function (global) {
   'use strict';
 
   var TPL, back, cachedScripts, cachedTemplates, currentContent, forth, noBackForth, redirects, renderCompiledTemplate;
@@ -28,6 +28,7 @@
     });
   };
 
+  // TODO: Is it possible to use the browser (e.g. document.history.push/pop)?
   TPL.backwards = function () {
     var upcomming = back.pop();
     if (!upcomming) { return; }
@@ -97,5 +98,5 @@
     redirects[source] = target;
   };
 
-  window.TPL = TPL;
-}());
+  global.TPL = TPL;
+}(this));
