@@ -63,9 +63,7 @@
       // TODO: Calculate max width of the tree, get the width of the
       // containerDiv, set containerDiv.width / treeWidth as max width of an
       // object in the tree.
-      //
-      // DEBUG:
-      console.log(JSON.stringify(nodeObjects, null, 2));
+
       console.log(JSON.stringify(edgesArray, null, 2));
 
       // Replace source and target IDs in edgesArray with their actual objects.
@@ -81,6 +79,7 @@
       }
       // Translate nodeObjects into a d3 array.
       nodesArray = d3.values(nodeObjects);
+      console.log(JSON.stringify(nodeObjects, null, 2));
 
       // Append the svg container to the given div.
       document.getElementById(spec.containerDivId).innerHTML = '\
