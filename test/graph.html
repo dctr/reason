@@ -1,21 +1,108 @@
 <!doctype html>
-<html lang=en>
-<head>
-  <meta charset=utf-8>
-  <title>Graph Test</title>
-  <script src="../scripts/vendor/d3.v3.js" charset="utf-8"></script>
-  <script src="../scripts/vendor/dagre.js"></script>
-  <script type="text/javascript">
-    window.onload = function myFun () {
 
-    }
-  </script>
-</head>
-<body>
-  <div id="canvas" class="canvas"></div>
-  <h2>Graph Visualization</h2>
+<meta charset="utf-8">
+<title>Dagre Interactive Demo</title>
 
-<svg width=0 height=0>
+<style>
+text {
+  font: 300 16px "Helvetica Neue";
+}
+
+rect {
+  fill: #fff;
+}
+
+.node > rect {
+  stroke-width: 3px;
+  stroke: #333;
+  fill: none;
+}
+
+.node:hover {
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+.edge rect {
+  fill: #fff
+}
+
+.edge path {
+  fill: none;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+.edge:hover {
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+.cp {
+  opacity: 0;
+}
+
+.cp:hover {
+  cursor:pointer;
+  opacity: 1;
+}
+
+</style>
+
+<style>
+h1, h2 {
+  color: #333;
+}
+
+textarea {
+  width: 800px;
+}
+
+label {
+  margin-top: 1em;
+  display: block;
+}
+
+.error {
+  color: red;
+}
+
+svg {
+  border: 1px solid #999;
+}
+</style>
+
+<h1>Dagre Interactive Demo</h1>
+
+<h2>Input</h2>
+
+<form>
+  <label for="inputGraph">Graphviz Definition</label>
+  <textarea id="inputGraph" rows="5" style="display: block" onKeyUp="tryDraw();">
+/* Example */
+digraph {
+    A [label="<div style='padding: 10px;'>A <br> <span style='font-size:32px'>Big</span> <br> <span style='color:red;'>HTML</span> <br> Source!</div>"];
+    C;
+    E [label="A blue sink"];
+    A -&gt; B -&gt; C;
+    B -&gt; D -&gt; E;
+    C -&gt; E;
+    A -&gt; D [label="<div>A multi-rank <span style='color:blue;'>HTML</span> edge!</div>"];
+}
+  </textarea>
+
+  <label for="inputStyle">CSS Styles</label>
+  <textarea id="inputStyle" rows="5" style="display: block" onKeyUp="tryDraw();">
+#node-E rect {
+  fill: #acf;
+}
+  </textarea>
+
+</form>
+
+<h2>Graph Visualization</h2>
+
+<svg width=800 height=600>
   <defs>
     <marker id="arrowhead"
             viewBox="0 0 10 10"
@@ -31,210 +118,266 @@
   </defs>
 </svg>
 
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="../dagre.js"></script>
-
-<style>
-.node rect {
-  stroke-width: 1.5px;
-  stroke: #333;
-  fill: #fff;
-}
-
-#node-1 rect {
-  stroke-width: 3px;
-  fill: #f88;
-}
-
-.node text {
-  font: 300 16px "Helvetica Neue";
-}
-
-.node:hover {
-  cursor: pointer;
-  opacity: 0.4;
-}
-
-path.edge {
-  fill: none;
-  stroke: #333;
-  stroke-width: 1.5px;
-}
-
-.edge:hover {
-  cursor: pointer;
-  opacity: 0.4;
-}
-</style>
+<script src="./scripts/vendor/d3.v3.js"></script>
+<script src="./scripts/vendor/dagre.js"></script>
 
 <script>
-  var nodePadding = 10;
+// Input related code goes here
 
-  function spline(e) {
-    var points = e.dagre.points.slice(0);
-    var source = dagre.util.intersectRect(e.source.dagre, points[0]);
-    var target = dagre.util.intersectRect(e.target.dagre, points[points.length - 1]);
-    points.unshift(source);
-    points.push(target);
-    return d3.svg.line()
-      .x(function(d) { return d.x; })
-      .y(function(d) { return d.y; })
-      .interpolate("linear")
-      (points);
-  }
+var inputGraph = document.querySelector("#inputGraph");
 
-  var commitsObjects = {
-    '1': {
-      sha: '1',
-      author: {
-        name: 'Sam',
-        email: 'sam@dom.org',
-        date: '2013-05-13T09:03:03Z'
-      },
-      message: 'Hi<br><br>jlkj kö jlk jl jl jlöjkljjjjjjjjjjjjj  jjjjjjjjjjjjj jjjjjjjjjjjjiiiiii iiiiiii iiiiiiiiiiiiiiiiiiiiHow are you?',
-      parents: []
-    },
-    '2': {
-      sha: '2',
-      author: {
-        name: 'Bob',
-        email: 'bob@dom.org',
-        date: '2013-05-14T09:03:03Z'
-      },
-      message: 'Hi<br><br>Ijklllllllllllloiuiu 88888888888888880 000000000 00000000000000 zzzzzzzzzzz  zzzzzzzzzzzzzzzz  zzzzzzzzzzzz zzzzzzzz iii am fine!',
-      parents: ['1']
-    },
-    '3': {
-      sha: '3',
-      author: {
-        name: 'Eve',
-        email: 'eve@dom.org',
-        date: '2013-05-15T09:03:03Z'
-      },
-      message: 'What djjjjjjjjjjjjjo you mean      jlkj joij jio uuopjkkj klj oi uoupiu ouoiuo u by that?',
-      parents: ['1']
+var graphStyle = d3.select("head").append("style");
+var inputStyle = d3.select("#inputStyle");
+
+var oldInputGraphValue;
+var oldInputStyleValue;
+
+var graphRE = /[?&]graph=([^&]+)/;
+var graphMatch = window.location.search.match(graphRE);
+if (graphMatch) {
+  inputGraph.value = decodeURIComponent(graphMatch[1]);
+}
+var styleRE = /[?&]style=([^&]+)/;
+var styleMatch = window.location.search.match(styleRE);
+if (styleMatch) {
+  inputStyle.text(decodeURIComponent(styleMatch[1]));
+} else if (graphMatch) {
+  // If we have graph input but no style input we clear out the current
+  // style. This is for backwards compatibility - we used to have only the
+  // graph definition coming in via the URL.
+  inputStyle.text("");
+}
+
+var nodeCache = {},
+    edgeCache = {};
+function tryDraw() {
+  var result;
+  if (oldInputGraphValue !== inputGraph.value || oldInputStyleValue !== inputStyle.node().value) {
+    inputGraph.setAttribute("class", "");
+    oldInputGraphValue = inputGraph.value;
+    oldInputStyleValue = inputStyle.node().value;
+    try {
+      result = dagre.dot.toObjects(inputGraph.value);
+      result.edges.forEach(function(e) { if (!e.label) { e.label = ""; } });
+    } catch (e) {
+      inputGraph.setAttribute("class", "error");
     }
-  };
 
-  var transitions = [];
+    if (result) {
+      // TODO why is inputStyle.text or inputStyle.html not working here?
+      graphStyle.html(inputStyle.node().value);
 
-  for (var key in commitsObjects) {
-    if (!commitsObjects[key].children) {
-      commitsObjects[key].children = [];
-      commitsObjects[key].children.push(commitsObjects[key].sha);
-    } else {
-      var exists = _.find(commitsObjects[key].children, function (child) {
-        return child.sha === commitsObjects[key].sha;
+      result.nodes.forEach(function(node) {
+        node.inEdges = [];
+        node.outEdges = [];
       });
-      if (!exists) {
-        commitsObjects[key].children.push(commitsObjects[key]);
-      }
-    }
+      result.edges.forEach(function(edge) {
+        edge.source.outEdges.push(edge);
+        edge.target.inEdges.push(edge);
+      });
 
-    for (var i = 0; i < commitsObjects[key].parents.length; i++) {
-      transitions.push({
-        source: commitsObjects[commitsObjects[key].parents[i]],
-        target: commitsObjects[key]
-      })
+      draw(result.nodes, result.edges);
     }
   }
+}
+</script>
 
-  var commits = d3.values(commitsObjects);
+<script>
+var svg = d3.select("svg");
+var svgGroup = svg.append("g").attr("transform", "translate(5, 5)");
 
+var nodes, edges;
+function draw(nodeData, edgeData) {
+  console.log(nodeData);
+  console.log(edgeData);
+  // D3 doesn't appear to like rebinding with the same id but a new object,
+  // so for now we remove everything.
+  svgGroup.selectAll("*").remove();
 
-  // Now start laying things out
-  var svg = d3.select("svg");
-  console.log(svg);
-  console.log(document.getElementsByTagName('svg')[0]);
-  var svgGroup = svg.append("g").attr("transform", "translate(5, 5)");
-
-  // `nodes` is center positioned for easy layout later
-  var nodes = svgGroup
+  nodes = svgGroup
     .selectAll("g .node")
-    .data(commits)
+    .data(nodeData, function(d) { return d.id; });
+
+  var nodeEnter = nodes
     .enter()
-      .append("g")
+    .append("g")
       .attr("class", "node")
-      .attr("id", function(d) { return "node-" + d.sha });
+      .attr("id", function(d) { return "node-" + d.id; })
+      .each(function(d) { d.nodePadding = 10; });
+  nodeEnter.append("rect");
+  addLabels(nodeEnter);
+  nodes.exit().remove();
 
-  var edges = svgGroup
-    .selectAll("path .edge")
-    .data(transitions)
+  edges = svgGroup
+    .selectAll("g .edge")
+    .data(edgeData, function(d) { return d.id; });
+
+  var edgeEnter = edges
     .enter()
-      .append("path")
+    .append("g")
       .attr("class", "edge")
+      .attr("id", function(d) { return "edge-" + d.id; })
+      .each(function(d) { d.nodePadding = 0; })
+  edgeEnter
+    .append("path")
       .attr("marker-end", "url(#arrowhead)");
+  addLabels(edgeEnter);
+  edges.exit().remove();
 
-  // Append rectangles to the nodes. We do this before laying out the text
-  // because we want the text above the rectangle.
-  var rects = nodes.append("rect");
+  recalcLabels();
 
-  // Append text
-  var labels = nodes
+  // Run the actual layout
+  dagre.layout()
+    .nodes(nodeData)
+    .edges(edgeData)
+    .debugLevel(2)
+    .run();
+
+  // Ensure that we have at least two points between source and target
+  edges.each(function(d) { ensureTwoControlPoints(d); });
+
+  // Re-render
+  update();
+}
+
+function addLabels(selection) {
+  var labelGroup = selection
+    .append("g")
+      .attr("class", "label");
+  labelGroup.append("rect");
+
+  var foLabel = labelGroup
+    .filter(function(d) { return d.label[0] === "<"; })
+    .append("foreignObject")
+      .attr("class", "htmllabel");
+
+  foLabel
+    .append("xhtml:div")
+      .style("float", "left");
+
+  labelGroup
+    .filter(function(d) { return d.label[0] !== "<"; })
     .append("text")
-      .attr("text-anchor", "middle")
-      .attr("x", 0);
+}
 
-  labels
-    .append("tspan")
-    .attr("x", 0)
-    .attr("dy", "1em")
-    .text(function(d) { return d.message; });
+function recalcLabels() {
+  var labelGroup = svgGroup.selectAll("g.label");
 
-  // We need width and height for layout.
-  labels.each(function(d) {
-    var bbox = this.getBBox();
-    d.bbox = bbox;
-    d.width = bbox.width + 2 * nodePadding;
-    d.height = bbox.height + 2 * nodePadding;
-  });
+  var foLabel = labelGroup
+    .selectAll(".htmllabel")
+    // TODO find a better way to get the dimensions for foriegnObjects
+    .attr("width", "100000");
 
-  rects
-    .attr("x", function(d) { return -(d.bbox.width / 2 + nodePadding); })
-    .attr("y", function(d) { return -(d.bbox.height / 2 + nodePadding); })
+  foLabel
+    .select("div")
+      .html(function(d) { return d.label; })
+      .each(function(d) {
+        d.width = this.clientWidth;
+        d.height = this.clientHeight;
+        d.nodePadding = 0;
+      });
+
+  foLabel
     .attr("width", function(d) { return d.width; })
     .attr("height", function(d) { return d.height; });
 
-  labels
-    .attr("x", function(d) { return -d.bbox.width / 2; })
-    .attr("y", function(d) { return -d.bbox.height / 2; });
+  var textLabel = labelGroup
+    .filter(function(d) { return d.label[0] !== "<"; });
 
-  // Create the layout and get the graph
-  dagre.layout()
-    .nodeSep(50)
-    .edgeSep(10)
-    .rankSep(50)
-    .nodes(commits)
-    .edges(transitions)
-    .debugLevel(1)
-    .run();
+  textLabel
+    .select("text")
+      .attr("text-anchor", "left")
+        .append("tspan")
+        .attr("dy", "1em")
+        .text(function(d) { return d.label; });
 
-  nodes.attr("transform", function(d) { return 'translate('+ d.dagre.x +','+ d.dagre.y +')'; });
+  labelGroup
+    .each(function(d) {
+      var bbox = this.getBBox();
+      d.bbox = bbox;
+      if (d.label.length) {
+        d.width = bbox.width + 2 * d.nodePadding;
+        d.height = bbox.height + 2 * d.nodePadding;
+      } else {
+        d.width = d.height = 0;
+      }
+    });
+}
 
-  // Ensure that we have at least two points between source and target
-  edges.each(function(d) {
-    var points = d.dagre.points;
-    if (!points.length) {
-      var s = d.source.dagre;
-      var t = d.target.dagre;
-      points.push({ x: (s.x + t.x) / 2, y: (s.y + t.y) / 2 });
-    }
+function ensureTwoControlPoints(d) {
+  var points = d.dagre.points;
+  if (!points.length) {
+    var s = e.source.dagre;
+    var t = e.target.dagre;
+    points.push({ x: Math.abs(s.x - t.x) / 2, y: Math.abs(s.y + t.y) / 2 });
+  }
 
-    if (points.length === 1) {
-      points.push({ x: points[0].x, y: points[0].y });
-    }
+  if (points.length === 1) {
+    points.push({ x: points[0].x, y: points[0].y });
+  }
+}
+
+// Translates all points in the edge using `dx` and `dy`.
+function translateEdge(e, dx, dy) {
+  e.dagre.points.forEach(function(p) {
+    p.x += dx;
+    p.y += dy;
   });
+}
+
+function update() {
+  nodes
+    .attr("transform", function(d) {
+      return "translate(" + d.dagre.x + "," + d.dagre.y +")"; })
+    .selectAll("g.node rect")
+      .attr("x", function(d) { return -(d.bbox.width / 2 + d.nodePadding); })
+      .attr("y", function(d) { return -(d.bbox.height / 2 + d.nodePadding); })
+      .attr("width", function(d) { return d.width; })
+      .attr("height", function(d) { return d.height; });
 
   edges
-    // Set the id. of the SVG element to have access to it later
-    .attr('id', function(e) { return e.dagre.id; })
-    .attr("d", function(e) { return spline(e); });
+    .selectAll("path")
+    .attr("d", function(d) {
+      var points = d.dagre.points.slice(0);
+      var source = dagre.util.intersectRect(d.source.dagre, points[0]);
+      var target = dagre.util.intersectRect(d.target.dagre, points[points.length - 1]);
+      points.unshift(source);
+      points.push(target);
+      return d3.svg.line()
+        .x(function(e) { return e.x; })
+        .y(function(e) { return e.y; })
+        .interpolate("linear")
+        (points);
+    });
 
-  // Resize the SVG element
-  var svgBBox = svg.node().getBBox();
-  svg.attr("width", svgBBox.width + 10);
-  svg.attr("height", svgBBox.height + 10);
+  edges
+    .selectAll("circle")
+    .attr("r", 5)
+    .attr("cx", function(d) { return d.x; })
+    .attr("cy", function(d) { return d.y; });
 
+  svgGroup
+    .selectAll("g.label rect")
+    .attr("x", function(d) { return -d.nodePadding; })
+    .attr("y", function(d) { return -d.nodePadding; })
+    .attr("width", function(d) { return d.width; })
+    .attr("height", function(d) { return d.height; });
+
+  nodes
+    .selectAll("g.label")
+    .attr("transform", function(d) { return "translate(" + (-d.bbox.width / 2) + "," + (-d.bbox.height / 2) + ")"; })
+
+  edges
+    .selectAll("g.label")
+    .attr("transform", function(d) {
+      var points = d.dagre.points;
+      var x = (points[0].x + points[1].x) / 2;
+      var y = (points[0].y + points[1].y) / 2;
+      return "translate(" + (-d.bbox.width / 2 + x) + "," + (-d.bbox.height / 2 + y) + ")";
+    });
+}
 </script>
-</body>
-</html>
+
+<script>
+tryDraw();
+</script>

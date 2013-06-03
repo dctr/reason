@@ -24,19 +24,21 @@
     <title>REaSoN</title>
 
 <style>
-.node rect {
-  stroke-width: 1.5px;
-  stroke: #333;
+svg div {
+  width: 200px;
+}
+text {
+  font: 300 16px "Helvetica Neue";
+}
+
+rect {
   fill: #fff;
 }
 
-#node-1 rect {
+.node > rect {
   stroke-width: 3px;
-  fill: #f88;
-}
-
-.node text {
-  font: 300 16px "Helvetica Neue";
+  stroke: #333;
+  fill: none;
 }
 
 .node:hover {
@@ -44,7 +46,11 @@
   opacity: 0.4;
 }
 
-path.edge {
+.edge rect {
+  fill: #fff
+}
+
+.edge path {
   fill: none;
   stroke: #333;
   stroke-width: 1.5px;
@@ -53,6 +59,36 @@ path.edge {
 .edge:hover {
   cursor: pointer;
   opacity: 0.4;
+}
+
+.cp {
+  opacity: 0;
+}
+
+.cp:hover {
+  cursor:pointer;
+  opacity: 1;
+}
+
+h1, h2 {
+  color: #333;
+}
+
+textarea {
+  width: 800px;
+}
+
+label {
+  margin-top: 1em;
+  display: block;
+}
+
+.error {
+  color: red;
+}
+
+svg {
+  border: 1px solid #999;
 }
 </style>
 

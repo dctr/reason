@@ -1,11 +1,11 @@
 /*jslint browser: true, es5: true, indent: 2, node: true , nomen: true, todo: true */
-/*global _, Github, RSN, async, console, d3, dagre */
+/*global _, Github, RSN, async, console, d3, dagre, e */
 (function (modulename) {
   'use strict';
 
   var constructor = function (spec) {
     // spec: containerDivId, nodePadding, debugLevel
-    var that, debugLevel, edgesArray, nodeContent, nodeId, nodeObjects, nodePadding, spline;
+    var that, addLabels, debugLevel, draw, edges, edgesArray, ensureTwoControlPoints, nodeContent, nodeId, nodeObjects, nodePadding, nodes, recalcLabels, svg, svgGroup, translateEdge, update;
 
 
     if (!spec.containerDivId) {
@@ -20,17 +20,201 @@
     nodeObjects = {};
 
 
-    spline = function (e) {
-      var points, source, target;
-      points = e.dagre.points.slice(0);
-      source = dagre.util.intersectRect(e.source.dagre, points[0]);
-      target = dagre.util.intersectRect(e.target.dagre, points[points.length - 1]);
-      points.unshift(source);
-      points.push(target);
-      return d3.svg.line()
-        .x(function (d) { return d.x; })
-        .y(function (d) { return d.y; })
-        .interpolate("linear")(points);
+    addLabels = function (selection) {
+      var labelGroup, foLabel;
+
+      labelGroup = selection
+        .append("g")
+        .attr("class", "label");
+      labelGroup.append("rect");
+
+      foLabel = labelGroup
+        .filter(function (d) { return d.label[0] === "<"; })
+        .append("foreignObject")
+        .attr("class", "htmllabel");
+
+      foLabel
+        .append("xhtml:div")
+        .style("float", "left");
+
+      labelGroup
+        .filter(function (d) { return d.label[0] !== "<"; })
+        .append("text");
+    };
+
+    draw = function (nodeData, edgeData) {
+      var edgeEnter, nodeEnter;
+
+      nodes = svgGroup
+        .selectAll("g .node")
+        .data(nodeData, function (d) { return d.id; });
+
+      nodeEnter = nodes
+        .enter()
+        .append("g")
+        .attr("class", "node")
+        .attr("id", function (d) { return "node-" + d.id; })
+        .each(function (d) { d.nodePadding = 10; });
+      nodeEnter.append("rect");
+      addLabels(nodeEnter);
+      nodes.exit().remove();
+
+      edges = svgGroup
+        .selectAll("g .edge")
+        .data(edgeData, function (d) { return d.id; });
+
+      edgeEnter = edges
+        .enter()
+        .append("g")
+        .attr("class", "edge")
+        .attr("id", function (d) { return "edge-" + d.id; })
+        .each(function (d) { d.nodePadding = 0; });
+
+      edgeEnter
+        .append("path")
+          .attr("marker-end", "url(#arrowhead)");
+      addLabels(edgeEnter);
+      edges.exit().remove();
+
+      recalcLabels();
+
+      // Run the actual layout
+      dagre.layout()
+        .nodes(nodeData)
+        .edges(edgeData)
+        .debugLevel(2)
+        .run();
+
+      // Ensure that we have at least two points between source and target
+      edges.each(function (d) { ensureTwoControlPoints(d); });
+
+      // Re-render
+      update();
+    };
+
+    ensureTwoControlPoints = function (d) {
+      var points, s, t;
+
+      points = d.dagre.points;
+      if (!points.length) {
+        s = e.source.dagre;
+        t = e.target.dagre;
+        points.push({ x: Math.abs(s.x - t.x) / 2, y: Math.abs(s.y + t.y) / 2 });
+      }
+
+      if (points.length === 1) {
+        points.push({ x: points[0].x, y: points[0].y });
+      }
+    };
+
+    recalcLabels = function () {
+      var labelGroup, foLabel, textLabel;
+
+      labelGroup = svgGroup.selectAll("g.label");
+
+      foLabel = labelGroup
+        .selectAll(".htmllabel")
+        // TODO find a better way to get the dimensions for foriegnObjects
+        .attr("width", "100000");
+
+      foLabel
+        .select("div")
+        .html(function (d) { return d.label; })
+        .each(function (d) {
+          d.width = this.clientWidth;
+          d.height = this.clientHeight;
+          d.nodePadding = 0;
+        });
+
+      foLabel
+        .attr("width", function (d) { return d.width; })
+        .attr("height", function (d) { return d.height; });
+
+      textLabel = labelGroup
+        .filter(function (d) { return d.label[0] !== "<"; });
+
+      textLabel
+        .select("text")
+        .attr("text-anchor", "left")
+        .append("tspan")
+        .attr("dy", "1em")
+        .text(function (d) { return d.label; });
+
+      labelGroup
+        .each(function (d) {
+          var bbox = this.getBBox();
+          d.bbox = bbox;
+          if (d.label.length) {
+            d.width = bbox.width + 2 * d.nodePadding;
+            d.height = bbox.height + 2 * d.nodePadding;
+          } else {
+            d.width = d.height = 0;
+          }
+        });
+    };
+
+    // Translates all points in the edge using `dx` and `dy`.
+    translateEdge = function (e, dx, dy) {
+      e.dagre.points.forEach(function (p) {
+        p.x += dx;
+        p.y += dy;
+      });
+    };
+
+    update = function () {
+      nodes
+        .attr("transform", function (d) {
+          return "translate(" + d.dagre.x + "," + d.dagre.y + ")";
+        })
+        .selectAll("g.node rect")
+        .attr("x", function (d) { return -(d.bbox.width / 2 + d.nodePadding); })
+        .attr("y", function (d) { return -(d.bbox.height / 2 + d.nodePadding); })
+        .attr("width", function (d) { return d.width; })
+        .attr("height", function (d) { return d.height; });
+
+      edges
+        .selectAll("path")
+        .attr("d", function (d) {
+          var points, source, target;
+          points = d.dagre.points.slice(0);
+          source = dagre.util.intersectRect(d.source.dagre, points[0]);
+          target = dagre.util.intersectRect(d.target.dagre, points[points.length - 1]);
+          points.unshift(source);
+          points.push(target);
+          return d3.svg.line()
+            .x(function (e) { return e.x; })
+            .y(function (e) { return e.y; })
+            .interpolate("linear")(points);
+        });
+
+      edges
+        .selectAll("circle")
+        .attr("r", 5)
+        .attr("cx", function (d) { return d.x; })
+        .attr("cy", function (d) { return d.y; });
+
+      svgGroup
+        .selectAll("g.label rect")
+        .attr("x", function (d) { return -d.nodePadding; })
+        .attr("y", function (d) { return -d.nodePadding; })
+        .attr("width", function (d) { return d.width; })
+        .attr("height", function (d) { return d.height; });
+
+      nodes
+        .selectAll("g.label")
+        .attr("transform", function (d) {
+          return "translate(" + (-d.bbox.width / 2) + "," + (-d.bbox.height / 2) + ")";
+        });
+
+      edges
+        .selectAll("g.label")
+        .attr("transform", function (d) {
+          var points, x, y;
+          points = d.dagre.points;
+          x = (points[0].x + points[1].x) / 2;
+          y = (points[0].y + points[1].y) / 2;
+          return "translate(" + (-d.bbox.width / 2 + x) + "," + (-d.bbox.height / 2 + y) + ")";
+        });
     };
 
 
@@ -58,13 +242,18 @@
     };
 
     that.run = function () {
-      var container, edges, fragment, i, labels, len, nodes, nodesArray, rects, svg, svgBBox, svgGroup;
+      var i, len, nodesArray;
 
       // TODO: Calculate max width of the tree, get the width of the
       // containerDiv, set containerDiv.width / treeWidth as max width of an
       // object in the tree.
 
-      console.log(JSON.stringify(edgesArray, null, 2));
+      for (i in nodeObjects) {
+        if (nodeObjects.hasOwnProperty(i)) {
+          nodeObjects[i].id = nodeObjects[i].sha;
+          nodeObjects[i].label = nodeObjects[i].message;
+        }
+      }
 
       // Replace source and target IDs in edgesArray with their actual objects.
       for (i = 0, len = edgesArray.length; i < len; i += 1) {
@@ -74,16 +263,17 @@
             message: 'Source or target are not present in the current node set.'
           };
         }
+        edgesArray[i].id = edgesArray[i].source + '-' + edgesArray[i].target;
         edgesArray[i].source = nodeObjects[edgesArray[i].source];
         edgesArray[i].target = nodeObjects[edgesArray[i].target];
+        edgesArray[i].label = "";
       }
       // Translate nodeObjects into a d3 array.
       nodesArray = d3.values(nodeObjects);
-      console.log(JSON.stringify(nodeObjects, null, 2));
 
       // Append the svg container to the given div.
       document.getElementById(spec.containerDivId).innerHTML = '\
-        <svg width=0 height=0>\
+        <svg width=2000 height=2000>\
           <defs>\
             <marker id="arrowhead"\
                     viewBox="0 0 10 10"\
@@ -104,96 +294,7 @@
       svg = d3.select('svg');
       svgGroup = svg.append('g').attr('transform', 'translate(5, 5)');
 
-      // `nodes` is center positioned for easy layout later
-      nodes = svgGroup
-        .selectAll('g .node')
-        .data(nodesArray)
-        .enter()
-          .append('g')
-          .attr('class', 'node')
-          .attr('id', function (d) { return 'node-' + d[nodeId]; });
-
-      edges = svgGroup
-        .selectAll('path .edge')
-        .data(edgesArray)
-        .enter()
-          .append('path')
-          .attr('class', 'edge')
-          .attr('marker-end', 'url(#arrowhead)');
-
-      // Append rectangles to the nodes. We do this before laying out the text
-      // because we want the text above the rectangle.
-      rects = nodes.append('rect');
-
-      // Append text
-      labels = nodes
-        .append('text')
-          .attr('text-anchor', 'middle')
-          .attr('x', 0);
-
-      labels
-        .append('tspan')
-        .attr('x', 0)
-        .attr('dy', '1em')
-        .text(function (d) { return d[nodeContent]; });
-
-      // We need width and height for layout.
-      labels.each(function (d) {
-        var bbox = this.getBBox();
-        d.bbox = bbox;
-        d.width = bbox.width + 2 * nodePadding;
-        d.height = bbox.height + 2 * nodePadding;
-      });
-
-      // Rects' position and size relative to surrounding g
-      rects
-        .attr('x', function (d) { return -(d.bbox.width / 2 + nodePadding); })
-        .attr('y', function (d) { return -(d.bbox.height / 2 + nodePadding); })
-        .attr('width', function (d) { return d.width; })
-        .attr('height', function (d) { return d.height; });
-
-      labels
-        .attr('x', function (d) { return -d.bbox.width / 2; })
-        .attr('y', function (d) { return -d.bbox.height / 2; });
-
-      // Create the layout and get the graph
-      dagre.layout()
-        .nodeSep(50)
-        .edgeSep(10)
-        .rankSep(50)
-        .nodes(nodesArray)
-        .edges(edgesArray)
-        .debugLevel(debugLevel)
-        .run();
-
-      nodes.attr('transform', function (d) {
-        return 'translate(' + d.dagre.x + ',' + d.dagre.y + ')';
-      });
-
-      // Ensure that we have at least two points between source and target
-      edges.each(function (d) {
-        var points, s, t;
-        points = d.dagre.points;
-        if (!points.length) {
-          s = d.source.dagre;
-          t = d.target.dagre;
-          points.push({ x: (s.x + t.x) / 2, y: (s.y + t.y) / 2 });
-        }
-
-        if (points.length === 1) {
-          points.push({ x: points[0].x, y: points[0].y });
-        }
-      });
-
-      edges
-        // Set the id. of the SVG element to have access to it later
-        .attr('id', function (e) { return e.dagre.id; })
-        .attr('d', function (e) { return spline(e); });
-
-      // Resize the SVG element
-      svgBBox = svg.node().getBBox();
-      svg.attr('width', svgBBox.width + 10);
-      svg.attr('height', svgBBox.height + 10);
+      draw(nodesArray, edgesArray);
     };
 
     return that;
