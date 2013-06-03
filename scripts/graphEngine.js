@@ -7,6 +7,7 @@
     // spec: containerDivId, nodePadding, debugLevel
     var that, debugLevel, edgesArray, nodeContent, nodeId, nodeObjects, nodePadding, spline;
 
+
     if (!spec.containerDivId) {
       throw {name: 'GraphError', message: 'No containerDivId given.'};
     }
@@ -17,6 +18,7 @@
 
     edgesArray = [];
     nodeObjects = {};
+
 
     spline = function (e) {
       var points, source, target;
@@ -61,6 +63,10 @@
       // TODO: Calculate max width of the tree, get the width of the
       // containerDiv, set containerDiv.width / treeWidth as max width of an
       // object in the tree.
+      //
+      // DEBUG:
+      console.log(JSON.stringify(nodeObjects, null, 2));
+      console.log(JSON.stringify(edgesArray, null, 2));
 
       // Replace source and target IDs in edgesArray with their actual objects.
       for (i = 0, len = edgesArray.length; i < len; i += 1) {
