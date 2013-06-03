@@ -136,7 +136,7 @@
         .append('tspan')
         .attr('x', 0)
         .attr('dy', '1em')
-        .text(function (d) { return d[nodeContent]; }); // TODO: Make tspan text a suppliable parameter.
+        .text(function (d) { return d[nodeContent]; });
 
       // We need width and height for layout.
       labels.each(function (d) {
