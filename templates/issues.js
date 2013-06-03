@@ -15,6 +15,7 @@ TPL.cacheScript('issues', function (data, render) {
   var commits, graphEngine, repo, recurseResolve;
 
   commits = {};
+  data.repo = data.repo.split('/', 2);
   repo = GHB.getRepo(data.repo[0], data.repo[1]);
 
   // Warning, brainfuck! Async and recusive!
@@ -34,7 +35,9 @@ TPL.cacheScript('issues', function (data, render) {
       // Store this commit in a global database.
       commits[sha] = commit;
       // Get the shas of all of it's parents.
-      var parentShas = _.pluck(commit.parents, 'sha');
+      var parentShas = commit.parents.map(function (parent, index) {
+        return parent.sha;
+      });
       async.each(
         parentShas,
         // The recursive call will receive a new callback for it's async.each.
@@ -60,7 +63,7 @@ TPL.cacheScript('issues', function (data, render) {
     if (error) { throw error; }
     var shas;
     // Get commit sha for each branch's head.
-    shas = _.map(branches, function (branch, index) {
+    shas = branches.map(function (branch, index) {
       return branch.commit.sha;
     });
     async.each(
