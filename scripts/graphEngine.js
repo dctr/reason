@@ -3,12 +3,20 @@
 (function (modulename) {
   'use strict';
 
-  var constructor = function (containerDivId, nodePadding) {
-    var that, edgesArray, nodeObjects, spline;
+  var constructor = function (spec) {
+    // spec: containerDivId, nodePadding, debugLevel
+    var that, debugLevel, edgesArray, nodeContent, nodeId, nodeObjects, nodePadding, spline;
+
+    if (!spec.containerDivId) {
+      throw {name: 'GraphError', message: 'No containerDivId given.'};
+    }
+    debugLevel = spec.debugLevel || 0;
+    nodeId = spec.nodeId || 'id';
+    nodeContent = spec.nodeContent || 'content';
+    nodePadding = spec.nodePadding || 10;
 
     edgesArray = [];
     nodeObjects = {};
-    nodePadding = nodePadding || 10;
 
     spline = function (e) {
       var points, source, target;
@@ -31,7 +39,6 @@
         source: sourceId,
         target: targetId
       });
-      console.log(edgesArray);
     };
 
     that.addNode = function (id, object) {
@@ -69,10 +76,8 @@
       // Translate nodeObjects into a d3 array.
       nodesArray = d3.values(nodeObjects);
 
-      console.log(edgesArray);
-
       // Append the svg container to the given div.
-      document.getElementById(containerDivId).innerHTML = '\
+      document.getElementById(spec.containerDivId).innerHTML = '\
         <svg width=0 height=0>\
           <defs>\
             <marker id="arrowhead"\
@@ -101,7 +106,7 @@
         .enter()
           .append('g')
           .attr('class', 'node')
-          .attr('id', function (d) { return 'node-' + d.sha; });
+          .attr('id', function (d) { return 'node-' + d[nodeId]; });
 
       edges = svgGroup
         .selectAll('path .edge')
@@ -125,7 +130,7 @@
         .append('tspan')
         .attr('x', 0)
         .attr('dy', '1em')
-        .text(function (d) { return d.message; });
+        .text(function (d) { return d[nodeContent]; }); // TODO: Make tspan text a suppliable parameter.
 
       // We need width and height for layout.
       labels.each(function (d) {
@@ -135,6 +140,7 @@
         d.height = bbox.height + 2 * nodePadding;
       });
 
+      // Rects' position and size relative to surrounding g
       rects
         .attr('x', function (d) { return -(d.bbox.width / 2 + nodePadding); })
         .attr('y', function (d) { return -(d.bbox.height / 2 + nodePadding); })
@@ -152,7 +158,7 @@
         .rankSep(50)
         .nodes(nodesArray)
         .edges(edgesArray)
-        .debugLevel(1)
+        .debugLevel(debugLevel)
         .run();
 
       nodes.attr('transform', function (d) {
