@@ -56,7 +56,11 @@ TPL.cacheScript('conversation', function (data, render) {
   // ----------
 
   data.drawingAreaId = 'drawingArea';
-  graphEngine = GPH({containerDivId: 'drawingArea', nodeId: 'sha', nodeContent: 'message'});
+  graphEngine = GPH({
+    containerDivId: 'drawingArea',
+    nodeId: 'sha',
+    nodeContent: 'message'
+  });
 
   // Get all heads to start from.
   repo.getBranches(function (error, branches) {
