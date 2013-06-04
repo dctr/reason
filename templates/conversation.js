@@ -5,7 +5,7 @@
 // - Assign issues to milestones.
 // - Allow votings for comments
 
-TPL.cacheScript('issues', function (data, render) {
+TPL.cacheScript('conversation', function (data, render) {
   'use strict';
 
   // Translate data.repo = username/repository to sstr/username___repository

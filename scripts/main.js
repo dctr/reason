@@ -29,7 +29,7 @@ $(document).ready(function () {
   // Select home per default.
   // TPL.render('home');
   // DEBUG:
-  TPL.render('issues', {repo: 'issuetracker/dctr___reason'});
+  TPL.render('conversation', {repo: 'issuetracker/dctr___reason'});
   $('.loggedIn').hide();
   $('.loggedOut').hide();
   $('#back').attr('disabled', true);
@@ -108,7 +108,7 @@ $(document).ready(function () {
   $('#search input[type="submit"]').click(function (e) {
     e.preventDefault();
     TPL.render('loading');
-    TPL.render('issues', {repo: $('#search input[name="repo"]').val()});
+    TPL.render('conversation', {repo: $('#search input[name="repo"]').val()});
     $('#back').attr('disabled', false);
   });
 });
