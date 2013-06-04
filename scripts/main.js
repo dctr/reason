@@ -27,21 +27,19 @@ $(document).ready(function () {
   // ----------
 
   // Select home per default.
-  // TPL.render('home');
-  // DEBUG:
-  TPL.render('conversation', {repo: 'issuetracker/dctr___reason'});
-  $('.loggedIn').hide();
-  $('.loggedOut').hide();
+  TPL.render('home');
+  $('.is-loggedIn').hide();
+  $('.is-loggedOut').hide();
   $('#back').attr('disabled', true);
   $('#forth').attr('disabled', true);
 
   RSN.resumeSession(function (success) {
     if (success) {
-      $('.loggedIn').show();
-      $('.loggedOut').hide();
+      $('.is-loggedIn').show();
+      $('.is-loggedOut').hide();
     } else {
-      $('.loggedIn').hide();
-      $('.loggedOut').show();
+      $('.is-loggedIn').hide();
+      $('.is-loggedOut').show();
     }
   });
 
@@ -66,13 +64,6 @@ $(document).ready(function () {
     $('#forth').attr('disabled', false);
   });
 
-  $('#debug').click(function (e) {
-    e.preventDefault();
-    TPL.clear();
-    RSN.clear();
-    window.location.reload();
-  });
-
   $('#forth').click(function (e) {
     e.preventDefault();
     if (!TPL.forwards()) {
@@ -88,8 +79,8 @@ $(document).ready(function () {
       $('#login input[name="password"]').val(),
       function (loggedIn) {
         if (loggedIn) {
-          $('.loggedIn').show();
-          $('.loggedOut').hide();
+          $('.is-loggedIn').show();
+          $('.is-loggedOut').hide();
         } else {
           window.alert('Login failure.');
         }
@@ -100,8 +91,8 @@ $(document).ready(function () {
   $('#logout').click(function (e) {
     e.preventDefault();
     RSN.logout();
-    $('.loggedIn').hide();
-    $('.loggedOut').show();
+    $('.is-loggedIn').hide();
+    $('.is-loggedOut').show();
     window.location.reload();
   });
 
@@ -111,4 +102,17 @@ $(document).ready(function () {
     TPL.render('conversation', {repo: $('#search input[name="repo"]').val()});
     $('#back').attr('disabled', false);
   });
+
+  // BEGIN DEBUG
+  if (RSN.isLogedIn) {
+    TPL.render('conversation', {repo: 'issuetracker/dctr___reason'});
+  }
+  $('#debug').click(function (e) {
+    e.preventDefault();
+    TPL.clear();
+    RSN.clear();
+    window.location.reload();
+  });
+  // END DEBUG
+
 });

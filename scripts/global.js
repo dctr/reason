@@ -9,7 +9,7 @@
 (function () {
   'use strict';
 
-  var RSN, clear, get, parse, remove, set, stringify;
+  var RSN, clear, get, logedIn, parse, remove, set, stringify;
 
   RSN = {};
 
@@ -39,6 +39,10 @@
     throw {name: 'StorageError', message: 'Session or local Storage corrupt.'};
   };
 
+  RSN.isLogedIn = function () {
+    return logedIn;
+  };
+
   RSN.login = function (username, password, callback) {
     var github = new Github({
       username: username,
@@ -52,6 +56,7 @@
         // TODO: Storing password on client plaintext. Very, very naughty!
         RSN.set('credentials', {username: username, password: password});
         window.GHB = github;
+        logedIn = true;
         callback(true);
       }
     });
@@ -60,6 +65,7 @@
   RSN.logout = function () {
     window.GHB = new Github();
     RSN.remove('credentials');
+    logedIn = false;
   };
 
   RSN.parse = function (string) {
@@ -103,6 +109,8 @@
   RSN.stringify = function (object) {
     return JSON.stringify(object, null, 2);
   };
+
+  logedIn = false;
 
   // When loading, assign anonymous GHB object.
   window.GHB = new Github();

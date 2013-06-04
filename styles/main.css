@@ -5,6 +5,9 @@
  * Furthermore, it used the solarized color scheme and is loosely based
  * on the SCSS used on the solarized hompage.
  */
+/*
+ * Basics
+ */
 /* normalize.css v1.1.0 | MIT License | git.io/normalize */
 /* ==========================================================================
    HTML5 display definitions
@@ -751,45 +754,21 @@ html * {
   color: #859900; }
 
 /*
- * Document structure
+ * Layout
  */
-html {
-  background-color: #eee8d5;
-  color: #073642; }
-  html * {
-    color: #073642; }
-  html h1, html h2, html h3, html h4, html h5, html h6 {
-    color: #073642;
-    border-color: #073642; }
-  html a, html a:active, html a:visited {
-    color: #002b36; }
-
 header, footer {
-  background-color: #073642;
-  color: #eee8d5;
-  margin: 0px;
+  margin: 0;
   padding-left: 70px;
   padding-right: 70px;
   padding-top: 20px;
   padding-bottom: 20px; }
-  header *, footer * {
-    color: #eee8d5; }
-  header h1, header h2, header h3, header h4, header h5, header h6, footer h1, footer h2, footer h3, footer h4, footer h5, footer h6 {
-    color: #eee8d5;
-    border-color: #eee8d5; }
-  header a, header a:active, header a:visited, footer a, footer a:active, footer a:visited {
-    color: #fdf6e3; }
-  header input, footer input {
-    color: #073642;
-    background-color: #eee8d5; }
 
 header nav, header form, header ul, header li {
   display: inline; }
-
-nav ul {
-  margin: 0px;
-  padding: 0px; }
-nav a {
+header ul {
+  margin: 0;
+  padding: 0; }
+header a {
   text-decoration: none;
   border: 1px solid;
   border-radius: 5px;
@@ -798,48 +777,32 @@ nav a {
   padding-left: 10px;
   padding-right: 10px;
   margin-right: 5px; }
-  nav a.selected, nav a:hover {
-    color: #073642;
-    background-color: #eee8d5; }
-
-aside {
-  float: right;
-  width: 280px;
-  margin-bottom: 40px;
-  margin-right: 70px; }
 
 main, div[role="main"] {
   margin-left: 70px;
   margin-right: 70px;
   margin-top: 40px;
   margin-bottom: 40px;
-  min-width: 32em;
-  max-width: 52em; }
+  min-width: 52em; }
 
 footer {
   clear: both; }
 
-/*
- * Generic tag styles.
- */
 h1, h2, h3, h4, h5, h6 {
   font-weight: lighter;
   text-transform: capitalize;
+  font-variant: small-caps;
   margin-top: 40px;
   margin-bottom: 20px; }
 
 h1 {
   font-size: 153.9%;
-  text-transform: uppercase;
-  font-weight: bold;
+  font-weight: normal;
   border-bottom: 1px solid #002b36; }
 
 h2 {
   font-size: 153.9%;
   border-bottom: 1px solid #002b36; }
-
-h3, h4, h5, h6 {
-  border-bottom: none; }
 
 h3 {
   font-size: 146.5%; }
@@ -896,8 +859,94 @@ td {
   padding-left: .2em;
   padding-right: 1.8em; }
 
+/*
+ * Colors
+ */
+html {
+  background-color: #eee8d5;
+  color: #073642; }
+  html * {
+    color: #073642; }
+  html h1, html h2, html h3, html h4, html h5, html h6 {
+    color: #073642;
+    border-color: #073642; }
+  html a, html a:active, html a:visited {
+    color: #002b36; }
+
+header, footer {
+  background-color: #073642;
+  color: #eee8d5; }
+  header *, footer * {
+    color: #eee8d5; }
+  header h1, header h2, header h3, header h4, header h5, header h6, footer h1, footer h2, footer h3, footer h4, footer h5, footer h6 {
+    color: #eee8d5;
+    border-color: #eee8d5; }
+  header a, header a:active, header a:visited, footer a, footer a:active, footer a:visited {
+    color: #fdf6e3; }
+  header input, footer input {
+    color: #073642;
+    background-color: #eee8d5; }
+
+nav a.selected, nav a:hover {
+  color: #073642;
+  background-color: #eee8d5; }
+
+/*
+ * Modules
+ */
+:disabled {
+  color: grey; }
+
 .right {
   float: right; }
 
-:disabled {
-  color: grey; }
+/* Graph */
+svg div {
+  width: 200px; }
+
+text {
+  font: 300 16px "Helvetica Neue"; }
+
+rect {
+  fill: #fff; }
+
+.node > rect {
+  stroke-width: 3px;
+  stroke: #333;
+  fill: none; }
+
+.node:hover {
+  cursor: pointer;
+  opacity: 0.4; }
+
+.edge rect {
+  fill: white; }
+
+.edge path {
+  fill: none;
+  stroke: #333;
+  stroke-width: 1.5px; }
+
+.edge:hover {
+  cursor: pointer;
+  opacity: 0.4; }
+
+.cp {
+  opacity: 0; }
+
+.cp:hover {
+  cursor: pointer;
+  opacity: 1; }
+
+h1, h2 {
+  color: #333; }
+
+textarea {
+  width: 800px; }
+
+label {
+  margin-top: 1em;
+  display: block; }
+
+.error {
+  color: red; }

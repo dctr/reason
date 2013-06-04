@@ -285,7 +285,7 @@
 
       // Append the svg container to the given div.
       document.getElementById(spec.containerDivId).innerHTML = '\
-        <svg width=2000 height=2000>\
+        <svg width=1000 height=1000>\
           <defs>\
             <marker id="arrowhead"\
                     viewBox="0 0 10 10"\

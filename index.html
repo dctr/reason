@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="de">
+<!--
+  This document and it's related template files use classes for styling.
+  "is-"-prefixed classes have styles toggleable by scripts.
+  IDs are used as action hooks for scripts.
+-->
+<html lang="en">
   <head>
     <link rel="author" href="./humans.txt">
     <link rel="shortcut icon" href="./images/favicon.ico" />
     <link rel="stylesheet" href="./styles/main.css">
     <meta charset="utf-8">
-    <!-- Libraries -->
+
+    <!-- Scripts -->
     <script src="./scripts/vendor/async.js"></script>
     <script src="./scripts/vendor/base64.js"></script>
     <script src="./scripts/vendor/d3.v3.js"></script>
@@ -15,119 +21,54 @@
     <script src="./scripts/vendor/dagre.js"></script>
     <!-- Library github depends on base64 and underscore -->
     <script src="./scripts/vendor/github.js"></script>
-    <!-- Own global stuff -->
     <script src="./scripts/global.js"></script>
     <script src="./scripts/graphEngine.js"></script>
     <script src="./scripts/templateEngine.js"></script>
-    <!-- The main script handling the page -->
     <script src="./scripts/main.js"></script>
+
     <title>REaSoN</title>
-
-<style>
-svg div {
-  width: 200px;
-}
-text {
-  font: 300 16px "Helvetica Neue";
-}
-
-rect {
-  fill: #fff;
-}
-
-.node > rect {
-  stroke-width: 3px;
-  stroke: #333;
-  fill: none;
-}
-
-.node:hover {
-  cursor: pointer;
-  opacity: 0.4;
-}
-
-.edge rect {
-  fill: #fff
-}
-
-.edge path {
-  fill: none;
-  stroke: #333;
-  stroke-width: 1.5px;
-}
-
-.edge:hover {
-  cursor: pointer;
-  opacity: 0.4;
-}
-
-.cp {
-  opacity: 0;
-}
-
-.cp:hover {
-  cursor:pointer;
-  opacity: 1;
-}
-
-h1, h2 {
-  color: #333;
-}
-
-textarea {
-  width: 800px;
-}
-
-label {
-  margin-top: 1em;
-  display: block;
-}
-
-.error {
-  color: red;
-}
-
-svg {
-  border: 1px solid #999;
-}
-</style>
-
   </head>
   <body>
     <header>
       <nav>
         <ul>
-          <!-- TODO: Do layout -->
-          <span class="left">
+          <!-- TODO: Do layout first two spans left and middle. -->
+          <span>
             <li><input type="button" value="Back" id="back"></li>
             <li><input type="button" value="Forth" id="forth"></li>
           </span>
-          <span class="middle">
+          <span>
             <li><a href="" id="home" class="selected">Home</a></li>
-            <li class="loggedIn">
+            <li class="is-loggedIn">
               <form action="#" id="search">
-                <!-- <input type="text" name="repo" placeholder="owner/repository" autofocus> -->
-                <!-- DEBUG -->
+                <!-- BEGIN DEBUG -->
+                <!-- PRODUCTION VERSION: <input type="text" name="repo" placeholder="owner/repository" autofocus> -->
                 <input type="text" name="repo" value="issuetracker/dctr___reason" autofocus>
+                <!-- END DEBUG -->
                 <input type="submit" value="View Issues">
               </form>
             </li>
           </span>
           <span class="right">
-            <li class="loggedOut">
+            <li class="is-loggedOut">
               <form action="#" id="login">
                 <input type="text" name="username" placeholder="Username" autofocus>
                 <input type="password" name="password" placeholder="Password">
                 <input type="submit" value="Login">
               </form>
             </li>
-            <li class="loggedIn"><input type="button" value="Logout" id="logout"></li>
+            <li class="is-loggedIn"><input type="button" value="Logout" id="logout"></li>
           </span>
         </ul>
       </nav>
     </header>
     <div role="main">
     </div>
-    <footer>&copy; 2013 dctr <input type="button" value="Clear" id="debug"></footer>
+    <footer>
+      &copy; 2013 <a href="https://github.com/dctr">dctr</a>
+      <!-- BEGIN DEBUG -->
+      <input type="button" value="Clear" id="debug">
+      <!-- END DEBUG -->
+    </footer>
   </body>
 </html>

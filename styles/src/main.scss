@@ -6,53 +6,48 @@
  * on the SCSS used on the solarized hompage.
  */
 
+/*
+ * Basics
+ */
+
 // Use normalize.css 1.1
 @import "normalize";
 
 // Use HTML5 boilerplate 4.1
 @import "h5bp";
 
-// Define basics for solarized (http://ethanschoonover.com/solarized)
+// Define basics from solarized (http://ethanschoonover.com/solarized)
 @import "solarized";
+
+// Variables
+$hmargin: 70px;
+$vmargin: 20px;
+$border: 1px solid $base03;
 
 
 /*
- * Document structure
+ * Layout
  */
-html {
-  // Light theme per default
-  @include rebase($base02,$base2,$base03);
-}
-// Box layout debug
-//* { border: $border}
+
 header, footer {
-  // Dark theme in header and footer
-  @include rebase($base2,$base02,$base3);
-  margin: 0px;
+  margin: 0;
   padding: {
     left: $hmargin;
     right: $hmargin;
     top: $vmargin;
     bottom: $vmargin;
   }
-  input {
-    color: $base02;
-    background-color: $base2;
-  }
 }
 header {
   nav, form, ul, li {
     display: inline;
   }
-}
-nav {
-  // Undo spacing of normalize.css.
   ul {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
   }
   a {
-    text-decoration:none;
+    text-decoration: none;
     border: 1px solid;
     border-radius: 5px;
     padding: {
@@ -62,92 +57,55 @@ nav {
       right: 10px;
     }
     margin-right: 5px;
-    &.selected, &:hover {
-      color: $base02;
-      background-color: $base2;
-    }
   }
-}
-aside{
-  float: right;
-  width: $hmargin*4;
-  //margin-top:$vmargin*2;
-  margin-bottom:$vmargin*2;
-  margin-right:$hmargin;
 }
 main, div[role="main"] {
   margin-left:$hmargin;
   margin-right:$hmargin;
   margin-top:$vmargin*2;
   margin-bottom:$vmargin*2;
-  //min-width: 52em; // sufficient for 80 char pre blocks
-  min-width: 32em; // sufficient for 72 char pre blocks
-  max-width: 52em;
+  min-width: 52em; // sufficient for 80 char pre blocks
+  //min-width: 32em; // sufficient for 72 char pre blocks
+  //max-width: 52em;
 }
 footer {
   clear: both;
 }
 
-/*
- * Generic tag styles.
- */
 h1,h2,h3,h4,h5,h6 {
   font-weight: lighter;
   text-transform: capitalize;
-  margin-top:$vmargin*2;
-  margin-bottom:$vmargin;
+  font-variant: small-caps;
+  margin-top: $vmargin * 2;
+  margin-bottom: $vmargin;
 }
 h1 {
-  font-size: 153.9%; //26px
-  text-transform: uppercase;
-  font-weight: bold;
+  font-size: 153.9%;        //26px
+  font-weight: normal;
   border-bottom: $border;
 }
 h2 {
-  font-size: 153.9%; //23px
-  border-bottom:$border;
+  font-size: 153.9%;        //23px
+  border-bottom: $border;
 }
-h3,h4,h5,h6 {
-  border-bottom:none;
-}
+// h3,h4,h5,h6 {
+//   border-bottom: none;
+// }
 h3 { font-size: 146.5% }    //20px
-h4 { font-size: 138.5% }      //18px
-h5 { font-size: 138.5% }      //18px
-h6 { font-size: 138.5% }      //18px
-
-p {
-  margin: 0 0 $vmargin 0;
-}
-strong {
-  font-weight: bold;
-}
-em {
-  font-style: italic;
-}
-ol,ul {
-  margin-bottom: $vmargin;
-}
-li {
-  margin-bottom: $vmargin/2;
-}
-dt {
-  font-weight: bold;
-}
-dd {
-  margin-left: $hmargin/2;
-}
-img {
-  margin: 0 0 $vmargin 0;
-}
-pre {
-  margin-bottom:$vmargin;
-}
-pre, code {
-  font-family: monospace;
-}
-table {
-  font-size: 75%;
-}
+h4 { font-size: 138.5% }    //18px
+h5 { font-size: 138.5% }    //18px
+h6 { font-size: 138.5% }    //18px
+p { margin: 0 0 $vmargin 0; }
+strong { font-weight: bold; }
+em { font-style: italic; }
+ol,ul { margin-bottom: $vmargin; }
+li { margin-bottom: $vmargin/2; }
+dt { font-weight: bold; }
+dd { margin-left: $hmargin/2; }
+img { margin: 0 0 $vmargin 0; }
+pre { margin-bottom:$vmargin; }
+pre, code { font-family: monospace; }
+table { font-size: 75%; }
 th {
   padding-bottom: .7em;
   padding-right: 1.8em;
@@ -159,10 +117,110 @@ td {
   padding-right: 1.8em;
 }
 
+
+/*
+ * Colors
+ */
+
+html {
+  // Light theme per default
+  @include rebase($base02,$base2,$base03);
+}
+header, footer {
+  // Dark theme in header and footer
+  @include rebase($base2,$base02,$base3);
+  input {
+    color: $base02;
+    background-color: $base2;
+  }
+}
+nav {
+  a {
+    &.selected, &:hover {
+      color: $base02;
+      background-color: $base2;
+    }
+  }
+}
+
+
+/*
+ * Modules
+ */
+
+:disabled {
+  color: grey;
+}
+
 .right {
   float: right;
 }
 
-:disabled {
-  color: grey;
+
+
+// TODO
+/* Graph */
+
+svg div {
+  width: 200px;
+}
+
+text {
+  font: 300 16px "Helvetica Neue";
+}
+
+rect {
+  fill: #fff;
+}
+
+.node > rect {
+  stroke-width: 3px;
+  stroke: #333;
+  fill: none;
+}
+
+.node:hover {
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+.edge rect {
+  fill: #fff
+}
+
+.edge path {
+  fill: none;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+.edge:hover {
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+.cp {
+  opacity: 0;
+}
+
+.cp:hover {
+  cursor:pointer;
+  opacity: 1;
+}
+
+h1, h2 {
+  color: #333;
+}
+
+textarea {
+  width: 800px;
+}
+
+label {
+  margin-top: 1em;
+  display: block;
+}
+
+.error {
+  color: red;
 }

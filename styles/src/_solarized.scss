@@ -15,11 +15,6 @@ $blue:      #268bd2;
 $cyan:      #2aa198;
 $green:     #859900;
 
-$hmargin: 70px;
-$vmargin: 20px;
-
-$border: 1px solid $base03;
-
 @mixin rebase($fg, $bg, $hl)
 {
   background-color:$bg;
