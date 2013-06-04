@@ -6,9 +6,13 @@
  *
  * To style, use CSS.
  * The graph is in a svg element contained in a div #containerDivId.
- * All nodes get a class node and an id node-<nodeId>.
- * All edges get a class edge and an id edge-<sourceNodeId>-<targetNodeId>.
- * To style with CSS, use: TODO
+ * All nodes get a class "node" and an "id node-<nodeId>".
+ * A nodes rectangle can be styled though a ".node rect" selector.
+ * A nodes content html can be styled though a ".node div" selector.
+ * All edges get a class "edge" and an id "edge-<sourceNodeId>-<targetNodeId>".
+ * The lines can be styled through a ".edge path" selector.
+ * The arrowhead can be styled through a ".edge marker" selector.
+ * Of course each class supports selectors such as ":hover".
  */
 (function (modulename) {
   'use strict';
@@ -39,11 +43,8 @@
     addLabels = function (selection) {
       var labelGroup, foLabel;
 
-      selection.append('rect');
-
       labelGroup = selection
-        .append('g')
-        .attr('class', 'label');
+        .append('g');
 
       labelGroup.append('rect');
 
@@ -52,8 +53,7 @@
         .attr('class', 'htmllabel');
 
       foLabel
-        .append('xhtml:div')
-        .style('float', 'left');
+        .append('xhtml:div');
     };
 
     draw = function (nodeData, edgeData) {
@@ -129,11 +129,11 @@
     recalcLabels = function () {
       var labelGroup, foLabel, textLabel;
 
-      labelGroup = svgGroup.selectAll('g.label');
+      labelGroup = svgGroup.selectAll('.node > g');
 
       foLabel = labelGroup
         .selectAll('.htmllabel')
-        // TODO find a better way to get the dimensions for foriegnObjects
+        // TODO find a better way to get the dimensions for foreignObjects
         .attr('width', '100000');
 
       foLabel
@@ -197,14 +197,14 @@
         });
 
       svgGroup
-        .selectAll('g.label rect')
+        .selectAll('.node rect')
         .attr('x', function (d) { return -d.nodePadding; })
         .attr('y', function (d) { return -d.nodePadding; })
         .attr('width', function (d) { return d.width; })
         .attr('height', function (d) { return d.height; });
 
       nodes
-        .selectAll('g.label')
+        .selectAll('.node > g')
         .attr('transform', function (d) {
           return 'translate(' + (-d.bbox.width / 2) + ',' + (-d.bbox.height / 2) + ')';
         });
@@ -262,8 +262,7 @@
                     markerUnits="strokeWidth"\
                     markerWidth="8"\
                     markerHeight="5"\
-                    orient="auto"\
-                    style="fill: #333">\
+                    orient="auto">\
               <path d="M 0 0 L 10 5 L 0 10 z"></path>\
             </marker>\
           </defs>\

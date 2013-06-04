@@ -901,13 +901,13 @@ nav a.selected, nav a:hover {
   float: right; }
 
 /* Graph */
-svg div {
-  width: 300px; }
-
-.label rect {
+.node rect {
   stroke-width: 1px;
   stroke: #333;
   fill: #fff; }
+
+.node div {
+  width: 300px; }
 
 .node:hover {
   cursor: pointer;
@@ -917,3 +917,6 @@ svg div {
   fill: none;
   stroke: #333;
   stroke-width: 1.5px; }
+
+.edge marker {
+  fill: #333; }
