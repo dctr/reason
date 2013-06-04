@@ -902,48 +902,18 @@ nav a.selected, nav a:hover {
 
 /* Graph */
 svg div {
-  width: 200px; }
+  width: 300px; }
 
-rect {
-  fill: #fff; }
-
-.node > rect {
-  stroke-width: 3px;
+.label rect {
+  stroke-width: 1px;
   stroke: #333;
-  fill: none; }
+  fill: #fff; }
 
 .node:hover {
   cursor: pointer;
   opacity: 0.4; }
 
-.edge rect {
-  fill: white; }
-
 .edge path {
   fill: none;
   stroke: #333;
   stroke-width: 1.5px; }
-
-.edge:hover {
-  cursor: pointer;
-  opacity: 0.4; }
-
-.cp {
-  opacity: 0; }
-
-.cp:hover {
-  cursor: pointer;
-  opacity: 1; }
-
-h1, h2 {
-  color: #333; }
-
-textarea {
-  width: 800px; }
-
-label {
-  margin-top: 1em;
-  display: block; }
-
-.error {
-  color: red; }

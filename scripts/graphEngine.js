@@ -3,6 +3,11 @@
 
 /**
  * Graph layout and drawing engine using dagre and d3
+ *
+ * To style, use CSS.
+ * The graph is in a svg element contained in a div #containerDivId.
+ * All nodes get a class node and an id node-<nodeId>.
+ * All edges get a class edge and an id edge-<sourceNodeId>-<targetNodeId>.
  * To style with CSS, use: TODO
  */
 (function (modulename) {
@@ -14,9 +19,7 @@
    * @return {object}      An object providing a set of graph functions.
    */
   var constructor = function (spec) {
-    // spec: containerDivId, nodePadding, debugLevel
     var that, addLabels, draw, edges, edgesArray, ensureTwoControlPoints, nodeContent, nodeId, nodeObjects, nodePadding, nodes, recalcLabels, svg, svgGroup, translateEdge, update;
-
 
     if (typeof spec !== 'object') {
       throw {name: 'GraphError', message: 'Parameter has to be an object.'};
@@ -65,9 +68,10 @@
         .append('g')
         .attr('class', 'node')
         .attr('id', function (d) { return 'node-' + d[nodeId]; })
-        .each(function (d) { d.nodePadding = 10; });
+        .each(function (d) { d.nodePadding = 0; });
 
       addLabels(nodeEnter);
+
       nodes.exit().remove();
 
       edges = svgGroup
@@ -192,12 +196,6 @@
             .interpolate('linear')(points);
         });
 
-      edges
-        .selectAll('circle')
-        .attr('r', 5)
-        .attr('cx', function (d) { return d.x; })
-        .attr('cy', function (d) { return d.y; });
-
       svgGroup
         .selectAll('g.label rect')
         .attr('x', function (d) { return -d.nodePadding; })
@@ -209,16 +207,6 @@
         .selectAll('g.label')
         .attr('transform', function (d) {
           return 'translate(' + (-d.bbox.width / 2) + ',' + (-d.bbox.height / 2) + ')';
-        });
-
-      edges
-        .selectAll('g.label')
-        .attr('transform', function (d) {
-          var points, x, y;
-          points = d.dagre.points;
-          x = (points[0].x + points[1].x) / 2;
-          y = (points[0].y + points[1].y) / 2;
-          return 'translate(' + (-d.bbox.width / 2 + x) + ',' + (-d.bbox.height / 2 + y) + ')';
         });
     };
 
