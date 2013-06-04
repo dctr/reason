@@ -1,5 +1,13 @@
 /*jslint browser: true, es5: true, indent: 2, node: true , nomen: true, todo: true */
 /*global _, Github, RSN, async, console, d3, dagre, e */
+
+/**
+ * Graph layout and drawing engine using dagre and d3
+ * To style, use: TODO
+ *
+ * @param  {[type]} modulename [description]
+ * @return {[type]}            [description]
+ */
 (function (modulename) {
   'use strict';
 
@@ -26,6 +34,7 @@
       labelGroup = selection
         .append("g")
         .attr("class", "label");
+
       labelGroup.append("rect");
 
       foLabel = labelGroup
@@ -55,6 +64,7 @@
         .attr("class", "node")
         .attr("id", function (d) { return "node-" + d.id; })
         .each(function (d) { d.nodePadding = 10; });
+
       nodeEnter.append("rect");
       addLabels(nodeEnter);
       nodes.exit().remove();
@@ -72,7 +82,8 @@
 
       edgeEnter
         .append("path")
-          .attr("marker-end", "url(#arrowhead)");
+        .attr("marker-end", "url(#arrowhead)");
+
       addLabels(edgeEnter);
       edges.exit().remove();
 
@@ -82,7 +93,7 @@
       dagre.layout()
         .nodes(nodeData)
         .edges(edgeData)
-        .debugLevel(2)
+        .debugLevel(0)
         .run();
 
       // Ensure that we have at least two points between source and target
@@ -251,7 +262,8 @@
       for (i in nodeObjects) {
         if (nodeObjects.hasOwnProperty(i)) {
           nodeObjects[i].id = nodeObjects[i].sha;
-          nodeObjects[i].label = nodeObjects[i].message;
+          // TODO: Allow class for div
+          nodeObjects[i].label = '<div>' + nodeObjects[i].message + '</div>';
         }
       }
 

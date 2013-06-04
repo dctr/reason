@@ -4,6 +4,8 @@
  */
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
 /*global $, _, RSN, async, console */
+
+// TODO: Refactoring: Match closureModule, give div to replace as argument.
 (function (global) {
   'use strict';
 
