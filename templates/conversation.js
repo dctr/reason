@@ -1,11 +1,11 @@
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
-/*global $, _, GHB, GPH, RSN, mute, async, console */
+/*global _, GHB, GPH, async, mute, muteScript, console */
 
 // TODO:
 // - Assign issues to milestones.
 // - Allow votings for comments
 
-mute.cacheScript('conversation', function (data, render) {
+muteScript('conversation', function (data, render) {
   'use strict';
 
   // Translate data.repo = username/repository to sstr/username___repository

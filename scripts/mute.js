@@ -1,21 +1,24 @@
-/*jslint browser: true, indent: 2, nomen: true, todo: true */
-/*global $, _, RSN, async, console */
-
-// TODO: Refactoring: Match closureModule, give div to replace as argument.
+/*jslint browser: true, evil: true, indent: 2, nomen: true, todo: true */
+/*global _, console */
 
 /**
  * Mute - Minimal underscore.js-based template engine
  *
- * A caching template engine based on Underscores template() function.
- * Defines the global TPL.
+ * A caching template engine based on Underscore's template() function.
+ *
  */
 (function (modulename) {
   'use strict';
 
-  var constructor, cachedScripts, cachedTemplates, renderCompiledTemplate;
+  var constructor, cachedScripts, muteScript, cachedTemplates, renderCompiledTemplate;
 
   cachedScripts = {};
   cachedTemplates = {};
+
+  muteScript = function (template, script) {
+    cachedScripts[template] = script;
+  };
+
 
   constructor = function (selector, ejsDir, jsDir) {
     var that, back, currentContent, forth, noBackForth, redirects, renderCompiledTemplate;
@@ -37,7 +40,7 @@
           back.push(currentContent);
         }
         currentContent = cachedTemplates[template](processedData);
-        $(selector).html(currentContent);
+        document.querySelector(selector).innerHTML = currentContent;
       });
     };
 
@@ -50,7 +53,7 @@
       if (!upcomming) { return; }
       forth.push(currentContent);
       currentContent = upcomming;
-      $(selector).html(currentContent);
+      document.querySelector(selector).innerHTML = currentContent;
       return back.length;
     };
 
@@ -59,29 +62,41 @@
       if (!upcomming) { return; }
       back.push(currentContent);
       currentContent = upcomming;
-      $(selector).html(currentContent);
+      document.querySelector(selector).innerHTML = currentContent;
       return forth.length;
     };
 
     that.render = function (template, data) {
+      var ex, reqTpl;
       if (redirects[template]) {
         template = redirects[template];
       }
+      ex = {
+        name: 'MuteError',
+        message: 'Could not retrieve template, got an ' + this.status + '.'
+      };
       // If a cached template exists, the corresponding script is also cached.
       if (cachedTemplates[template]) {
         renderCompiledTemplate(template, data);
       } else {
-        // TODO: Check template for [a-z]
-        $.get(ejsDir + '/' + template + '.ejs', function (templateContent) {
-          cachedTemplates[template] = _.template(templateContent);
-          $.getScript(jsDir + '/' + template + '.js', function (res, status, jqxhr) {
-            if (status !== 'success') {
-              throw {name: 'LoadError', message: jqxhr};
-            }
-            // NOTE: The template scripts cache themselves.
+        // TODO: Replace with native functions.
+        reqTpl = new XMLHttpRequest();
+        reqTpl.open('GET', ejsDir + '/' + template + '.ejs');
+        reqTpl.onload = function (e) {
+          var reqScr;
+          // NOTE: A 304 from the server results in a client-side 200.
+          if (this.status !== 200) { throw ex; }
+          cachedTemplates[template] = _.template(this.response);
+          reqScr = new XMLHttpRequest();
+          reqScr.open('GET', jsDir + '/' + template + '.js');
+          reqScr.onload = function (e) {
+            if (this.status !== 200) { throw ex; }
+            eval(this.response.trim() + ';');
             renderCompiledTemplate(template, data);
-          });
-        });
+          };
+          reqScr.send();
+        };
+        reqTpl.send();
       }
     };
 
@@ -96,20 +111,13 @@
     return str.replace(/<br\s*\/?>/mg, '\n');
   };
 
-  constructor.cacheScript = function (template, script) {
-    cachedScripts[template] = script;
-  };
-
-  constructor.cacheTemplate = function (template, text) {
-    cachedTemplates[template] = text;
-  };
-
   constructor.clear = function () {
     cachedScripts = {};
     cachedTemplates = {};
   };
 
   constructor.nl2br = function (str) {
+    // Using self-closing tag to be compatible with HTML5 _and_ XHTML.
     var breakTag = '<br />';
     return str.replace(
       /(\r\n|\n\r|\r|\n)/mg,
