@@ -2,10 +2,10 @@
 /*global _, console */
 
 /**
- * Mute - Minimal underscore.js-based template engine
+ * Mute - Minimal Underscore.js-based Template Engine
  *
- * A caching template engine based on Underscore's template() function.
- *
+ * A caching, client-side template engine based on Underscore's template().
+ * This script exports the engine to a browsers global mute object.
  */
 (function (modulename) {
   'use strict';
@@ -15,7 +15,19 @@
   cachedScripts = {};
   cachedTemplates = {};
 
+  /**
+   * Cache a script with a given name
+   * @param  {string} template The name of the template.
+   * @param  {function} script   The function to be executed on template execution.
+   */
   muteScript = function (template, script) {
+    if (!/^[A-Za-z0-9]*$/.test(template) ||
+        typeof script !== 'function') {
+      throw {
+        name: 'MuteError',
+        message: 'Invalid call to muteScript().'
+      };
+    }
     cachedScripts[template] = script;
   };
 
@@ -26,7 +38,7 @@
     if (typeof selector !== 'string' ||
         typeof ejsDir   !== 'string' ||
         typeof jsDir    !== 'string') {
-      throw {name: 'MuteError', message: 'Invalid parameters given.'};
+      throw {name: 'MuteError', message: 'Invalid call of mute().'};
     }
 
     back = [];
@@ -35,13 +47,16 @@
 
     // Compiles memoized templates.
     renderCompiledTemplate = function (template, data) {
-      cachedScripts[template](data, function (processedData) {
-        if (currentContent !== back[back.length - 1]) {
-          back.push(currentContent);
-        }
-        currentContent = cachedTemplates[template](processedData);
-        document.querySelector(selector).innerHTML = currentContent;
-      });
+      cachedScripts[template](
+        function (processedData) {
+          if (currentContent !== back[back.length - 1]) {
+            back.push(currentContent);
+          }
+          currentContent = cachedTemplates[template](processedData);
+          document.querySelector(selector).innerHTML = currentContent;
+        },
+        data
+      );
     };
 
 
@@ -68,13 +83,24 @@
 
     that.render = function (template, data) {
       var ex, reqTpl;
+
+      if (!/^[A-Za-z0-9]*$/.test(template) ||
+          (data && typeof data !== 'object')
+          ) {
+        throw {
+          name: 'MuteError',
+          message: 'Invalid call to render().'
+        };
+      }
+      data = data || {};
       if (redirects[template]) {
         template = redirects[template];
       }
       ex = {
         name: 'MuteError',
-        message: 'Could not retrieve template, got an ' + this.status + '.'
+        message: 'Could not retrieve template.'
       };
+
       // If a cached template exists, the corresponding script is also cached.
       if (cachedTemplates[template]) {
         renderCompiledTemplate(template, data);
@@ -101,6 +127,13 @@
     };
 
     that.setRedirect = function (source, target) {
+      if (!/^[A-Za-z0-9]*$/.test(source) ||
+          !/^[A-Za-z0-9]*$/.test(target)) {
+        throw {
+          name: 'MuteError',
+          message: 'Invalid call to setRedirect().'
+        };
+      }
       redirects[source] = target;
     };
 
@@ -108,6 +141,12 @@
   };
 
   constructor.br2nl = function (str) {
+    if (typeof str !== 'string') {
+      throw {
+        name: 'MuteError',
+        message: 'Invalid call to br2nl().'
+      };
+    }
     return str.replace(/<br\s*\/?>/mg, '\n');
   };
 
@@ -117,6 +156,12 @@
   };
 
   constructor.nl2br = function (str) {
+    if (typeof str !== 'string') {
+      throw {
+        name: 'MuteError',
+        message: 'Invalid call to nl2br().'
+      };
+    }
     // Using self-closing tag to be compatible with HTML5 _and_ XHTML.
     var breakTag = '<br />';
     return str.replace(

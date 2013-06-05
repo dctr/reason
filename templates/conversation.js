@@ -5,7 +5,7 @@
 // - Assign issues to milestones.
 // - Allow votings for comments
 
-muteScript('conversation', function (data, render) {
+muteScript('conversation', function (render, data) {
   'use strict';
 
   // Translate data.repo = username/repository to sstr/username___repository
