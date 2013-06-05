@@ -1,6 +1,6 @@
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
-/*global $, _, GHB, RSN, TPL, async, console */
-TPL.cacheScript('profile', function (data, render) {
+/*global $, _, GHB, RSN, mute, async, console */
+mute.cacheScript('profile', function (data, render) {
   'use strict';
 
   var user = GHB.getUser();

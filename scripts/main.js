@@ -8,13 +8,15 @@
  * - Script code
  */
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
-/*global $, _, RSN, TPL, console */
+/*global $, _, RSN, mute, console */
 $(document).ready(function () {
   'use strict';
 
   // -----
   // Settings
   // ----------
+
+  var TPL = mute('div[role="main"]', '/templates', '/templates');
 
   // Turn caching off globally.
   $.ajaxSetup({ cache: false });
@@ -109,7 +111,7 @@ $(document).ready(function () {
   }
   $('#debug').click(function (e) {
     e.preventDefault();
-    TPL.clear();
+    mute.clear();
     RSN.clear();
     window.location.reload();
   });
