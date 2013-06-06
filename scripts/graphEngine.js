@@ -8,10 +8,11 @@
  * The graph is in a svg element contained in a div #containerDivId.
  * All nodes get a class "node" and an "id node-<nodeId>".
  * A nodes rectangle can be styled though a ".node rect" selector.
- * A nodes content html can be styled though a ".node div" selector.
+ * A nodes content html can be styled though a ".htmllabel > div" selector.
  * All edges get a class "edge" and an id "edge-<sourceNodeId>-<targetNodeId>".
- * The lines can be styled through a ".edge path" selector.
- * The arrowhead can be styled through a ".edge marker" selector.
+ * The lines can be styled through a ".edge > path" selector.
+ * The arrowhead can be styled through a "svg marker" selector (or use your
+ * drawing area id instead of svg, which would style as svg's markers).
  * Of course each class supports selectors such as ":hover".
  */
 (function (modulename) {
@@ -32,6 +33,8 @@
       throw {name: 'GraphError', message: 'No containerDivId given.'};
     }
     spec.debugLevel = spec.debugLevel || 0;
+    spec.rx = spec.rx || 0;
+    spec.ry = spec.ry || 0;
     nodeContent = spec.nodeContent || 'content';
     nodeId = spec.nodeId || 'id';
     nodePadding = spec.nodePadding || 10;
@@ -46,7 +49,9 @@
       labelGroup = selection
         .append('g');
 
-      labelGroup.append('rect');
+      labelGroup.append('rect')
+        .attr('rx', spec.rx)
+        .attr('ry', spec.ry);
 
       foLabel = labelGroup
         .append('foreignObject')
@@ -252,8 +257,9 @@
       nodesArray = d3.values(nodeObjects);
 
       // Append the svg container to the given div.
+      // TODO: Manage height dynamically
       document.getElementById(spec.containerDivId).innerHTML = '\
-        <svg width=1000 height=1000>\
+        <svg width=1000 height=2000>\
           <defs>\
             <marker id="arrowhead"\
                     viewBox="0 0 10 10"\

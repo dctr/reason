@@ -57,9 +57,11 @@ muteScript('conversation', function (render, data) {
 
   data.drawingAreaId = 'drawingArea';
   graphEngine = GPH({
-    containerDivId: 'drawingArea',
+    containerDivId: data.drawingAreaId,
     nodeId: 'sha',
-    nodeContent: 'message'
+    nodeContent: 'message',
+    rx: '5px',
+    ry: '5px'
   });
 
   // Get all heads to start from.

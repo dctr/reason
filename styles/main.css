@@ -903,20 +903,21 @@ nav a.selected, nav a:hover {
 /* Graph */
 .node rect {
   stroke-width: 1px;
-  stroke: #333;
+  stroke: #073642;
   fill: #fff; }
 
-.node div {
+.htmllabel > div {
+  padding: 10px;
   width: 300px; }
 
 .node:hover {
   cursor: pointer;
   opacity: 0.4; }
 
-.edge path {
+.edge > path {
   fill: none;
-  stroke: #333;
+  stroke: #073642;
   stroke-width: 1.5px; }
 
-.edge marker {
-  fill: #333; }
+marker {
+  fill: #073642; }

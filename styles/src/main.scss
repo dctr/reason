@@ -163,11 +163,12 @@ nav {
 
 .node rect {
   stroke-width: 1px;
-  stroke: #333;
+  stroke: $base02;
   fill: #fff;
 }
 
-.node div {
+.htmllabel > div {
+  padding: $vmargin / 2;
   width: 300px;
 }
 
@@ -176,12 +177,12 @@ nav {
   opacity: 0.4;
 }
 
-.edge path {
+.edge > path {
   fill: none;
-  stroke: #333;
+  stroke: $base02;
   stroke-width: 1.5px;
 }
 
-.edge marker {
-  fill: #333;
+marker {
+  fill: $base02;
 }
