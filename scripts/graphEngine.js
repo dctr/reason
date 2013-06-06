@@ -24,7 +24,7 @@
    * @return {object}      An object providing a set of graph functions.
    */
   var constructor = function (spec) {
-    var that, addLabels, draw, edges, edgesArray, ensureTwoControlPoints, nodeContent, nodeId, nodeObjects, nodePadding, nodes, recalcLabels, svg, svgGroup, translateEdge, update;
+    var that, addLabels, draw, edges, edgesArray, ensureTwoControlPoints, nodeContent, nodeId, nodeObjects, nodePadding, nodes, recalcLabels, svg, svgBBox, svgGroup, translateEdge, update;
 
     if (typeof spec !== 'object') {
       throw {name: 'GraphError', message: 'Parameter has to be an object.'};
@@ -114,6 +114,11 @@
 
       // Re-render
       update();
+
+      // Size the SVG element
+      svgBBox = svg.node().getBBox();
+      svg.attr("width", svgBBox.width + 10);
+      svg.attr("height", svgBBox.height + 10);
     };
 
     ensureTwoControlPoints = function (d) {
@@ -259,7 +264,7 @@
       // Append the svg container to the given div.
       // TODO: Manage height dynamically
       document.getElementById(spec.containerDivId).innerHTML = '\
-        <svg width=1000 height=2000>\
+        <svg>\
           <defs>\
             <marker id="arrowhead"\
                     viewBox="0 0 10 10"\
