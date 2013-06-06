@@ -143,46 +143,84 @@ nav {
   }
 }
 
+:disabled {
+  color: grey;
+}
 
 /*
  * Modules
  */
 
-:disabled {
-  color: grey;
+.aligncenter {
+  text-align: center;
 }
 
-.right {
+.floatright {
   float: right;
 }
 
+.js-overlay {
+  background-color: #000;
+  opacity: .7;
+  filter: alpha(opacity=70);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.js-overoverlay {
+  z-index: 11;
+  background-color: $base2;
+  position: absolute;
+  top: 28%;
+  left: 28%;
+  width: 44%;
+  padding: 1%;
+  border-radius: 5px;
+}
+
+.js-overoverlay textarea {
+  display: block;
+  text-align: left;
+  width: 100%;
+  height: 200px;
+}
+
+.js-stopScrolling {
+  height: 100%;
+  overflow: hidden;
+}
 
 
-// TODO
 /* Graph */
 
-.node rect {
-  stroke-width: 1px;
-  stroke: $base02;
-  fill: #fff;
-}
+svg {
+  rect {
+    stroke-width: 1px;
+    stroke: $base02;
+    fill: #fff;
+  }
 
-.htmllabel > div {
-  padding: $vmargin / 2;
-  width: 300px;
-}
+  path {
+    fill: none;
+    stroke: $base02;
+    stroke-width: 1.5px;
+  }
 
-.node:hover {
-  cursor: pointer;
-  opacity: 0.4;
-}
+  marker {
+    fill: $base02;
+  }
 
-.edge > path {
-  fill: none;
-  stroke: $base02;
-  stroke-width: 1.5px;
-}
+  .htmllabel > div {
+    padding: $vmargin / 2;
+    width: 300px;
+  }
 
-marker {
-  fill: $base02;
+  .node:hover {
+    cursor: pointer;
+    opacity: 0.6;
+  }
 }

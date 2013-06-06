@@ -1,5 +1,5 @@
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
-/*global _, GHB, GPH, async, mute, muteScript, console */
+/*global $, _, GHB, GPH, async, mute, muteScript, console */
 
 // TODO:
 // - Assign issues to milestones.
@@ -12,14 +12,27 @@ muteScript('conversation', function (render, data) {
   // Get list of branches == issues
   // - Title, time opened, time of last activity, opened/closed-status, tags
 
-  var commits, graphEngine, repo, recurseResolve;
+  var addHTMLContent, commits, graphEngine, repo, recurseResolve, registerEventHandlers;
 
   commits = {};
   data.repo = data.repo.split('/', 2);
   repo = GHB.getRepo(data.repo[0], data.repo[1]);
 
-  // Warning, brainfuck! Async and recusive!
-  // @mvo: Thanks for the hint, try to understand this :-P
+  addHTMLContent = function () {
+    var htmlCallback, key, nodeTpl;
+    htmlCallback = function (html, sha) {
+      commits[sha].htmlContent = html;
+    };
+    nodeTpl = mute(htmlCallback, '/templates', '/templates');
+    for (key in commits) {
+      if (commits.hasOwnProperty(key)) {
+        nodeTpl.render('nodeContent', commits[key]);
+      }
+    }
+  };
+
+  // Brainfuck! Async and recusive.
+  // @mvo: Thanks for the hint, try to understand it :-P
   recurseResolve = function (sha, callback) {
     // If this commit is known, it's subtree is known.
     // Thus we can exit the recursion tree by calling the callback (aka return).
@@ -47,6 +60,22 @@ muteScript('conversation', function (render, data) {
           callback(err);
         }
       );
+    });
+  };
+
+  registerEventHandlers = function () {
+    $('.node').click(function (e) {
+      // if (e.ctrlKey || e.metaKey) {
+      //   // TODO: Multiple partent selection.
+      // }
+      var $main, parent;
+      parent = e.currentTarget.id;
+      $main = $('div[role="main"]');
+      // TODO: Open input field, post text to commit with partent
+      //$main.addClass('js-stopScrolling');
+      $main.append('<div class="js-overlay"></div>');
+      $main.append('<div class="js-overoverlay"><textarea class="aligncenter"></textarea><br /><input type="button" value="cancel" />&nbsp;<input type="button" value="reply" /></div>');
+      //$main.removeClass('js-stopScrolling');
     });
   };
 
@@ -78,7 +107,6 @@ muteScript('conversation', function (render, data) {
       function (err) {
         if (err) { throw err; }
         var sha, i, len;
-        // TODO: apply gained info on data object.
         graphEngine.addNodes(commits);
         for (sha in commits) {
           if (commits.hasOwnProperty(sha)) {
@@ -88,8 +116,10 @@ muteScript('conversation', function (render, data) {
           }
         }
         render(data);
-        // run() has to be called after render, which creates the drawingArea.
+        // TODO: addHTMLContent is async, so graphengine is run before html is present.
+        addHTMLContent();
         graphEngine.run();
+        registerEventHandlers();
       }
     );
   });

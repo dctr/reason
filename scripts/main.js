@@ -30,18 +30,18 @@ $(document).ready(function () {
 
   // Select home per default.
   TPL.render('home');
-  $('.is-loggedIn').hide();
-  $('.is-loggedOut').hide();
+  $('.js-loggedIn').hide();
+  $('.js-loggedOut').hide();
   $('#back').attr('disabled', true);
   $('#forth').attr('disabled', true);
 
   RSN.resumeSession(function (success) {
     if (success) {
-      $('.is-loggedIn').show();
-      $('.is-loggedOut').hide();
+      $('.js-loggedIn').show();
+      $('.js-loggedOut').hide();
     } else {
-      $('.is-loggedIn').hide();
-      $('.is-loggedOut').show();
+      $('.js-loggedIn').hide();
+      $('.js-loggedOut').show();
     }
   });
 
@@ -81,8 +81,8 @@ $(document).ready(function () {
       $('#login input[name="password"]').val(),
       function (loggedIn) {
         if (loggedIn) {
-          $('.is-loggedIn').show();
-          $('.is-loggedOut').hide();
+          $('.js-loggedIn').show();
+          $('.js-loggedOut').hide();
         } else {
           window.alert('Login failure.');
         }
@@ -93,8 +93,8 @@ $(document).ready(function () {
   $('#logout').click(function (e) {
     e.preventDefault();
     RSN.logout();
-    $('.is-loggedIn').hide();
-    $('.is-loggedOut').show();
+    $('.js-loggedIn').hide();
+    $('.js-loggedOut').show();
     window.location.reload();
   });
 

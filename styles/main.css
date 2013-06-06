@@ -891,33 +891,63 @@ nav a.selected, nav a:hover {
   color: #073642;
   background-color: #eee8d5; }
 
-/*
- * Modules
- */
 :disabled {
   color: grey; }
 
-.right {
+/*
+ * Modules
+ */
+.aligncenter {
+  text-align: center; }
+
+.floatright {
   float: right; }
 
+.js-overlay {
+  background-color: #000;
+  opacity: .7;
+  filter: alpha(opacity=70);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10; }
+
+.js-overoverlay {
+  z-index: 11;
+  background-color: #eee8d5;
+  position: absolute;
+  top: 28%;
+  left: 28%;
+  width: 44%;
+  padding: 1%;
+  border-radius: 5px; }
+
+.js-overoverlay textarea {
+  display: block;
+  text-align: left;
+  width: 100%;
+  height: 200px; }
+
+.js-stopScrolling {
+  height: 100%;
+  overflow: hidden; }
+
 /* Graph */
-.node rect {
+svg rect {
   stroke-width: 1px;
   stroke: #073642;
   fill: #fff; }
-
-.htmllabel > div {
-  padding: 10px;
-  width: 300px; }
-
-.node:hover {
-  cursor: pointer;
-  opacity: 0.4; }
-
-.edge > path {
+svg path {
   fill: none;
   stroke: #073642;
   stroke-width: 1.5px; }
-
-marker {
+svg marker {
   fill: #073642; }
+svg .htmllabel > div {
+  padding: 10px;
+  width: 300px; }
+svg .node:hover {
+  cursor: pointer;
+  opacity: 0.6; }

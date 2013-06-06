@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   This document and it's related template files use classes for styling.
-  "is-"-prefixed classes have styles toggleable by scripts.
+  "js-"-prefixed classes have styles toggleable by scripts.
   IDs are used as action hooks for scripts.
 -->
 <html lang="en">
@@ -39,7 +39,7 @@
           </span>
           <span>
             <li><a href="" id="home" class="selected">Home</a></li>
-            <li class="is-loggedIn">
+            <li class="js-loggedIn">
               <form action="#" id="search">
                 <!-- BEGIN DEBUG -->
                 <!-- PRODUCTION VERSION: <input type="text" name="repo" placeholder="owner/repository" autofocus> -->
@@ -49,15 +49,15 @@
               </form>
             </li>
           </span>
-          <span class="right">
-            <li class="is-loggedOut">
+          <span class="floatright">
+            <li class="js-loggedOut">
               <form action="#" id="login">
                 <input type="text" name="username" placeholder="Username" autofocus>
                 <input type="password" name="password" placeholder="Password">
                 <input type="submit" value="Login">
               </form>
             </li>
-            <li class="is-loggedIn"><input type="button" value="Logout" id="logout"></li>
+            <li class="js-loggedIn"><input type="button" value="Logout" id="logout"></li>
           </span>
         </ul>
       </nav>

@@ -1,5 +1,5 @@
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
-/*global $, _, TPL, USR, Github, console */
+/*global _, TPL, USR, Github, console */
 
 /**
  * Functionality exported via the global RSN object

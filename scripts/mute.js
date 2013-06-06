@@ -42,11 +42,10 @@
    * @return {object}          A mute instance for the CSS selector.
    */
   constructor = function (selector, ejsDir, jsDir) {
-    var that, back, currentContent, forth, noBackForth, redirects, renderCompiledTemplate;
+    var that, applyTemplate, back, currentContent, forth, noBackForth, redirects, renderCompiledTemplate;
 
-    if (typeof selector !== 'string' ||
-        typeof ejsDir   !== 'string' ||
-        typeof jsDir    !== 'string') {
+    if (typeof ejsDir !== 'string' ||
+        typeof jsDir  !== 'string') {
       throw {name: 'MuteError', message: 'Invalid call of mute().'};
     }
 
@@ -57,16 +56,26 @@
     // Compiles memoized templates.
     renderCompiledTemplate = function (template, data) {
       cachedScripts[template](
-        function (processedData) {
+        function (processedData, args) {
           if (currentContent !== back[back.length - 1]) {
             back.push(currentContent);
           }
           currentContent = cachedTemplates[template](processedData);
-          document.querySelector(selector).innerHTML = currentContent;
+          applyTemplate(currentContent, args);
         },
         data
       );
     };
+
+    if (typeof selector === 'string') {
+      applyTemplate = function (content) {
+        document.querySelector(selector).innerHTML = content;
+      };
+    } else if (typeof selector === 'function') {
+      applyTemplate = function (content, args) {
+        selector(content, args);
+      };
+    }
 
 
     that = {};
@@ -79,10 +88,10 @@
      */
     that.backwards = function () {
       var upcomming = back.pop();
-      if (!upcomming) { return; }
+      if (!upcomming) { return -1; }
       forth.push(currentContent);
       currentContent = upcomming;
-      document.querySelector(selector).innerHTML = currentContent;
+      applyTemplate(currentContent);
       return back.length;
     };
 
@@ -93,10 +102,10 @@
      */
     that.forwards = function () {
       var upcomming = forth.pop();
-      if (!upcomming) { return; }
+      if (!upcomming) { return -1; }
       back.push(currentContent);
       currentContent = upcomming;
-      document.querySelector(selector).innerHTML = currentContent;
+      applyTemplate(currentContent);
       return forth.length;
     };
 

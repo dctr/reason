@@ -6,10 +6,10 @@
  *
  * To style, use CSS.
  * The graph is in a svg element contained in a div #containerDivId.
- * All nodes get a class "node" and an "id node-<nodeId>".
+ * All nodes get a class "node" and an id "<nodeId>".
  * A nodes rectangle can be styled though a ".node rect" selector.
  * A nodes content html can be styled though a ".htmllabel > div" selector.
- * All edges get a class "edge" and an id "edge-<sourceNodeId>-<targetNodeId>".
+ * All edges get a class "edge" and an id "<sourceNodeId>-<targetNodeId>".
  * The lines can be styled through a ".edge > path" selector.
  * The arrowhead can be styled through a "svg marker" selector (or use your
  * drawing area id instead of svg, which would style as svg's markers).
@@ -72,7 +72,7 @@
         .enter()
         .append('g')
         .attr('class', 'node')
-        .attr('id', function (d) { return 'node-' + d[nodeId]; })
+        .attr('id', function (d) { return d[nodeId]; })
         .each(function (d) { d.nodePadding = 0; });
 
       addLabels(nodeEnter);
@@ -90,7 +90,7 @@
         .append('g')
         .attr('class', 'edge')
         .attr('id', function (d) {
-          return 'edge-' + d.source[nodeId] + '-' + d.target[nodeId];
+          return d.source[nodeId] + '-' + d.target[nodeId];
         })
         .each(function (d) { d.nodePadding = 0; });
 
@@ -262,7 +262,6 @@
       nodesArray = d3.values(nodeObjects);
 
       // Append the svg container to the given div.
-      // TODO: Manage height dynamically
       document.getElementById(spec.containerDivId).innerHTML = '\
         <svg>\
           <defs>\
@@ -289,6 +288,7 @@
 
     return that;
   };
+
 
   window[modulename] = constructor;
 }('GPH'));
