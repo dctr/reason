@@ -116,8 +116,9 @@
 
     /**
      * Render a template
-     * @param  {string} template Template name (also filename without extension).
-     * @param  {object} data     A data object which will be present within the corresponding script and the template.
+     * @param  {string}   template Template name (also filename without extension).
+     * @param  {object}   data     A data object which will be present within the corresponding script and the template.
+     * @param  {function} data     A prefetch-callback which will be called, if the XMLHttpRequests to template are finished. No rendering done!
      */
     that.render = function (template, data) {
       var ex, reqTpl;

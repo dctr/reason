@@ -3,5 +3,7 @@
 muteScript('nodeContent', function (render, data) {
   'use strict';
 
+  data.author.date = (new Date(data.author.date)).toLocaleString();
+
   render(data, data.sha);
 });

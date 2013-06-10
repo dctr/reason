@@ -900,8 +900,17 @@ nav a.selected, nav a:hover {
 .aligncenter {
   text-align: center; }
 
+.citeAuthor {
+  font-size: 75%;
+  text-align: right;
+  margin-bottom: 0; }
+
 .floatright {
   float: right; }
+
+.htmllabel > div {
+  padding: 10px;
+  width: 300px; }
 
 .js-overlay {
   background-color: #000;
@@ -945,9 +954,6 @@ svg path {
   stroke-width: 1.5px; }
 svg marker {
   fill: #073642; }
-svg .htmllabel > div {
-  padding: 10px;
-  width: 300px; }
 svg .node:hover {
   cursor: pointer;
   opacity: 0.6; }
