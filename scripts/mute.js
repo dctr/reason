@@ -55,9 +55,14 @@
 
     // Compiles memoized templates.
     renderCompiledTemplate = function (template, data) {
+      if (typeof data === 'function') {
+        data();
+        return;
+      }
       cachedScripts[template](
         function (processedData, args) {
           if (currentContent !== back[back.length - 1]) {
+            // TODO: back and forth not necessary, if rendering to function.
             back.push(currentContent);
           }
           currentContent = cachedTemplates[template](processedData);
@@ -118,8 +123,10 @@
       var ex, reqTpl;
 
       if (!/^[A-Za-z0-9]*$/.test(template) ||
-          (data && typeof data !== 'object')
+          (data && typeof data !== 'object' && typeof data !== 'function')
           ) {
+        console.log(typeof data);
+        console.log(template);
         throw {
           name: 'MuteError',
           message: 'Invalid call to render().'
@@ -144,6 +151,7 @@
         reqTpl.onload = function (e) {
           var reqScr;
           // NOTE: A 304 from the server results in a client-side 200.
+          // TODO: Handle errors.
           if (this.status !== 200) { throw ex; }
           cachedTemplates[template] = _.template(this.response);
           reqScr = new XMLHttpRequest();

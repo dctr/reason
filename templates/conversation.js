@@ -12,23 +12,14 @@ muteScript('conversation', function (render, data) {
   // Get list of branches == issues
   // - Title, time opened, time of last activity, opened/closed-status, tags
 
-  var addHTMLContent, commits, graphEngine, repo, recurseResolve, registerEventHandlers;
+  var addHTMLContent, commits, graphEngine, nodeTpl, repo, recurseResolve, registerEventHandlers, stageOne, stageTwo, stageThree;
 
   commits = {};
   data.repo = data.repo.split('/', 2);
   repo = GHB.getRepo(data.repo[0], data.repo[1]);
 
-  addHTMLContent = function () {
-    var htmlCallback, key, nodeTpl;
-    htmlCallback = function (html, sha) {
-      commits[sha].htmlContent = html;
-    };
-    nodeTpl = mute(htmlCallback, '/templates', '/templates');
-    for (key in commits) {
-      if (commits.hasOwnProperty(key)) {
-        nodeTpl.render('nodeContent', commits[key]);
-      }
-    }
+  addHTMLContent = function (htmlString, sha) {
+    commits[sha].htmlContent = htmlString;
   };
 
   // Brainfuck! Async and recusive.
@@ -79,48 +70,65 @@ muteScript('conversation', function (render, data) {
     });
   };
 
+  stageOne = function () {
+    data.drawingAreaId = 'drawingArea';
+    graphEngine = GPH({
+      containerDivId: data.drawingAreaId,
+      nodeId: 'sha',
+      nodeContent: 'htmlContent',
+      rx: '5px',
+      ry: '5px'
+    });
+
+    // Get all heads to start from.
+    repo.getBranches(function (error, branches) {
+      if (error) { throw error; }
+      var shas;
+      // Get commit sha for each branch's head.
+      shas = branches.map(function (branch, index) {
+        return branch.commit.sha;
+      });
+      async.each(
+        shas,
+        recurseResolve,
+        stageTwo
+      );
+    });
+  };
+
+  stageTwo = function (err) {
+    if (err) { throw err; }
+    var sha, i, len;
+    graphEngine.addNodes(commits);
+    for (sha in commits) {
+      if (commits.hasOwnProperty(sha)) {
+        for (i = 0, len = commits[sha].parents.length; i < len; i += 1) {
+          graphEngine.addEdge(commits[sha].parents[i].sha, sha);
+        }
+      }
+    }
+    nodeTpl = mute(addHTMLContent, '/templates', '/templates');
+    // Calling the renderer with a prefetch-callback. So, in stageThree,
+    // the template does not need to be fetched and render is synchronously.
+    nodeTpl.render('nodeContent', stageThree);
+  };
+
+  stageThree = function () {
+    var sha;
+    render(data);
+    for (sha in commits) {
+      if (commits.hasOwnProperty(sha)) {
+        nodeTpl.render('nodeContent', commits[sha]);
+      }
+    }
+    graphEngine.run();
+    registerEventHandlers();
+  };
+
 
   // -----
   // main
   // ----------
 
-  data.drawingAreaId = 'drawingArea';
-  graphEngine = GPH({
-    containerDivId: data.drawingAreaId,
-    nodeId: 'sha',
-    nodeContent: 'message',
-    rx: '5px',
-    ry: '5px'
-  });
-
-  // Get all heads to start from.
-  repo.getBranches(function (error, branches) {
-    if (error) { throw error; }
-    var shas;
-    // Get commit sha for each branch's head.
-    shas = branches.map(function (branch, index) {
-      return branch.commit.sha;
-    });
-    async.each(
-      shas,
-      recurseResolve,
-      function (err) {
-        if (err) { throw err; }
-        var sha, i, len;
-        graphEngine.addNodes(commits);
-        for (sha in commits) {
-          if (commits.hasOwnProperty(sha)) {
-            for (i = 0, len = commits[sha].parents.length; i < len; i += 1) {
-              graphEngine.addEdge(commits[sha].parents[i].sha, sha);
-            }
-          }
-        }
-        render(data);
-        // TODO: addHTMLContent is async, so graphengine is run before html is present.
-        addHTMLContent();
-        graphEngine.run();
-        registerEventHandlers();
-      }
-    );
-  });
+  stageOne();
 });
