@@ -148,6 +148,7 @@ muteScript('conversation', function (render, data) {
       shas = branches.map(function (branch, index) {
         // TODO: Add optional prefix filter
         // if (branch.name contains prefix)
+        // prefix also has to be added when new branch is created!!
         return branch.commit.sha;
       });
       async.each(
