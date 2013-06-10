@@ -16,24 +16,22 @@ $(document).ready(function () {
   // Settings
   // ----------
 
-  var TPL = mute('div[role="main"]', '/templates', '/templates');
-
-  // Turn caching off globally.
-  $.ajaxSetup({ cache: false });
-
-  // Let the logout page redirect to home.
-  TPL.setRedirect('logout', 'home');
+  var mainTpl = mute('div[role="main"]', '/templates', '/templates');
 
   // -----
   // Program
   // ----------
 
   // Select home per default.
-  TPL.render('home');
+  $('#overlay').hide();
+  mainTpl.render('home');
   $('.js-loggedIn').hide();
   $('.js-loggedOut').hide();
   $('#back').attr('disabled', true);
   $('#forth').attr('disabled', true);
+
+  // Let the logout page redirect to home.
+  mainTpl.setRedirect('logout', 'home');
 
   RSN.resumeSession(function (success) {
     if (success) {
@@ -54,13 +52,13 @@ $(document).ready(function () {
     e.preventDefault();
     $('nav a').attr('class', '');
     $(this).attr('class', 'selected');
-    TPL.render($(this).attr('id'));
+    mainTpl.render($(this).attr('id'));
     $('#back').attr('disabled', false);
   });
 
   $('#back').click(function (e) {
     e.preventDefault();
-    if (!TPL.backwards()) {
+    if (!mainTpl.backwards()) {
       $('#back').attr('disabled', true);
     }
     $('#forth').attr('disabled', false);
@@ -68,7 +66,7 @@ $(document).ready(function () {
 
   $('#forth').click(function (e) {
     e.preventDefault();
-    if (!TPL.forwards()) {
+    if (!mainTpl.forwards()) {
       $('#forth').attr('disabled', true);
     }
     $('#back').attr('disabled', false);
@@ -100,14 +98,14 @@ $(document).ready(function () {
 
   $('#search input[type="submit"]').click(function (e) {
     e.preventDefault();
-    TPL.render('loading');
-    TPL.render('conversation', {repo: $('#search input[name="repo"]').val()});
+    mainTpl.render('loading');
+    mainTpl.render('conversation', {repo: $('#search input[name="repo"]').val()});
     $('#back').attr('disabled', false);
   });
 
   // BEGIN DEBUG
   if (RSN.isLogedIn) {
-    TPL.render('conversation', {repo: 'issuetracker/dctr___reason'});
+    mainTpl.render('conversation', {repo: 'issuetracker/dctr___reason'});
   }
   $('#debug').click(function (e) {
     e.preventDefault();

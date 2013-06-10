@@ -170,7 +170,7 @@ nav {
   width: 300px;
 }
 
-.js-overlay {
+.overlay {
   background-color: #000;
   opacity: .7;
   filter: alpha(opacity=70);
@@ -182,7 +182,7 @@ nav {
   z-index: 10;
 }
 
-.js-overoverlay {
+.overoverlay {
   z-index: 11;
   background-color: $base2;
   position: absolute;
@@ -193,7 +193,7 @@ nav {
   border-radius: 5px;
 }
 
-.js-overoverlay textarea {
+.overoverlay textarea {
   display: block;
   text-align: left;
   width: 100%;
@@ -201,8 +201,8 @@ nav {
 }
 
 .js-stopScrolling {
-  height: 100%;
-  overflow: hidden;
+  // height: 100%;
+  // overflow: hidden;
 }
 
 
@@ -222,7 +222,8 @@ svg {
   }
 
   marker {
-    fill: $base02;
+    fill: 000;
+    //fill: $base02;
   }
 
   .node:hover {

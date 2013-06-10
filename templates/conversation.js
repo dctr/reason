@@ -12,7 +12,7 @@ muteScript('conversation', function (render, data) {
   // Get list of branches == issues
   // - Title, time opened, time of last activity, opened/closed-status, tags
 
-  var addHTMLContent, commits, graphEngine, nodeTpl, repo, recurseResolve, registerEventHandlers, stageOne, stageTwo, stageThree;
+  var addHTMLContent, clickedCommit, commits, commitResponse, graphEngine, nodeTpl, repo, recurseResolve, registerEventHandlers, stageOne, stageTwo, stageThree;
 
   commits = {};
   data.repo = data.repo.split('/', 2);
@@ -22,7 +22,7 @@ muteScript('conversation', function (render, data) {
     commits[sha].htmlContent = htmlString;
   };
 
-  // Brainfuck! Async and recusive.
+  // Brainfuck! Async recusion.
   // @mvo: Thanks for the hint, try to understand it :-P
   recurseResolve = function (sha, callback) {
     // If this commit is known, it's subtree is known.
@@ -57,18 +57,59 @@ muteScript('conversation', function (render, data) {
   registerEventHandlers = function () {
     $('.node').click(function (e) {
       // if (e.ctrlKey || e.metaKey) {
-      //   // TODO: Multiple partent selection.
+      //   // TODO: Multiple partent selection. clickedCommit = []
+      //   //       Those multiple partents should form an array of parent.shas.
       // }
-      var $main, parent;
-      parent = e.currentTarget.id;
-      $main = $('div[role="main"]');
-      // TODO: Open input field, post text to commit with partent
-      //$main.addClass('js-stopScrolling');
-      $main.append('<div class="js-overlay"></div>');
-      $main.append('<div class="js-overoverlay"><textarea class="aligncenter"></textarea><br /><input type="button" value="cancel" />&nbsp;<input type="button" value="reply" /></div>');
-      //$main.removeClass('js-stopScrolling');
+      // TODO: push(id) if clicked is array
+      clickedCommit = e.currentTarget.id;
+      $('body').addClass('js-stopScrolling');
+      $('#overlay').show();
+    });
+
+    $('#overlay input[type="submit"]').click(function (e) {
+      e.preventDefault();
+      var newCommit;
+      newCommit = {};
+      // TODO: Iterate over all clickedCommit
+      $('#' + clickedCommit + ' .js-commitMetainfo').children(':input').each(function () {
+        var child = $(this);
+        newCommit[child.attr('name')] = child.attr('value');
+      });
+      newCommit.message = $('#overlay textarea').val();
+      // TODO: For multiple partents this will be an array
+      repo.commit(clickedCommit, newCommit.tree, newCommit.message, function (err, resSha) {
+        if (err) { throw err; }
+        if (commits[clickedCommit].head) {
+          console.log('Updating ' + commits[clickedCommit].head);
+          repo.updateHead(commits[clickedCommit].head, resSha, function (err) {
+            if (err) { throw err; }
+          });
+        } else {
+          repo.createRef(
+            {
+              'ref': 'refs/heads/' + resSha,
+              'sha': resSha
+            },
+            function (err) {
+              console.log('Creating branch');
+              if (err) { throw err; }
+            }
+          );
+        }
+
+      });
+      $('#overlay input[type="reset"]').click();
+    });
+
+    $('#overlay input[type="reset"]').click(function (e) {
+      clickedCommit = undefined;
+      $('body').removeClass('js-stopScrolling');
+      $('#overlay').hide();
     });
   };
+
+  // The program is divided into stages, to instead of nesting too many
+  // functions as callbacks, a stage-function is provided as callback.
 
   stageOne = function () {
     data.drawingAreaId = 'drawingArea';
@@ -86,18 +127,26 @@ muteScript('conversation', function (render, data) {
       var shas;
       // Get commit sha for each branch's head.
       shas = branches.map(function (branch, index) {
+        console.log(branch.name);
         return branch.commit.sha;
       });
       async.each(
         shas,
         recurseResolve,
-        stageTwo
+        function (err) {
+          if (err) { throw err; }
+          var i, len;
+          // Add branchname to the head commit.
+          for (i = 0, len = branches.length; i < len; i += 1) {
+            commits[branches[i].commit.sha].head = branches[i].name;
+          }
+          stageTwo();
+        }
       );
     });
   };
 
   stageTwo = function (err) {
-    if (err) { throw err; }
     var sha, i, len;
     graphEngine.addNodes(commits);
     for (sha in commits) {
