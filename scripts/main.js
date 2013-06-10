@@ -105,7 +105,7 @@ $(document).ready(function () {
 
   // BEGIN DEBUG
   if (RSN.isLogedIn) {
-    mainTpl.render('conversation', {repo: 'issuetracker/dctr___reason'});
+    mainTpl.render('conversation', {repo: 'issuetracker/ggc-one'});
   }
   $('#debug').click(function (e) {
     e.preventDefault();

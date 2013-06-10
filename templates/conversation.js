@@ -68,37 +68,42 @@ muteScript('conversation', function (render, data) {
 
     $('#overlay input[type="submit"]').click(function (e) {
       e.preventDefault();
-      var newCommit;
+      var done, newCommit;
       newCommit = {};
-      // TODO: Iterate over all clickedCommit
+      done = function () {
+        $('#overlay input[type="reset"]').click();
+        // TODO: redraw
+      };
+      newCommit.message = $('#overlay textarea').val();
+      // TODO: Iterate over all clickedCommit elements
       $('#' + clickedCommit + ' .js-commitMetainfo').children(':input').each(function () {
         var child = $(this);
         newCommit[child.attr('name')] = child.attr('value');
       });
-      newCommit.message = $('#overlay textarea').val();
       // TODO: For multiple partents this will be an array
-      repo.commit(clickedCommit, newCommit.tree, newCommit.message, function (err, resSha) {
+      repo.commit(clickedCommit, newCommit.tree, newCommit.message, function (err, newSha) {
         if (err) { throw err; }
+        // TODO: Only take one of the clickedCommits if muliple are used.
         if (commits[clickedCommit].head) {
           console.log('Updating ' + commits[clickedCommit].head);
-          repo.updateHead(commits[clickedCommit].head, resSha, function (err) {
+          repo.updateHead(commits[clickedCommit].head, newSha, function (err) {
             if (err) { throw err; }
+            done();
           });
         } else {
           repo.createRef(
             {
-              'ref': 'refs/heads/' + resSha,
-              'sha': resSha
+              'ref': 'refs/heads/' + newSha,
+              'sha': newSha
             },
             function (err) {
               console.log('Creating branch');
               if (err) { throw err; }
+              done();
             }
           );
         }
-
       });
-      $('#overlay input[type="reset"]').click();
     });
 
     $('#overlay input[type="reset"]').click(function (e) {
@@ -180,4 +185,13 @@ muteScript('conversation', function (render, data) {
   // ----------
 
   stageOne();
+
+  // function foo() {
+  //   console.log(clickedCommit);
+  //   setTimeout(function foocaller() {
+  //     foo();
+  //   }, 2000);
+  // }
+  // foo();
+
 });
