@@ -12,7 +12,7 @@ muteScript('conversation', function (render, data) {
   // Get list of branches == issues
   // - Title, time opened, time of last activity, opened/closed-status, tags
 
-  var addHTMLContent, clickedCommit, commits, commitResponse, graphEngine, nodeTpl, repo, recurseResolve, registerEventHandlers, stageOne, stageTwo, stageThree;
+  var addHTMLContent, commits, commitResponse, graphEngine, nodeTpl, repo, recurseResolve, registerEventHandlers, stageOne, stageTwo, stageThree;
 
   commits = {};
   data.repo = data.repo.split('/', 2);
@@ -21,6 +21,8 @@ muteScript('conversation', function (render, data) {
   addHTMLContent = function (htmlString, sha) {
     commits[sha].htmlContent = htmlString;
   };
+
+  // TODO: addSVGClass, removeSVGClass
 
   // Brainfuck! Async recusion.
   // @mvo: Thanks for the hint, try to understand it :-P
@@ -56,58 +58,70 @@ muteScript('conversation', function (render, data) {
 
   registerEventHandlers = function () {
     $('.node').click(function (e) {
-      // if (e.ctrlKey || e.metaKey) {
-      //   // TODO: Multiple partent selection. clickedCommit = []
-      //   //       Those multiple partents should form an array of parent.shas.
-      // }
-      // TODO: push(id) if clicked is array
-      clickedCommit = e.currentTarget.id;
+      var $node, oldClasses;
+      $node = $('#' + e.currentTarget.id);
+      oldClasses = $node.attr('class');
+      // If ctrl oder meta are hold, toggle selection state.
+      if (e.ctrlKey) {
+        // if (!$node.hasClass('js-selected'))
+        if (oldClasses.indexOf('js-selected') === -1) {
+          $node.attr('class', oldClasses + ' js-selected');
+        } else {
+          $node.attr('class', oldClasses.replace('js-selected', '').trim());
+        }
+        return;
+      }
+      if (oldClasses.indexOf('js-selected') === -1) {
+        $node.attr('class', oldClasses + ' js-selected');
+      }
       $('body').addClass('js-stopScrolling');
       $('#overlay').show();
     });
 
     $('#overlay input[type="submit"]').click(function (e) {
       e.preventDefault();
-      var done, newCommit;
-      newCommit = {};
+      var done, parents, headCommit;
+      parents = [];
       done = function () {
         $('#overlay input[type="reset"]').click();
         // TODO: redraw
       };
-      newCommit.message = $('#overlay textarea').val();
-      // TODO: Iterate over all clickedCommit elements
-      $('#' + clickedCommit + ' .js-commitMetainfo').children(':input').each(function () {
-        var child = $(this);
-        newCommit[child.attr('name')] = child.attr('value');
-      });
-      // TODO: For multiple partents this will be an array
-      repo.commit(clickedCommit, newCommit.tree, newCommit.message, function (err, newSha) {
-        if (err) { throw err; }
-        // TODO: Only take one of the clickedCommits if muliple are used.
-        if (commits[clickedCommit].head) {
-          console.log('Updating ' + commits[clickedCommit].head);
-          repo.updateHead(commits[clickedCommit].head, newSha, function (err) {
-            if (err) { throw err; }
-            done();
-          });
-        } else {
-          repo.createRef(
-            {
-              'ref': 'refs/heads/' + newSha,
-              'sha': newSha
-            },
-            function (err) {
-              console.log('Creating branch');
-              if (err) { throw err; }
-              done();
-            }
-          );
+      $('.js-selected input[name="sha"]').each(function () {
+        var currentSha = $(this).attr('value');
+        parents.push(currentSha);
+        if (commits[currentSha].head) {
+          headCommit = commits[currentSha].head;
         }
       });
+      // TODO: For multiple partents this will be an array
+      repo.commit(
+        parents,
+        $('.js-selected input[name="tree"]').first().attr('value'),
+        $('#overlay textarea').val(),
+        function (err, newSha) {
+          if (err) { throw err; }
+          // TODO: Only take one of the clickedCommits if muliple are used.
+          if (headCommit) {
+            console.log('Updating ' + headCommit);
+            repo.updateHead(headCommit, newSha, function (err) {
+              if (err) { throw err; }
+              done();
+            });
+          } else {
+            repo.createRef(
+              {'ref': 'refs/heads/' + newSha, 'sha': newSha},
+              function (err) {
+                console.log('Creating branch');
+                if (err) { throw err; }
+                done();
+              }
+            );
+          }
+        }
+      );
     });
 
     $('#overlay input[type="reset"]').click(function (e) {
-      clickedCommit = undefined;
       $('body').removeClass('js-stopScrolling');
       $('#overlay').hide();
     });
@@ -132,7 +146,8 @@ muteScript('conversation', function (render, data) {
       var shas;
       // Get commit sha for each branch's head.
       shas = branches.map(function (branch, index) {
-        console.log(branch.name);
+        // TODO: Add optional prefix filter
+        // if (branch.name contains prefix)
         return branch.commit.sha;
       });
       async.each(
@@ -187,7 +202,7 @@ muteScript('conversation', function (render, data) {
   stageOne();
 
   // function foo() {
-  //   console.log(clickedCommit);
+  //   console.log(clickedCommits);
   //   setTimeout(function foocaller() {
   //     foo();
   //   }, 2000);

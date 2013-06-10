@@ -1,6 +1,6 @@
 <p><%= message %></p>
-<p class="citeAuthor">&mdash; <a href="mailto:<%= author.email %>"><%= author.name %></a> @ <%= author.date %></p>
-<form action="#" class="hidden js-commitMetainfo">
+<p class="citeAuthor">&mdash; <%= author.name %> @ <%= author.date %></p>
+<form action="#" class="hidden">
   <input type="hidden" name="sha" value="<%= sha %>">
   <input type="hidden" name="tree" value="<%= tree.sha %>">
   <% if (typeof head !== 'undefined') { %>
