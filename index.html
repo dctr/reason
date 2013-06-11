@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <!--
-  This document and it's related template files use classes for styling.
+  This document and it's related template files use normal classes for styling.
   "js-"-prefixed classes have styles toggleable by scripts.
-  IDs are used as action hooks for scripts.
+  IDs are used as action hooks for scripts exclusively.
 -->
 <html lang="en">
   <head>
@@ -32,30 +32,21 @@
     <header>
       <nav>
         <ul>
-          <!-- TODO: Do layout first two spans left and middle. -->
-          <span>
-            <li><input type="button" value="Back" id="back"></li>
-            <li><input type="button" value="Forth" id="forth"></li>
-          </span>
-          <span>
-            <li><a href="" id="home" class="selected">Home</a></li>
-            <li class="js-loggedIn">
-              <form action="#" id="search">
-                <input type="text" name="repo" placeholder="owner/repository" autofocus>
-                <input type="submit" value="View Issues">
-              </form>
-            </li>
-          </span>
-          <span class="floatright">
-            <li class="js-loggedOut">
-              <form action="#" id="login">
-                <input type="text" name="username" placeholder="Username" autofocus>
-                <input type="password" name="password" placeholder="Password">
-                <input type="submit" value="Login">
-              </form>
-            </li>
-            <li class="js-loggedIn"><input type="button" value="Logout" id="logout"></li>
-          </span>
+          <li><a href="" id="home" class="selected">Home</a></li>
+          <li class="js-loggedIn">
+            <form action="#" id="search">
+              <input type="text" name="repo" placeholder="owner/repository" autofocus>
+              <input type="submit" value="View Issues">
+            </form>
+          </li>
+          <li class="floatright js-loggedOut">
+            <form action="#" id="login">
+              <input type="text" name="username" placeholder="Username" autofocus>
+              <input type="password" name="password" placeholder="Password">
+              <input type="submit" value="Login">
+            </form>
+          </li>
+          <li class="floatright js-loggedIn"><input type="button" value="Logout" id="logout"></li>
         </ul>
       </nav>
     </header>
@@ -70,11 +61,6 @@
         </form>
       </div>
     </div>
-    <footer>
-      &copy; 2013 <a href="https://github.com/dctr">dctr</a>
-      <!-- BEGIN DEBUG -->
-      <input type="button" value="Clear" id="debug">
-      <!-- END DEBUG -->
-    </footer>
+    <footer>&copy; 2013 <a href="https://github.com/dctr">dctr</a></footer>
   </body>
 </html>

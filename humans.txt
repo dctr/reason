@@ -13,7 +13,7 @@ From: University of Trier, Germany
 
 
 /* SITE */
-Last update: 2013-03-27
+Last update: 2013-07-01
 Standards: HTML5, CSS3, JavaScript
-Components: async, base64, github, jQuery, underscore; normalize.css, Solarized Color Scheme
+Components: async, base64, d3, dagre, github, jQuery, underscore; normalize.css, HTML5 Boilerplate, Solarized Color Scheme
 Tools: ZSH, Sublime Text, Firefox
