@@ -98,7 +98,6 @@ $(document).ready(function () {
 
   $('#search input[type="submit"]').click(function (e) {
     e.preventDefault();
-    mainTpl.render('loading');
     mainTpl.render('conversation', {repo: $('#search input[name="repo"]').val()});
     $('#back').attr('disabled', false);
   });
