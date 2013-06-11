@@ -92,8 +92,7 @@ muteScript('conversation', function (render, data) {
       var done, parents, headCommit;
       parents = [];
       done = function () {
-        $('#overlay input[type="reset"]').click();
-        // TODO: redraw
+        window.location.reload();
       };
       $('.js-selected input[name="sha"]').each(function () {
         var currentSha = $(this).attr('value');
@@ -154,14 +153,13 @@ muteScript('conversation', function (render, data) {
       rx: '5px',
       ry: '5px'
     });
-
     // Get all heads to start from.
     repo.getBranches(function (error, branches) {
       if (error) { addError(error); }
       var shas;
       // Get commit sha for each branch's head.
       shas = branches.map(function (branch, index) {
-        // TODO: Add optional prefix filter
+        // NICETOHAVE: Add optional prefix filter
         // if (branch.name contains prefix)
         // prefix also has to be added when new branch is created!!
         return branch.commit.sha;
