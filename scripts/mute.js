@@ -6,6 +6,7 @@
  *
  * A caching, client-side template engine based on Underscore's template().
  * This script exports the engine to a browsers global mute object.
+ * TODO: https://developer.mozilla.org/en-US/docs/Web/Guide/DOM/Manipulating_the_browser_history?redirectlocale=en-US&redirectslug=DOM%2FManipulating_the_browser_history
  */
 (function (modulename) {
   'use strict';

@@ -22,8 +22,12 @@ $(document).ready(function () {
   // Program
   // ----------
 
-  // Select home per default.
   $('#overlay').hide();
+
+  // TODO: Render from search query
+  console.log(decodeURIComponent(window.location.search).slice(1).split('='));
+
+  // Select home per default.
   mainTpl.render('home');
   $('.js-loggedIn').hide();
   $('.js-loggedOut').hide();
@@ -53,23 +57,6 @@ $(document).ready(function () {
     $('nav a').attr('class', '');
     $(this).attr('class', 'selected');
     mainTpl.render($(this).attr('id'));
-    $('#back').attr('disabled', false);
-  });
-
-  $('#back').click(function (e) {
-    e.preventDefault();
-    if (!mainTpl.backwards()) {
-      $('#back').attr('disabled', true);
-    }
-    $('#forth').attr('disabled', false);
-  });
-
-  $('#forth').click(function (e) {
-    e.preventDefault();
-    if (!mainTpl.forwards()) {
-      $('#forth').attr('disabled', true);
-    }
-    $('#back').attr('disabled', false);
   });
 
   $('#login input[type="submit"]').click(function (e) {
@@ -96,22 +83,8 @@ $(document).ready(function () {
     window.location.reload();
   });
 
-  $('#search input[type="submit"]').click(function (e) {
-    e.preventDefault();
-    mainTpl.render('conversation', {repo: $('#search input[name="repo"]').val()});
-    $('#back').attr('disabled', false);
-  });
-
   // BEGIN DEBUG
   if (RSN.isLogedIn) {
     mainTpl.render('conversation', {repo: 'issuetracker/ggc-one'});
   }
-  $('#debug').click(function (e) {
-    e.preventDefault();
-    mute.clear();
-    RSN.clear();
-    window.location.reload();
-  });
-  // END DEBUG
-
 });
