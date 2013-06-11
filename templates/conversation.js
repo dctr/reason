@@ -1,10 +1,6 @@
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
 /*global $, _, GHB, GPH, async, mute, muteScript, console */
 
-// TODO:
-// - Assign issues to milestones.
-// - Allow votings for comments
-
 muteScript('conversation', function (render, data) {
   'use strict';
 
@@ -12,35 +8,45 @@ muteScript('conversation', function (render, data) {
   // Get list of branches == issues
   // - Title, time opened, time of last activity, opened/closed-status, tags
 
-  var addHTMLContent, commits, commitResponse, graphEngine, nodeTpl, repo, recurseResolve, registerEventHandlers, stageOne, stageTwo, stageThree;
+  var addError, addHTMLContent, addSVGClass, commits, commitResponse, graphEngine, nodeTpl, repo, recurseResolve, registerEventHandlers, removeSVGClass, stageOne, stageTwo, stageThree;
 
   commits = {};
   data.repo = data.repo.split('/', 2);
   repo = GHB.getRepo(data.repo[0], data.repo[1]);
 
+  addError = function (e) {
+    console.log('ERROR in conversation.js');
+    console.log(e);
+  };
+
   addHTMLContent = function (htmlString, sha) {
     commits[sha].htmlContent = htmlString;
   };
 
-  // TODO: addSVGClass, removeSVGClass
+  addSVGClass = function ($selection, className) {
+    var classes = $selection.attr('class');
+    // if (!$selection.hasClass('js-selected'))
+    if (classes.indexOf(className) === -1) {
+      $selection.attr('class', classes + ' ' + className);
+    }
+  };
 
   // Brainfuck! Async recusion.
   // @mvo: Thanks for the hint, try to understand it :-P
   recurseResolve = function (sha, callback) {
-    // If this commit is known, it's subtree is known.
-    // Thus we can exit the recursion tree by calling the callback (aka return).
+    // If this commit is known, it's subtree is known too.
     if (commits[sha]) {
+      // Exit recursion tree.
       callback();
       return;
     }
     repo.getCommit(sha, function (error, commit) {
       if (error) {
+        // Exit recursion tree, aborting the surrounding recursion.
         callback(error);
         return;
       }
-      // Store this commit in a global database.
       commits[sha] = commit;
-      // Get the shas of all of it's parents.
       var parentShas = commit.parents.map(function (parent, index) {
         return parent.sha;
       });
@@ -49,6 +55,7 @@ muteScript('conversation', function (render, data) {
         // The recursive call will receive a new callback for it's async.each.
         recurseResolve,
         function (err) {
+          // Exit recursion tree.
           // If no error occured, err will evaluate to false.
           callback(err);
         }
@@ -57,6 +64,7 @@ muteScript('conversation', function (render, data) {
   };
 
   registerEventHandlers = function () {
+    // Selecting nodes and opening up the reply overlay.
     $('.node').click(function (e) {
       var $node, oldClasses;
       $node = $('#' + e.currentTarget.id);
@@ -65,19 +73,20 @@ muteScript('conversation', function (render, data) {
       if (e.ctrlKey) {
         // if (!$node.hasClass('js-selected'))
         if (oldClasses.indexOf('js-selected') === -1) {
-          $node.attr('class', oldClasses + ' js-selected');
+          addSVGClass($node, 'js-selected');
         } else {
-          $node.attr('class', oldClasses.replace('js-selected', '').trim());
+          removeSVGClass($node, 'js-selected');
         }
         return;
       }
       if (oldClasses.indexOf('js-selected') === -1) {
-        $node.attr('class', oldClasses + ' js-selected');
+        addSVGClass($node, 'js-selected');
       }
       $('body').addClass('js-stopScrolling');
       $('#overlay').show();
     });
 
+    // Submitting data from reply overlay.
     $('#overlay input[type="submit"]').click(function (e) {
       e.preventDefault();
       var done, parents, headCommit;
@@ -93,26 +102,22 @@ muteScript('conversation', function (render, data) {
           headCommit = commits[currentSha].head;
         }
       });
-      // TODO: For multiple partents this will be an array
       repo.commit(
-        parents,
-        $('.js-selected input[name="tree"]').first().attr('value'),
-        $('#overlay textarea').val(),
+        parents, // Parent(s)
+        $('.js-selected input[name="tree"]').first().attr('value'), // Tree
+        $('#overlay textarea').val(), // Commit message
         function (err, newSha) {
-          if (err) { throw err; }
-          // TODO: Only take one of the clickedCommits if muliple are used.
+          if (err) { addError(err); }
           if (headCommit) {
-            console.log('Updating ' + headCommit);
             repo.updateHead(headCommit, newSha, function (err) {
-              if (err) { throw err; }
+              if (err) { addError(err); }
               done();
             });
           } else {
             repo.createRef(
               {'ref': 'refs/heads/' + newSha, 'sha': newSha},
               function (err) {
-                console.log('Creating branch');
-                if (err) { throw err; }
+                if (err) { addError(err); }
                 done();
               }
             );
@@ -121,10 +126,20 @@ muteScript('conversation', function (render, data) {
       );
     });
 
+    // Reset the reply overlay on reset click (and after submit).
     $('#overlay input[type="reset"]').click(function (e) {
       $('body').removeClass('js-stopScrolling');
       $('#overlay').hide();
     });
+  };
+
+  removeSVGClass = function ($selection, className) {
+    var classes = $selection.attr('class');
+    // if ($selection.hasClass('js-selected'))
+    if (classes.indexOf(className) !== -1) {
+      classes.replace(className, '').trim();
+      $selection.attr('class', classes);
+    }
   };
 
   // The program is divided into stages, to instead of nesting too many
@@ -142,7 +157,7 @@ muteScript('conversation', function (render, data) {
 
     // Get all heads to start from.
     repo.getBranches(function (error, branches) {
-      if (error) { throw error; }
+      if (error) { addError(error); }
       var shas;
       // Get commit sha for each branch's head.
       shas = branches.map(function (branch, index) {
@@ -155,7 +170,7 @@ muteScript('conversation', function (render, data) {
         shas,
         recurseResolve,
         function (err) {
-          if (err) { throw err; }
+          if (err) { addError(err); }
           var i, len;
           // Add branchname to the head commit.
           for (i = 0, len = branches.length; i < len; i += 1) {

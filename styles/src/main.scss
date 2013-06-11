@@ -193,6 +193,22 @@ nav {
   margin-bottom: 0;
 }
 
+.errors {
+  border-bottom: $border;
+  @include rebase($red,$base3,$base03);
+  ul, li {
+    display: block;
+  }
+  ul {
+    margin-top: 0;
+    padding-top: $vmargin / 2;
+    margin-bottom: 0;
+  }
+}
+ul.error, li.error {
+  display: block;
+}
+
 .floatright {
   float: right;
 }

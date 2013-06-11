@@ -1,6 +1,6 @@
 /*jslint browser: true, indent: 2, nomen: true, todo: true */
 /*global _, TPL, USR, Github, console */
-
+// TODO: Merge into main.js
 /**
  * Functionality exported via the global RSN object
  *

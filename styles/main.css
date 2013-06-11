@@ -936,6 +936,27 @@ nav a.selected, nav a:hover {
   text-align: right;
   margin-bottom: 0; }
 
+.errors {
+  border-bottom: 1px solid #002b36;
+  background-color: #fdf6e3;
+  color: #dc322f; }
+  .errors * {
+    color: #dc322f; }
+  .errors h1, .errors h2, .errors h3, .errors h4, .errors h5, .errors h6 {
+    color: #dc322f;
+    border-color: #dc322f; }
+  .errors a, .errors a:active, .errors a:visited {
+    color: #002b36; }
+  .errors ul, .errors li {
+    display: block; }
+  .errors ul {
+    margin-top: 0;
+    padding-top: 10px;
+    margin-bottom: 0; }
+
+ul.error, li.error {
+  display: block; }
+
 .floatright {
   float: right; }
 
