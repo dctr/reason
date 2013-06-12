@@ -6,7 +6,7 @@
  *
  * A caching, client-side template engine based on Underscore's template().
  * This script exports the engine to a browsers global mute object.
- * TODO: https://developer.mozilla.org/en-US/docs/Web/Guide/DOM/Manipulating_the_browser_history?redirectlocale=en-US&redirectslug=DOM%2FManipulating_the_browser_history
+ * TODO: Error Callback
  */
 (function (modulename) {
   'use strict';
@@ -43,35 +43,15 @@
    * @return {object}          A mute instance for the CSS selector.
    */
   constructor = function (selector, ejsDir, jsDir) {
-    var that, applyTemplate, back, currentContent, forth, noBackForth, redirects, renderCompiledTemplate;
+    var that, applyTemplate, currentContent, mutePushState, noBackForth, redirects, renderCompiledTemplate;
 
     if (typeof ejsDir !== 'string' ||
         typeof jsDir  !== 'string') {
       throw {name: 'MuteError', message: 'Invalid call of mute().'};
     }
 
-    back = [];
-    forth = [];
     redirects = {};
 
-    // Compiles memoized templates.
-    renderCompiledTemplate = function (template, data) {
-      if (typeof data === 'function') {
-        data();
-        return;
-      }
-      cachedScripts[template](
-        function (processedData, args) {
-          if (currentContent !== back[back.length - 1]) {
-            // TODO: back and forth not necessary, if rendering to function.
-            back.push(currentContent);
-          }
-          currentContent = cachedTemplates[template](processedData);
-          applyTemplate(currentContent, args);
-        },
-        data
-      );
-    };
 
     if (typeof selector === 'string') {
       applyTemplate = function (content) {
@@ -83,37 +63,34 @@
       };
     }
 
+    // TODO: Make history
+    // if (typeof window !== 'undefined') {
+    //   mutePushState = window.pushState;
+    // } else {
+    //   mutePushState = function () {};
+    // }
+
+    // Compiles memoized templates.
+    renderCompiledTemplate = function (template, data) {
+      if (typeof data === 'function') {
+        data();
+        return;
+      }
+      cachedScripts[template](
+        function (processedData, args) {
+          // if (currentContent !== back[back.length - 1]) {
+          //   // TODO: back and forth not necessary, if rendering to function.
+          //   back.push(currentContent);
+          // }
+          // currentContent = cachedTemplates[template](processedData);
+          applyTemplate(currentContent, args);
+        },
+        data
+      );
+    };
+
 
     that = {};
-
-    // TODO: Is it possible to use the browser (e.g. document.history.push/pop)?
-    /**
-     * Replace the current page with the previous one.
-     * @todo Can you use the browsers history for single page apps?
-     * @return {number} The number of pages in the backwards log.
-     */
-    that.backwards = function () {
-      var upcomming = back.pop();
-      if (!upcomming) { return -1; }
-      forth.push(currentContent);
-      currentContent = upcomming;
-      applyTemplate(currentContent);
-      return back.length;
-    };
-
-    /**
-     * Replace the current page with the previous one after a backwards.
-     * @todo Can you use the browsers history for single page apps?
-     * @return {number} The number of pages in the forwards log.
-     */
-    that.forwards = function () {
-      var upcomming = forth.pop();
-      if (!upcomming) { return -1; }
-      back.push(currentContent);
-      currentContent = upcomming;
-      applyTemplate(currentContent);
-      return forth.length;
-    };
 
     /**
      * Render a template

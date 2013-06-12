@@ -83,7 +83,7 @@ muteScript('conversation', function (render, data) {
         addSVGClass($node, 'js-selected');
       }
       $('body').addClass('js-stopScrolling');
-      $('#overlay').show();
+      $('#overlay').removeClass('hidden');
     });
 
     // Submitting data from reply overlay.
@@ -128,8 +128,10 @@ muteScript('conversation', function (render, data) {
     // Reset the reply overlay on reset click (and after submit).
     $('#overlay input[type="reset"]').click(function (e) {
       $('body').removeClass('js-stopScrolling');
-      $('#overlay').hide();
+      $('#overlay').addClass('hidden');
     });
+
+    // NICETOHAVE: Press escape to hide overlay.
   };
 
   removeSVGClass = function ($selection, className) {
