@@ -72,6 +72,7 @@
 
     // Compiles memoized templates.
     renderCompiledTemplate = function (template, data) {
+      // If data is a render prefetch callback.
       if (typeof data === 'function') {
         data();
         return;
@@ -83,7 +84,8 @@
           //   back.push(currentContent);
           // }
           // currentContent = cachedTemplates[template](processedData);
-          applyTemplate(currentContent, args);
+          // applyTemplate(currentContent, args);
+          applyTemplate(cachedTemplates[template](processedData), args);
         },
         data
       );
@@ -104,8 +106,6 @@
       if (!/^[A-Za-z0-9]*$/.test(template) ||
           (data && typeof data !== 'object' && typeof data !== 'function')
           ) {
-        console.log(typeof data);
-        console.log(template);
         throw {
           name: 'MuteError',
           message: 'Invalid call to render().'
