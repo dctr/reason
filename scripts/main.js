@@ -12,40 +12,38 @@
 $(document).ready(function () {
   'use strict';
 
-  // -----
-  // Settings
-  // ----------
+  var mainTpl, i, len, pair, searchObject, searchPairs;
 
-  var mainTpl = mute('div[role="main"]', '/templates', '/templates');
 
   // -----
-  // Program
+  // Render requested page
   // ----------
 
-  $('#overlay').hide();
-
-  // TODO: Render from search query
-  console.log(decodeURIComponent(window.location.search).slice(1).split('='));
-
-  // Select home per default.
-  mainTpl.render('home');
-  $('.js-loggedIn').hide();
-  $('.js-loggedOut').hide();
-  $('#back').attr('disabled', true);
-  $('#forth').attr('disabled', true);
-
-  // Let the logout page redirect to home.
-  mainTpl.setRedirect('logout', 'home');
+  searchPairs = window.location.search.substring(1).split("&");
+  searchObject = {};
+  for (i = 0, len = searchPairs.length; i < len; i += 1) {
+    if (searchPairs[i] !== "") {
+      pair = searchPairs[i].split("=");
+      searchObject[window.decodeURIComponent(pair[0])] = window.decodeURIComponent(pair[1]);
+    }
+  }
+  if (!searchObject.page) {
+    // Home is default page.
+    searchObject.page = 'home';
+  }
 
   RSN.resumeSession(function (success) {
     if (success) {
-      $('.js-loggedIn').show();
-      $('.js-loggedOut').hide();
+      $('.js-loggedIn').removeClass('hidden');
+      $('.js-loggedOut').addClass('hidden');
     } else {
-      $('.js-loggedIn').hide();
-      $('.js-loggedOut').show();
+      $('.js-loggedIn').addClass('hidden');
+      $('.js-loggedOut').removeClass('hidden');
     }
   });
+
+  mainTpl = mute('div[role="main"]', '/templates', '/templates');
+  mainTpl.render(searchObject.page, searchObject);
 
   // -----
   // Register event handlers
@@ -54,9 +52,16 @@ $(document).ready(function () {
   // Functionality for the nav bar.
   $('nav a').click(function (e) {
     e.preventDefault();
-    $('nav a').attr('class', '');
-    $(this).attr('class', 'selected');
+    // $('nav a').removeClass('selected');
+    // $(this).addClass('selected');
     mainTpl.render($(this).attr('id'));
+  });
+
+  $('#conversation input[type="submit"]').click(function (e) {
+    e.preventDefault();
+    mainTpl.render('conversation', {
+      repo: $('#conversation input[name="repo"]').val()
+    });
   });
 
   $('#login input[type="submit"]').click(function (e) {
@@ -66,10 +71,10 @@ $(document).ready(function () {
       $('#login input[name="password"]').val(),
       function (loggedIn) {
         if (loggedIn) {
-          $('.js-loggedIn').show();
-          $('.js-loggedOut').hide();
+          $('.js-loggedIn').removeClass('hidden');
+          $('.js-loggedOut').addClass('hidden');
         } else {
-          window.alert('Login failure.');
+          window.alert('Login failed.');
         }
       }
     );
@@ -78,13 +83,16 @@ $(document).ready(function () {
   $('#logout').click(function (e) {
     e.preventDefault();
     RSN.logout();
-    $('.js-loggedIn').hide();
-    $('.js-loggedOut').show();
+    $('.js-loggedIn').addClass('hidden');
+    $('.js-loggedOut').removeClass('hidden');
     window.location.reload();
   });
 
+  // Let the logout page redirect to home.
+  mainTpl.setRedirect('logout', 'home');
+
   // BEGIN DEBUG
-  if (RSN.isLogedIn) {
-    mainTpl.render('conversation', {repo: 'issuetracker/ggc-one'});
-  }
+  // if (RSN.isLogedIn) {
+  //   mainTpl.render('conversation', {repo: 'issuetracker/ggc-one'});
+  // }
 });

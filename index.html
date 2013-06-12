@@ -33,20 +33,20 @@
       <nav>
         <ul>
           <li><a href="" id="home" class="selected">Home</a></li>
-          <li class="js-loggedIn">
-            <form action="?" id="search">
-              <input type="text" name="conversation" placeholder="owner/repository" autofocus>
+          <li class="js-loggedIn hidden">
+            <form action="?" id="conversation">
+              <input type="text" name="repo" placeholder="owner/repository" autofocus>
               <input type="submit" value="View Issues">
             </form>
           </li>
-          <li class="floatright js-loggedOut">
+          <li class="floatright js-loggedOut hidden">
             <form action="?" id="login">
               <input type="text" name="username" placeholder="Username" autofocus>
               <input type="password" name="password" placeholder="Password">
               <input type="submit" value="Login">
             </form>
           </li>
-          <li class="floatright js-loggedIn"><input type="button" value="Logout" id="logout"></li>
+          <li class="floatright js-loggedIn hidden"><input type="button" value="Logout" id="logout"></li>
         </ul>
       </nav>
     </header>
@@ -54,7 +54,7 @@
     </div>
     <div role="main">
     </div>
-    <div id="overlay">
+    <div id="overlay" class="hidden">
       <div class="overlay"></div>
       <div class="overoverlay">
         <form action="#">
