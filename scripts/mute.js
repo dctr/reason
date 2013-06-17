@@ -1,218 +1,208 @@
-/*jslint browser: true, evil: true, indent: 2, nomen: true, todo: true */
-/*global _, console */
+/*jslint browser: true, es5: true, indent: 2, node: true, nomen: true, todo: true */
+/*global _, define, console */
 
 /**
- * Mute - Minimal Underscore.js-based Template Engine
+ * Module boilerplate.
  *
- * A caching, client-side template engine based on Underscore's template().
- * This script exports the engine to a browsers global mute object.
- * TODO: Error Callback
+ * This boilerplate samples a module that provides a constructor function with
+ * private variables through closure which is invoked without a new keyword.
+ * In addition, it contains JSLint asignments following the author's
+ * coding conventions.
+ *
+ * Please replace MODULENAME in the last line.
+ *
+ * @author David Christ <david.christ@uni-trier.de>
+ * @version 0.1
  */
 (function (modulename) {
   'use strict';
 
-  var constructor, cachedScripts, muteScript, cachedTemplates, renderCompiledTemplate;
+  var constructor, parallel;
 
-  cachedScripts = {};
-  cachedTemplates = {};
-
-  /**
-   * Cache a script with a given name
-   * @param  {string}   template The name of the template.
-   * @param  {function} script   The function to be executed on template execution.
-   */
-  muteScript = function (template, script) {
-    if (!/^[A-Za-z0-9]*$/.test(template) ||
-        typeof script !== 'function') {
-      throw {
-        name: 'MuteError',
-        message: 'Invalid call to muteScript().'
-      };
+  // From ypocat / async-mini
+  parallel = function (funcs, cb) {
+    // TODO: Refactor for arrays only
+    var c, errs, has_errs, k, next, ress;
+    var global = global || {};
+    var process = process || {};
+    next = global.setImmediate || process.nextTick || setTimeout;
+    c = typeof funcs === 'object' ?
+        Object.keys(funcs).length :
+        funcs.length;
+    errs = {};
+    has_errs = false;
+    ress = {};
+    if (!c) { cb(null, ress); }
+    for (k in funcs) {
+      (function () {
+        var f, id;
+        f = funcs[k];
+        id = k;
+        next(function () {
+          f(function (err, res) {
+            if (err) {
+              errs[id] = err.stack || err;
+              has_errs = true;
+            }
+            if (res !== undefined) { ress[id] = res; }
+            c -= 1;
+            if (c === 0) { cb(has_errs ? errs : null, ress); }
+          });
+        });
+      }());
     }
-    cachedScripts[template] = script;
   };
 
-  /**
-   * Function to export as global mute object
-   *
-   * This is a function creating a template engine instance for a certain CSS selector.
-   * It is enrichted by "static" functions below.
-   * @param  {string} selector A CSS selector defining the Element which's content should be replaced by a template.
-   * @param  {string} ejsDir   URL path which contains the EJS files.
-   * @param  {string} jsDir    URL path which contains the JS files.
-   * @return {object}          A mute instance for the CSS selector.
-   */
-  constructor = function (selector, ejsDir, jsDir) {
-    var that, applyTemplate, currentContent, mutePushState, noBackForth, redirects, renderCompiledTemplate;
+  // -----
+  // Private Static
+  // ----------
 
-    if (typeof ejsDir !== 'string' ||
-        typeof jsDir  !== 'string') {
-      throw {name: 'MuteError', message: 'Invalid call of mute().'};
-    }
+  constructor = function (ejsDir, jsDir, target) {
+    var that, cache, cachedEjs, cachedScripts, cachedTemplates, muteScript, renderCompiledTemplate, request, resolve;
 
-    redirects = {};
+    // -----
+    // Validate input
+    // ----------
+
+    ejsDir = ejsDir || '/templates';
+    jsDir = jsDir || '/templates';
+
+    cachedEjs = {};
+    cachedScripts = {};
+    cachedTemplates = {};
 
 
-    if (typeof selector === 'string') {
-      applyTemplate = function (content) {
-        document.querySelector(selector).innerHTML = content;
-      };
-    } else if (typeof selector === 'function') {
-      applyTemplate = function (content, args) {
-        selector(content, args);
-      };
-    }
+    // -----
+    // Private non-static
+    // ----------
 
-    // TODO: Make history
-    // if (typeof window !== 'undefined') {
-    //   mutePushState = window.pushState;
-    // } else {
-    //   mutePushState = function () {};
-    // }
+    // Cache the raw ejs in cachedEjs and the script in cachedScripts.
+    cache = function (tplName, cb) {
+      if (cachedEjs[tplName]) { cb(); }
+      parallel(
+        [
+          function (pcb) {
+            request(ejsDir + '/' + tplName + '.ejs', pcb);
+          },
+          function (pcb) {
+            request(jsDir + '/' + tplName + '.js', pcb);
+          }
+        ],
+        function (err, ress) {
+          if (err) { return cb(err); }
+          cachedEjs[tplName] = ress[0];
+          // NOTE: Scripts cache themselves through a call to muteScript.
+          eval(ress[1].trim() + ';');
+          cb();
+        }
+      );
+    };
 
-    // Compiles memoized templates.
-    renderCompiledTemplate = function (template, data) {
-      // If data is a render prefetch callback.
-      if (typeof data === 'function') {
-        data();
-        return;
-      }
-      cachedScripts[template](
-        function (processedData, args) {
-          // if (currentContent !== back[back.length - 1]) {
-          //   // TODO: back and forth not necessary, if rendering to function.
-          //   back.push(currentContent);
-          // }
-          // currentContent = cachedTemplates[template](processedData);
-          // applyTemplate(currentContent, args);
-          applyTemplate(cachedTemplates[template](processedData), args);
+    muteScript = function (tplName, func) {
+      cachedScripts[tplName] = func;
+    };
+
+    renderCompiledTemplate = function (tplName, tplArgs, cb, cbArgs) {
+      cachedScripts[tplName](
+        function (processedTplArgs) {
+          var html;
+          html = cachedTemplates[tplName](processedTplArgs);
+          if (typeof target !== 'undefined') { document.querySelector(target).innerHTML = html; }
+          cb(undefined, html, cbArgs);
         },
-        data
+        tplArgs
+      );
+    };
+
+    request = function (url, cb) {
+      var xhr;
+      // NOTE: A 304 from the server results in a client-side 200.
+      xhr = new XMLHttpRequest();
+      xhr.open('GET', url);
+      xhr.onload = function (e) {
+        if (this.status !== 200) {
+          cb(new Error('Failed to retrieve ' + url + '.'));
+        } else {
+          cb(undefined, this.response);
+        }
+      };
+      xhr.send();
+    };
+
+    resolve = function (ejs, cb) {
+      var funcs, match, pattern, tplName;
+      funcs = [];
+      // match "<% include tplName %>"
+      pattern = /<%\s*include\s*(.*?)\s*%>/g;
+      while (true) {
+        match = pattern.exec(ejs);
+        if (!match) { break; }
+        // [0] Full match string
+        // [1] tplName (Capture group 1)
+        // Match is an object reference, thus the needed content has to be copied as the objet mutates.
+        tplName = match[1];
+        funcs.push(function (pcb) {
+          cache(tplName, pcb);
+        });
+      }
+      parallel(
+        funcs,
+        function (err, ress) {
+          if (err) { return cb(err); }
+          var resEjs;
+          resEjs = ejs.replace(
+            pattern,
+            function (match, tplName) {
+              return cachedEjs[tplName];
+            }
+          );
+          cb(undefined, resEjs);
+        }
       );
     };
 
 
+    // -----
+    // Public non-static
+    // ----------
+
     that = {};
 
-    /**
-     * Render a template
-     * @param  {string}   template Template name (also filename without extension).
-     * @param  {object}   data     A data object which will be present within the corresponding script and the template.
-     * @param  {function} data     A prefetch-callback which will be called, if the XMLHttpRequests to template are finished. No rendering done!
-     */
-    that.render = function (template, data) {
-      var ex, reqTpl;
-
-      if (!/^[A-Za-z0-9]*$/.test(template) ||
-          (data && typeof data !== 'object' && typeof data !== 'function')
-          ) {
-        throw {
-          name: 'MuteError',
-          message: 'Invalid call to render().'
-        };
+    that.render = function (tplName, tplArgs, cb, cbArgs) {
+      // TODO: Validate input
+      if (cachedTemplates[tplName]) {
+        return renderCompiledTemplate(tplName, tplArgs, cb, cbArgs);
       }
-      data = data || {};
-      if (redirects[template]) {
-        template = redirects[template];
-      }
-      ex = {
-        name: 'MuteError',
-        message: 'Could not retrieve template.'
-      };
-
-      // If a cached template exists, the corresponding script is also cached.
-      if (cachedTemplates[template]) {
-        renderCompiledTemplate(template, data);
-      } else {
-        // TODO: Replace with native functions.
-        reqTpl = new XMLHttpRequest();
-        reqTpl.open('GET', ejsDir + '/' + template + '.ejs');
-        reqTpl.onload = function (e) {
-          var reqScr;
-          // NOTE: A 304 from the server results in a client-side 200.
-          // TODO: Handle errors.
-          if (this.status !== 200) { throw ex; }
-          cachedTemplates[template] = _.template(this.response);
-          reqScr = new XMLHttpRequest();
-          reqScr.open('GET', jsDir + '/' + template + '.js');
-          reqScr.onload = function (e) {
-            if (this.status !== 200) { throw ex; }
-            eval(this.response.trim() + ';');
-            renderCompiledTemplate(template, data);
-          };
-          reqScr.send();
-        };
-        reqTpl.send();
-      }
-    };
-
-    /**
-     * Sets an alias for a certain template
-     * @param  {string} source The templates name.
-     * @param  {string} target Which template should be displayed instead
-     */
-    that.setRedirect = function (source, target) {
-      if (!/^[A-Za-z0-9]*$/.test(source) ||
-          !/^[A-Za-z0-9]*$/.test(target)) {
-        throw {
-          name: 'MuteError',
-          message: 'Invalid call to setRedirect().'
-        };
-      }
-      redirects[source] = target;
+      cache(tplName, function (err) {
+        if (err) { return cb(err, undefined, cbArgs); }
+        resolve(cachedEjs[tplName], function (err, res) {
+          cachedTemplates[tplName] = _.template(res);
+          renderCompiledTemplate(tplName, tplArgs, cb, cbArgs);
+        });
+      });
     };
 
     return that;
   };
 
-  /**
-   * Convert <br>, <br/>, and <br /> to \n
-   * @param  {string} str The source string.
-   * @return {string}     The processed string
-   */
-  constructor.br2nl = function (str) {
-    if (typeof str !== 'string') {
-      throw {
-        name: 'MuteError',
-        message: 'Invalid call to br2nl().'
-      };
-    }
-    return str.replace(/<br\s*\/?>/mg, '\n');
-  };
 
-  /**
-   * Clear the template and script cache
-   *
-   * Usefull, if the templates/scripts change server-side.
-   */
-  constructor.clear = function () {
-    cachedScripts = {};
-    cachedTemplates = {};
-  };
+  // -----
+  // Public Static
+  // ----------
 
-  /**
-   * Convert \n to <br />
-   *
-   * Using self-closing br tag to be compatible with both HTML5 _and_ XHTML.
-   * @param  {string} str The source string.
-   * @return {string}     The processed string
-   */
-  constructor.nl2br = function (str) {
-    if (typeof str !== 'string') {
-      throw {
-        name: 'MuteError',
-        message: 'Invalid call to nl2br().'
-      };
-    }
-    var breakTag = '<br />';
-    return str.replace(
-      /(\r\n|\n\r|\r|\n)/mg,
-      breakTag + '$1'
-    );
-  };
 
-  /**
-   * Export the global mute object.
-   */
-  window[modulename] = constructor;
+  // -----
+  // Exporting
+  // ----------
+
+  // To Node.js
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = constructor;
+  // To AMD / Require.js
+  } else if (typeof define !== 'undefined' && define.amd) {
+    define(modulename, [], function () { return constructor; });
+  // To browser's global object
+  } else {
+    window[modulename] = constructor;
+  }
 }('mute'));
