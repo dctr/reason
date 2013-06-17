@@ -42,7 +42,7 @@ $(document).ready(function () {
     }
   });
 
-  mainTpl = mute('div[role="main"]', '/templates', '/templates');
+  mainTpl = mute('/templates', '/templates', 'div[role="main"]');
   mainTpl.render(searchObject.page, searchObject);
 
   // -----
@@ -89,7 +89,7 @@ $(document).ready(function () {
   });
 
   // Let the logout page redirect to home.
-  mainTpl.setRedirect('logout', 'home');
+  //mainTpl.setRedirect('logout', 'home');
 
   // BEGIN DEBUG
   // if (RSN.isLogedIn) {

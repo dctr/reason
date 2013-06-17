@@ -5,5 +5,5 @@ muteScript('nodeContent', function (render, data) {
 
   data.author.localeDate = (new Date(data.author.date)).toLocaleString();
 
-  render(data, data.sha);
+  render(data);
 });

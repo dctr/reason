@@ -17,6 +17,8 @@
 (function (modulename) {
   'use strict';
 
+  // TODO: Replace cbArgs with Array.prototype.slice.call(arguments, n);
+
   var constructor, parallel;
 
   // From ypocat / async-mini
@@ -103,17 +105,26 @@
     };
 
     renderCompiledTemplate = function (tplName, tplArgs, cb, cbArgs) {
-      cachedScripts[tplName](
-        function (processedTplArgs) {
-          var html;
-          html = cachedTemplates[tplName](processedTplArgs);
-          if (typeof target !== 'undefined') { document.querySelector(target).innerHTML = html; }
-          cb(undefined, html, cbArgs);
-        },
-        tplArgs
-      );
+      try {
+        // Store callback arguments for use in inner function.
+        cachedScripts[tplName](
+          function (processedTplArgs) {
+            var html;
+            html = cachedTemplates[tplName](processedTplArgs);
+            if (typeof target === 'string') { document.querySelector(target).innerHTML = html; }
+            if (typeof cb === 'function') {
+              cb(undefined, html, cbArgs);
+            }
+          },
+          tplArgs
+        );
+      } catch (ex) {
+        // Call to cached function failed.
+        cb(ex, undefined, Array.prototype.slice.call(arguments, 3));
+      }
     };
 
+    // TODO: To be node-compatible, this function has to do file-io if run in node.js.
     request = function (url, cb) {
       var xhr;
       // NOTE: A 304 from the server results in a client-side 200.
@@ -168,16 +179,27 @@
 
     that = {};
 
-    that.render = function (tplName, tplArgs, cb, cbArgs) {
+    that.render = function (tplName, tplArgs, cb) {
       // TODO: Validate input
+      // TODO: Do not render if tplArgs === 'prefetch'
+      var cbArgs = Array.prototype.slice.call(arguments, 3);
       if (cachedTemplates[tplName]) {
-        return renderCompiledTemplate(tplName, tplArgs, cb, cbArgs);
+        if (tplArgs !== 'prefetch') {
+          renderCompiledTemplate(tplName, tplArgs, cb, cbArgs);
+        } else {
+          cb(undefined, undefined, cbArgs);
+        }
+        return;
       }
       cache(tplName, function (err) {
         if (err) { return cb(err, undefined, cbArgs); }
         resolve(cachedEjs[tplName], function (err, res) {
           cachedTemplates[tplName] = _.template(res);
-          renderCompiledTemplate(tplName, tplArgs, cb, cbArgs);
+          if (tplArgs !== 'prefetch') {
+            renderCompiledTemplate(tplName, tplArgs, cb, cbArgs);
+          } else {
+            cb(undefined, undefined, cbArgs);
+          }
         });
       });
     };

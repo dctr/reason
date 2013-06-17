@@ -19,7 +19,7 @@ muteScript('conversation', function (render, data) {
     console.log(e);
   };
 
-  addHTMLContent = function (htmlString, sha) {
+  addHTMLContent = function (err, htmlString, sha) {
     commits[sha].htmlContent = htmlString;
   };
 
@@ -192,10 +192,10 @@ muteScript('conversation', function (render, data) {
         }
       }
     }
-    nodeTpl = mute(addHTMLContent, '/templates', '/templates');
+    nodeTpl = mute('/templates', '/templates');
     // Calling the renderer with a prefetch-callback. So, in stageThree,
     // the template does not need to be fetched and render is synchronously.
-    nodeTpl.render('nodeContent', stageThree);
+    nodeTpl.render('nodeContent', 'prefetch', stageThree);
   };
 
   stageThree = function () {
@@ -203,7 +203,7 @@ muteScript('conversation', function (render, data) {
     render(data);
     for (sha in commits) {
       if (commits.hasOwnProperty(sha)) {
-        nodeTpl.render('nodeContent', commits[sha]);
+        nodeTpl.render('nodeContent', commits[sha], addHTMLContent, sha);
       }
     }
     graphEngine.run();

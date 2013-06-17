@@ -10,14 +10,15 @@ muteScript('XXX', function (render, data) {
 
   // Process input from data object.
   // ===============================
+  //
+  // Store all data that should be available in templateData.
 
 
   // Render the template with some data object.
   // ==========================================
   //
-  // Optional: If your mute.js instance was created with a callback function,
-  // you can provide additional data to that callback by calling
-  // render(templateData, callbackData)
+  // If this script is called, the template and this function are fetched.
+  // Thus, the call to render() is sync.
   render(templateData);
 
 
