@@ -1,25 +1,53 @@
-Reporting Errors using a Social Network
-=======================================
+# Welcome to REaSoN
 
-This software is curently under development and does not provide any working version.
+# What?
 
-Come back later!
+REaSoN provides a two-dimensional talk, stored in a GitHub repository.
 
-Hosting the app
-===============
+SCREENSHOT
 
-Everything within the app runs client-side, so you could virtually just open the index.html. But as the app uses XML HTTP requests, which prohibit file:// URLs, a webserver is needed.
+## Create you own talk
 
-The app comes bundled with mongoose, a small, easy to use, and plattform-independant webserver. To use it, simply run
+Just create a new GitHub repository the usual way and make you initial commit message the first message you want to post.
 
-    ./tools/run.sh
+## Contribute to a talk
 
-As an alternative, you can host the app on any webserver. In fact, the current HEAD of the gh-pages branch is available via github.io.
+Just open the [REaSoN Homepage](http://dctr.github.io/reason "REaSoN Homepage"), log in with your GitHub credentials, and enter the repo path (username/reponame) in the search field to view a repo.
 
-dl test
+If you have write access to the repo, just click on any message you want to reply to, type your answer, and click the submit button.
 
-foo
-: bar
+# Why?
 
-haba
-: baba
+Common forums often have the following structure:
+
+*   Topic
+  *   RE: Topic
+    *   RE: RE: Topic
+      *   RE: RE: RE: Topic
+    *   RE: RE: Topic
+  *   RE: Topic
+
+This is because common forums are one-dimensional. REaSoN is a prototype forum that extends the common structure by a second dimension.
+
+Instead of citing or re-ing, you can directly response to any (also multiple) contributions, whereby a two-dimensional graph of response-hierarchy is built.
+
+# How?
+
+REaSoN is a web app based on HTML, CSS, and Javascript. Backend, it uses GitHub to store the talk as a graph.
+
+REaSoN uses
+- async
+- dagre
+- github.js
+- jQuery
+- mute.js
+- Underscore.js
+
+To set up a own topic, just create a repository at GitHub with a README file and enter your first topic text as the commit. Now login in this page, enter the repos path above to see the graph and interact with it. All persons with access to the repository have access to the graph.
+
+# Who?
+
+<dl>
+  <dt>Homepage</dt><dd>[https://dctr.github.io](https://dctr.github.io) (WIP)</dd>
+  <dt>GitHub Profile</dt><dd>[https://github.com/dctr](https://github.com/dctr)</dd>
+</dl>

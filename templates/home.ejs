@@ -1,39 +1,69 @@
-<!-- TODO: Make this page a markdown template and use it for README.md and home.ejs. -->
-<h1 class="pageTitle">Welcome to REaSoN</h1>
+<h1 id='welcome_to_reason' class="pageTitle">Welcome to REaSoN</h1>
 
-<h1>What?</h1>
-<p>REaSoN provides a two-dimensional chat, stored in GitHub repositories.</p>
+<h1 id='what'>What?</h1>
+
+<p>REaSoN provides a two-dimensional talk, stored in a GitHub repository.</p>
+
 <p>SCREENSHOT</p>
 
+<h2 id='create_you_own_talk'>Create you own talk</h2>
 
-<h1>Why?</h1>
+<p>Just create a new GitHub repository the usual way and make you initial commit message the first message you want to post.</p>
+
+<h2 id='contribute_to_a_talk'>Contribute to a talk</h2>
+
+<p>Just open the <a href='http://dctr.github.io/reason' title='REaSoN Homepage'>REaSoN Homepage</a>, log in with your GitHub credentials, and enter the repo path (username/reponame) in the search field to view a repo.</p>
+
+<p>If you have write access to the repo, just click on any message you want to reply to, type your answer, and click the submit button.</p>
+
+<h1 id='why'>Why?</h1>
+
 <p>Common forums often have the following structure:</p>
+
 <ul>
-  <li>Topic
+  <li>
+    <p>Topic</p>
+
     <ul>
-      <li>RE: Topic
-        <ul>
-          <li>RE: RE: Topic
-            <ul>
-              <li>RE: RE: RE: Topic</li>
-            </ul>
-          </li>
-          <li>RE: RE: Topic</li>
-        </ul>
-      </li>
+      <li>RE: Topic</li>
+
+      <li>RE: RE: Topic * RE: RE: RE: Topic</li>
+
+      <li>RE: RE: Topic</li>
+
       <li>RE: Topic</li>
     </ul>
   </li>
 </ul>
+
 <p>This is because common forums are one-dimensional. REaSoN is a prototype forum that extends the common structure by a second dimension.</p>
+
 <p>Instead of citing or re-ing, you can directly response to any (also multiple) contributions, whereby a two-dimensional graph of response-hierarchy is built.</p>
 
-<h1>How?</h1>
-<p>REaSoN is a web app based on HTML, CSS, and Javascript. Backend, it uses GitHub to store the chat as a graph.</p>
+<h1 id='how'>How?</h1>
+
+<p>REaSoN is a web app based on HTML, CSS, and Javascript. Backend, it uses GitHub to store the talk as a graph.</p>
+
+<p>REaSoN uses</p>
+
+<ul>
+  <li>async</li>
+
+  <li>dagre</li>
+
+  <li>github.js</li>
+
+  <li>jQuery</li>
+
+  <li>mute.js</li>
+
+  <li>Underscore.js</li>
+</ul>
+
 <p>To set up a own topic, just create a repository at GitHub with a README file and enter your first topic text as the commit. Now login in this page, enter the repos path above to see the graph and interact with it. All persons with access to the repository have access to the graph.</p>
 
-<h1>Who?</h1>
+<h1 id='who'>Who?</h1>
 <dl>
-  <dt>Homepage</dt><dd><a href="https://dctr.github.io" target="_blank">https://dctr.github.io</a> (WIP)</dd>
-  <dt>GitHub Profile</dt><dd><a href="https://github.com/dctr" target="_blank">https://github.com/dctr</a></dd>
+  <dt>Homepage</dt><dd>[https://dctr.github.io](https://dctr.github.io) (WIP)</dd>
+  <dt>GitHub Profile</dt><dd>[https://github.com/dctr](https://github.com/dctr)</dd>
 </dl>

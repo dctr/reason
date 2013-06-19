@@ -192,7 +192,7 @@ muteScript('conversation', function (render, data) {
         }
       }
     }
-    nodeTpl = mute('/templates', '/templates');
+    nodeTpl = mute('./templates', './templates');
     // Calling the renderer with a prefetch-callback. So, in stageThree,
     // the template does not need to be fetched and render is synchronously.
     nodeTpl.render('nodeContent', 'prefetch', stageThree);
