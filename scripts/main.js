@@ -42,7 +42,7 @@ $(document).ready(function () {
     }
   });
 
-  mainTpl = mute('/templates', '/templates', 'div[role="main"]');
+  mainTpl = mute('./templates', './templates', 'div[role="main"]');
   mainTpl.render(searchObject.page, searchObject);
 
   // -----

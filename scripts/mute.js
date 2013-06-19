@@ -2,26 +2,21 @@
 /*global _, define, console */
 
 /**
- * Module boilerplate.
- *
- * This boilerplate samples a module that provides a constructor function with
- * private variables through closure which is invoked without a new keyword.
- * In addition, it contains JSLint asignments following the author's
- * coding conventions.
- *
- * Please replace MODULENAME in the last line.
+ * Minimalistic underscore.js-based template engine.
  *
  * @author David Christ <david.christ@uni-trier.de>
- * @version 0.1
+ * @license ./LICENSE MIT License
+ * @version 2.0
  */
 (function (modulename) {
   'use strict';
 
-  // TODO: Replace cbArgs with Array.prototype.slice.call(arguments, n);
+  // TODO: Make node.js compatible.
 
   var constructor, parallel;
 
-  // From ypocat / async-mini
+  // Similar to async.parallel, but without loading all of async.
+  // From https://github.com/ypocat/async-mini
   parallel = function (funcs, cb) {
     // TODO: Refactor for arrays only
     var c, errs, has_errs, k, next, ress;
@@ -59,12 +54,15 @@
   // Private Static
   // ----------
 
+  // The construtor function that will be exported as mute().
   constructor = function (ejsDir, jsDir, target) {
     var that, cache, cachedEjs, cachedScripts, cachedTemplates, muteScript, renderCompiledTemplate, request, resolve;
 
     // -----
     // Validate input
     // ----------
+
+    // TODO: Check for validity (typeof (e)jsDir === string), target undefined or non-empty string
 
     ejsDir = ejsDir || '/templates';
     jsDir = jsDir || '/templates';
@@ -78,7 +76,7 @@
     // Private non-static
     // ----------
 
-    // Cache the raw ejs in cachedEjs and the script in cachedScripts.
+    // Cache a raw EJS in cachedEjs and it's script in cachedScripts.
     cache = function (tplName, cb) {
       if (cachedEjs[tplName]) { cb(); }
       parallel(
@@ -91,6 +89,7 @@
           }
         ],
         function (err, ress) {
+          // TODO: Check if ress[1] empty or cachedScripts[tplName] is a function (the now cached one). Or store a NOP instead.
           if (err) { return cb(err); }
           cachedEjs[tplName] = ress[0];
           // NOTE: Scripts cache themselves through a call to muteScript.
@@ -100,30 +99,30 @@
       );
     };
 
+    // This function is called by the template JavaScrips to cache themselves.
     muteScript = function (tplName, func) {
+      // TODO: Check if func is function
       cachedScripts[tplName] = func;
     };
 
+    // Renders a readyly cached and compiled template.
     renderCompiledTemplate = function (tplName, tplArgs, cb, cbArgs) {
       try {
-        // Store callback arguments for use in inner function.
         cachedScripts[tplName](
           function (processedTplArgs) {
-            var html;
-            html = cachedTemplates[tplName](processedTplArgs);
-            if (typeof target === 'string') { document.querySelector(target).innerHTML = html; }
-            if (typeof cb === 'function') {
-              cb(undefined, html, cbArgs);
-            }
+            var html = cachedTemplates[tplName](processedTplArgs);
+            if (target) { document.querySelector(target).innerHTML = html; }
+            if (cb) { cb(undefined, html, cbArgs); }
           },
           tplArgs
         );
       } catch (ex) {
-        // Call to cached function failed.
-        cb(ex, undefined, Array.prototype.slice.call(arguments, 3));
+        // Call to template script failed.
+        cb(ex, undefined, cbArgs);
       }
     };
 
+    // Load a file from a given URL.
     // TODO: To be node-compatible, this function has to do file-io if run in node.js.
     request = function (url, cb) {
       var xhr;
@@ -140,10 +139,12 @@
       xhr.send();
     };
 
+    // Resolve includes in EJS files.
+    // From http://emptysqua.re/blog/adding-an-include-tag-to-underscore-js-templates/
     resolve = function (ejs, cb) {
       var funcs, match, pattern, tplName;
       funcs = [];
-      // match "<% include tplName %>"
+      // Matches "<% include tplName %>"
       pattern = /<%\s*include\s*(.*?)\s*%>/g;
       while (true) {
         match = pattern.exec(ejs);
@@ -152,10 +153,12 @@
         // [1] tplName (Capture group 1)
         // Match is an object reference, thus the needed content has to be copied as the objet mutates.
         tplName = match[1];
+        // Construct functions that load templates.
         funcs.push(function (pcb) {
           cache(tplName, pcb);
         });
       }
+      // Load all templates in parallel, resolve content afterwards.
       parallel(
         funcs,
         function (err, ress) {
@@ -179,6 +182,8 @@
 
     that = {};
 
+    // Render a template with a given name and given data.
+    // A callback can be called with the result, additional arguments are forwarded.
     that.render = function (tplName, tplArgs, cb) {
       // TODO: Validate input
       // TODO: Do not render if tplArgs === 'prefetch'
@@ -218,6 +223,7 @@
   // ----------
 
   // To Node.js
+  // WARN: Not ready yet!
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = constructor;
   // To AMD / Require.js
