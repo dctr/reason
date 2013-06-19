@@ -1,16 +1,16 @@
-# Welcome to REaSoN
-
 # What?
 
 REaSoN provides a two-dimensional talk, stored in a GitHub repository.
 
 SCREENSHOT
 
-## Create you own talk
+Start in 2 minutes:
+
+## 1. Create you own talk
 
 Just create a new GitHub repository the usual way and make you initial commit message the first message you want to post.
 
-## Contribute to a talk
+## 2. Contribute to a talk
 
 Just open the [REaSoN Homepage](http://dctr.github.io/reason "REaSoN Homepage"), log in with your GitHub credentials, and enter the repo path (username/reponame) in the search field to view a repo.
 
