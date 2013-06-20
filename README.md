@@ -2,7 +2,7 @@
 
 REaSoN provides a two-dimensional talk, stored in a GitHub repository.
 
-SCREENSHOT
+![Demo Screenshot](/images/screenshot.png "Demo Screenshot")
 
 Start in 2 minutes:
 
@@ -20,12 +20,12 @@ If you have write access to the repo, just click on any message you want to repl
 
 Common forums often have the following structure:
 
-*   Topic
-    *   RE: Topic
-        *   RE: RE: Topic
-            *   RE: RE: RE: Topic
-        *   RE: RE: Topic
-    *   RE: Topic
+-   Topic
+    -   Re: Topic
+        -   Re: Re: Topic
+            -   Re: Re: Re: Topic
+        -   Re: Re: Topic
+    -   Re: Topic
 
 This is because common forums are one-dimensional. REaSoN is a prototype forum that extends the common structure by a second dimension.
 
