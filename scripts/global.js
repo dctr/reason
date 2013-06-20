@@ -79,8 +79,9 @@
       auth: 'basic',
       cache: false
     });
-    github.getUser().show(username, function (err, user) {
+    github.getUser().show(undefined, function (err, user) {
       if (err) {
+        console.log(err);
         callback(false);
       } else {
         // TODO: Storing password on client plaintext. Very, very naughty!
@@ -110,6 +111,7 @@
    * @return {object}        A JavaScript object, if JSON.parse succeeds.
    */
   RSN.parse = function (string) {
+    if (!string) { return undefined; }
     return JSON.parse(string);
   };
 

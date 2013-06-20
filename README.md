@@ -21,11 +21,11 @@ If you have write access to the repo, just click on any message you want to repl
 Common forums often have the following structure:
 
 *   Topic
-  *   RE: Topic
-    *   RE: RE: Topic
-      *   RE: RE: RE: Topic
-    *   RE: RE: Topic
-  *   RE: Topic
+    *   RE: Topic
+        *   RE: RE: Topic
+            *   RE: RE: RE: Topic
+        *   RE: RE: Topic
+    *   RE: Topic
 
 This is because common forums are one-dimensional. REaSoN is a prototype forum that extends the common structure by a second dimension.
 
