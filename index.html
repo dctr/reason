@@ -32,9 +32,10 @@
     <header>
       <nav>
         <ul>
-          <li><a href="" id="home" class="selected">Home</a></li>
+          <li><a href="/" id="home" class="selected">Home</a></li>
           <li class="js-loggedIn hidden">
             <form action="?" id="conversation">
+              <input type="hidden" name="page" value="conversation">
               <input type="text" name="repo" placeholder="owner/repository" autofocus>
               <input type="submit" value="View Conversation">
             </form>
@@ -50,9 +51,9 @@
         </ul>
       </nav>
     </header>
-    <div class="errors">
-    </div>
     <div role="main">
+      <p>Loading...</p>
+      <p>This might take a while for big repositories.</p>
     </div>
     <div id="overlay" class="hidden">
       <div class="overlay"></div>

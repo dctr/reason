@@ -49,21 +49,6 @@ $(document).ready(function () {
   // Register event handlers
   // ----------
 
-  // Functionality for the nav bar.
-  $('nav a').click(function (e) {
-    e.preventDefault();
-    // $('nav a').removeClass('selected');
-    // $(this).addClass('selected');
-    mainTpl.render($(this).attr('id'));
-  });
-
-  $('#conversation input[type="submit"]').click(function (e) {
-    e.preventDefault();
-    mainTpl.render('conversation', {
-      repo: $('#conversation input[name="repo"]').val()
-    });
-  });
-
   $('#login input[type="submit"]').click(function (e) {
     e.preventDefault();
     RSN.login(

@@ -143,7 +143,7 @@ muteScript('conversation', function (render, data) {
     }
   };
 
-  // The program is divided into stages, to instead of nesting too many
+  // The program is divided into stages, so instead of nesting too many
   // functions as callbacks, a stage-function is provided as callback.
 
   stageOne = function () {
