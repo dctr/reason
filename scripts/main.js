@@ -72,12 +72,4 @@ $(document).ready(function () {
     $('.js-loggedOut').removeClass('hidden');
     window.location.reload();
   });
-
-  // Let the logout page redirect to home.
-  //mainTpl.setRedirect('logout', 'home');
-
-  // BEGIN DEBUG
-  // if (RSN.isLogedIn) {
-  //   mainTpl.render('conversation', {repo: 'issuetracker/ggc-one'});
-  // }
 });
