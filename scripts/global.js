@@ -76,7 +76,8 @@
     var github = new Github({
       username: username,
       password: password,
-      auth: 'basic'
+      auth: 'basic',
+      cache: false
     });
     github.getUser().show(username, function (err, user) {
       if (err) {
