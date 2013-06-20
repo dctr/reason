@@ -2,11 +2,11 @@
 
 REaSoN provides a two-dimensional talk, stored in a GitHub repository.
 
-![Demo Screenshot](/images/screenshot.png "Demo Screenshot")
+![Demo Screenshot](/images/screenshot.png)
 
 Start in 2 minutes:
 
-## 1. Create you own talk
+## 1. Create your own talk
 
 Just create a new GitHub repository the usual way and make you initial commit message the first message you want to post.
 
